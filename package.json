@@ -1,0 +1,29 @@
+{
+  "name": "my-app",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@nodetoy/three-nodetoy": "^0.1.36",
+    "@tweenjs/tween.js": "^23.1.2",
+    "glslify-loader": "^2.0.0",
+    "gsap": "^3.12.5",
+    "next": "14.2.4",
+    "react": "^18",
+    "react-dom": "^18",
+    "stats.js": "^0.17.0",
+    "three": "^0.165.0"
+  },
+  "devDependencies": {
+    "eslint": "^8",
+    "eslint-config-next": "14.2.4",
+    "install": "^0.13.0",
+    "npm": "^10.8.1",
+    "raw-loader": "^4.0.2"
+  }
+}

@@ -1,0 +1,25 @@
+.starting_message_page {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  display: flex; /* Enable Flexbox */
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  background-color: rgba(0, 0, 0, 0.442);
+}
+
+.starting_message_container {
+  margin: auto;
+  width: 70vw;
+  height: max-content;
+  text-align: center;
+}
+
+.starting_message_title {
+  font-size: 3vw;
+  margin-bottom: 5%;
+}
+
+.starting_message {
+  font-size: 2vw;
+}

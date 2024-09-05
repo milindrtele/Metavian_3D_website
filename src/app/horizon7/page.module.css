@@ -1,0 +1,13 @@
+.slidecontainer {
+  position: absolute;
+  width: 10%;
+  right: 0;
+}
+
+.video {
+  width: 25%;
+  height: 25%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
