@@ -53,7 +53,7 @@ import {
   cubeCamera,
   projectModels,
   projectModelsAnchors,
-} from "../lib/scripts/assetLoader.js";
+} from "../lib/scripts/assetLoader_new.js";
 
 import { setupGrid } from "../lib/scripts/setupGrid.js";
 
