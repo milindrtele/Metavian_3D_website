@@ -1175,30 +1175,50 @@ export default function Horizon() {
   const totalAnimationSeconds =
     blenderCameraAnimationFrames / blenderCameraAnimationFrameRate;
 
+  // function onMouseScroll(progress) {
+  //   if (mixerRef.current !== null) {
+  //     const elapsedTime = progress * totalAnimationSeconds;
+
+  //     // animateProductModels(
+  //     //   sceneRef.current,
+  //     //   projectModels,
+  //     //   projectModelsAnchors,
+  //     //   elapsedTime
+  //     // );
+
+  //     mixerRef.current.setTime(elapsedTime);
+  //     mixerArrayRef.current.forEach((mixer) => {
+  //       console.log(elapsedTime);
+  //       console.log(mixer);
+  //       mixer.setTime(elapsedTime);
+  //       mixer._root.updateMatrix();
+  //     });
+
+  //     // if (checkScrollDirectionIsUp(progress)) {
+  //     //   mixerRef.current.setTime(elapsedTime);
+  //     // } else {
+  //     //   mixerRef.current.setTime(elapsedTime);
+  //     // }
+  //   }
+  // }
+
+  //let previousTime = 0;
+
   function onMouseScroll(progress) {
     if (mixerRef.current !== null) {
       const elapsedTime = progress * totalAnimationSeconds;
 
-      // animateProductModels(
-      //   sceneRef.current,
-      //   projectModels,
-      //   projectModelsAnchors,
-      //   elapsedTime
-      // );
+      // Interpolation factor
+      const delta = 0.1; // Adjust this for smoothness
+      const smoothTime = THREE.MathUtils.lerp(previousTime, elapsedTime, delta);
 
-      mixerRef.current.setTime(elapsedTime);
+      mixerRef.current.setTime(smoothTime);
       mixerArrayRef.current.forEach((mixer) => {
-        console.log(elapsedTime);
-        console.log(mixer);
-        mixer.setTime(elapsedTime);
+        mixer.setTime(smoothTime);
         mixer._root.updateMatrix();
       });
 
-      // if (checkScrollDirectionIsUp(progress)) {
-      //   mixerRef.current.setTime(elapsedTime);
-      // } else {
-      //   mixerRef.current.setTime(elapsedTime);
-      // }
+      previousTime = smoothTime; // Store the current time for the next frame
     }
   }
 

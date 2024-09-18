@@ -86,6 +86,8 @@ body {
 } */
 
 body {
+  overflow-y: scroll;
+  scroll-behavior: smooth;
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(
       to bottom,

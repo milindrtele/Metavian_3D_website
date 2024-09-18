@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { NodeToyMaterial } from "@nodetoy/three-nodetoy";
 import { data } from "../shaders/scan_lines/scan_lines_shader_data.js";
+import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
 
 let blenderCamera = null;
 let animationMixers = [];
@@ -13,6 +14,8 @@ let cubeCamera, cubeRenderTarget;
 
 let projectModels = [];
 let projectModelsAnchors = [];
+
+let hdrImage = null;
 
 export function loadAssetsWithPromise(
   loader,
@@ -102,7 +105,7 @@ export function loadAssetsWithPromise(
     //load the capsule
     loader.load(
       //"models/capsule/cosmos ship of imagination.glb",
-      "models/capsule/new_capsule_2.glb",
+      "models/capsule/capsule/capsule_with_baked_textures.glb",
       (gltf) => {
         capsule_model = gltf.scene;
         console.log(capsule_model);
@@ -151,27 +154,58 @@ export function loadAssetsWithPromise(
           metalness: 1,
         });
 
+        // const capsule_material = new THREE.MeshBasicMaterial({
+        //   map: new THREE.TextureLoader().load(
+        //     "models/capsule/capsule/new_baked_textures/diffuse_combined.png"
+        //   ),
+        //   normalMap: new THREE.TextureLoader().load(
+        //     "models/capsule/capsule/new_baked_textures/normal_map.png"
+        //   ),
+        //   normalMap: new THREE.TextureLoader().load(
+        //     "models/capsule/capsule/new_baked_textures/roughness_map.png"
+        //   ),
+        // });
+
         const glass = new NodeToyMaterial({
           url: "https://draft.nodetoy.co/ECrNY8O4MMUUagsb", //"https://draft.nodetoy.co/w7BhuuAcZ2ESIjU5", //,
         });
         glass.side = THREE.DoubleSide;
 
-        capsule_model.traverse((object) => {
-          if (object.isMesh) {
-            object.material.envMap = cubeRenderTarget.texture;
+        function loadHDRI() {
+          return new Promise((resolve, reject) => {
+            new RGBELoader()
+              .setPath("models/capsule/capsule/")
+              .load("brown_photostudio_01_1k.hdr", function (texture) {
+                hdrImage = texture;
+                hdrImage.mapping = THREE.EquirectangularReflectionMapping;
+                console.log(hdrImage);
+                resolve();
+              });
+          });
+        }
 
-            if (object.name == "cockpit_canopy") {
-              cockpit_canopy = object;
-              cockpit_canopy.material = glass;
-              cockpit_canopy.material.side = THREE.DoubleSide;
+        loadHDRI().then(() => {
+          capsule_model.traverse((object) => {
+            if (object.isMesh) {
+              //object.material.envMap = cubeRenderTarget.texture;
+              //object.material = capsule_material;
+              object.material.envMap = hdrImage;
+
+              if (object.name == "cockpit_canopy") {
+                cockpit_canopy = object;
+                cockpit_canopy.material = glass;
+                cockpit_canopy.material.side = THREE.DoubleSide;
+              }
+
+              console.log(object.material);
+
+              // if (object.material.name == "metal") {
+              //   object.material = reflectiveMaterial;
+              // } else if (object.material.name == "glass") {
+              //   object.material.envMap = cubeRenderTarget.texture;
+              // }
             }
-
-            // if (object.material.name == "metal") {
-            //   object.material = reflectiveMaterial;
-            // } else if (object.material.name == "glass") {
-            //   object.material.envMap = cubeRenderTarget.texture;
-            // }
-          }
+          });
         });
 
         // const scan_lines_plane =
