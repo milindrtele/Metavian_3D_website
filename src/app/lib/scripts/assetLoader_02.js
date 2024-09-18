@@ -282,7 +282,7 @@ export function loadAssetsWithPromise(
       );
       loadModels(
         4,
-        "models/Consolidated models/saperated_animated_models/virtual_production/virtual_production.glb", //"models/positioned assets 2/virtual_production.glb",
+        "models/Consolidated models/saperated_animated_models/virtual_production/virtual_production1.glb", //"models/positioned assets 2/virtual_production.glb",
         "anchor",
         null,
         null,

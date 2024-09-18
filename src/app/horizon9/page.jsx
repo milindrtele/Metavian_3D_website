@@ -162,12 +162,12 @@ export default function Horizon() {
         uProgress: progressJSRef.current,
         rotationAngle: rotationAngleJS,
         vScale: scaleJS,
-        mt1: { value: 7 / totalLengthOfAnimation },
-        mt2: { value: 18 / totalLengthOfAnimation },
-        mt3: { value: 30 / totalLengthOfAnimation },
-        mt4: { value: 40 / totalLengthOfAnimation },
-        mt5: { value: 50 / totalLengthOfAnimation },
-        mt6: { value: 62 / totalLengthOfAnimation },
+        mt1: { value: 8 / totalLengthOfAnimation }, //7
+        mt2: { value: 16 / totalLengthOfAnimation }, //18
+        mt3: { value: 30 / totalLengthOfAnimation }, //30
+        mt4: { value: 40 / totalLengthOfAnimation }, //40
+        mt5: { value: 50 / totalLengthOfAnimation }, //50
+        mt6: { value: 60 / totalLengthOfAnimation }, //60
         step1: {
           value: new THREE.TextureLoader().load("/images/metavian-logo.png"),
         },
@@ -441,8 +441,7 @@ export default function Horizon() {
       //   renderType: "transparent",
       // });
 
-      // add the debug plane
-      // console.log(fboRef.current.texture);
+      //add the debug plane
       // const debugPlaneGeo = new THREE.PlaneGeometry(20, 17.7);
       // const debugPlaneMat = new THREE.MeshBasicMaterial({
       //   //map: new THREE.TextureLoader().load("images/ring.jpg"),
@@ -526,8 +525,8 @@ export default function Horizon() {
           scan_lines_meshRef.current = capsule_model;
           capsule_anchorRef.current = capsule_anchor;
           sceneRef.current.add(capsule_model);
-          transformControlRef.current.attach(capsule_anchor);
-          sceneRef.current.add(transformControlRef.current);
+          // transformControlRef.current.attach(capsule_anchor);
+          // sceneRef.current.add(transformControlRef.current);
           setAssetsLoadedSuccessfully(true);
         })
         .catch((error) => {
@@ -1104,7 +1103,7 @@ export default function Horizon() {
       pin: true,
       markers: true,
       onUpdate: (self) => {
-        const min = 0.2;
+        const min = 0.15;
         const max = 1.0;
 
         progressJSRef.current.value = self.progress * (max - min) + min;
@@ -1141,17 +1140,17 @@ export default function Horizon() {
 
         //copy the position and rotation of the imported camera from blender .glb///////////////////////////////
 
-        if (blenderCameraRef.current != null) {
-          cameraRef.current.position.copy(blenderCameraRef.current.position);
-          cameraRef.current.position.y =
-            blenderCameraRef.current.position.y - 3;
-          cameraRef.current.rotation.copy(blenderCameraRef.current.rotation);
-          cameraRef.current.quaternion.copy(
-            blenderCameraRef.current.quaternion
-          );
-          //console.log(blenderCameraRef.current.position);
-          cameraRef.current.updateMatrix();
-        }
+        // if (blenderCameraRef.current != null) {
+        //   cameraRef.current.position.copy(blenderCameraRef.current.position);
+        //   cameraRef.current.position.y =
+        //     blenderCameraRef.current.position.y - 3;
+        //   cameraRef.current.rotation.copy(blenderCameraRef.current.rotation);
+        //   cameraRef.current.quaternion.copy(
+        //     blenderCameraRef.current.quaternion
+        //   );
+        //   //console.log(blenderCameraRef.current.position);
+        //   cameraRef.current.updateMatrix();
+        // }
       },
     });
   }
@@ -1175,52 +1174,52 @@ export default function Horizon() {
   const totalAnimationSeconds =
     blenderCameraAnimationFrames / blenderCameraAnimationFrameRate;
 
-  // function onMouseScroll(progress) {
-  //   if (mixerRef.current !== null) {
-  //     const elapsedTime = progress * totalAnimationSeconds;
-
-  //     // animateProductModels(
-  //     //   sceneRef.current,
-  //     //   projectModels,
-  //     //   projectModelsAnchors,
-  //     //   elapsedTime
-  //     // );
-
-  //     mixerRef.current.setTime(elapsedTime);
-  //     mixerArrayRef.current.forEach((mixer) => {
-  //       console.log(elapsedTime);
-  //       console.log(mixer);
-  //       mixer.setTime(elapsedTime);
-  //       mixer._root.updateMatrix();
-  //     });
-
-  //     // if (checkScrollDirectionIsUp(progress)) {
-  //     //   mixerRef.current.setTime(elapsedTime);
-  //     // } else {
-  //     //   mixerRef.current.setTime(elapsedTime);
-  //     // }
-  //   }
-  // }
-
-  //let previousTime = 0;
-
   function onMouseScroll(progress) {
     if (mixerRef.current !== null) {
       const elapsedTime = progress * totalAnimationSeconds;
 
-      // Interpolation factor
-      const delta = 0.1; // Adjust this for smoothness
-      const smoothTime = THREE.MathUtils.lerp(previousTime, elapsedTime, delta);
+      // animateProductModels(
+      //   sceneRef.current,
+      //   projectModels,
+      //   projectModelsAnchors,
+      //   elapsedTime
+      // );
 
-      mixerRef.current.setTime(smoothTime);
+      mixerRef.current.setTime(elapsedTime);
       mixerArrayRef.current.forEach((mixer) => {
-        mixer.setTime(smoothTime);
+        console.log(elapsedTime);
+        console.log(mixer);
+        mixer.setTime(elapsedTime);
         mixer._root.updateMatrix();
       });
 
-      previousTime = smoothTime; // Store the current time for the next frame
+      // if (checkScrollDirectionIsUp(progress)) {
+      //   mixerRef.current.setTime(elapsedTime);
+      // } else {
+      //   mixerRef.current.setTime(elapsedTime);
+      // }
     }
   }
+
+  //let previousTime = 0;
+
+  // function onMouseScroll(progress) {
+  //   if (mixerRef.current !== null) {
+  //     const elapsedTime = progress * totalAnimationSeconds;
+
+  //     // Interpolation factor
+  //     const delta = 0.1; // Adjust this for smoothness
+  //     const smoothTime = THREE.MathUtils.lerp(previousTime, elapsedTime, delta);
+
+  //     mixerRef.current.setTime(smoothTime);
+  //     mixerArrayRef.current.forEach((mixer) => {
+  //       mixer.setTime(smoothTime);
+  //       mixer._root.updateMatrix();
+  //     });
+
+  //     previousTime = smoothTime; // Store the current time for the next frame
+  //   }
+  // }
 
   function onRotationChange(value) {
     rotationAngleJS.value = value;
