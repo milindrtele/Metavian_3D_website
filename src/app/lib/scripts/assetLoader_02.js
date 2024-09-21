@@ -105,7 +105,7 @@ export function loadAssetsWithPromise(
     //load the capsule
     loader.load(
       //"models/capsule/cosmos ship of imagination.glb",
-      "models/capsule/capsule/capsule_with_baked_textures.glb",
+      "models/capsule/capsule/capsule_with_baked_textures1.glb",
       (gltf) => {
         capsule_model = gltf.scene;
         console.log(capsule_model);
@@ -167,9 +167,9 @@ export function loadAssetsWithPromise(
         // });
 
         const glass = new NodeToyMaterial({
-          url: "https://draft.nodetoy.co/ECrNY8O4MMUUagsb", //"https://draft.nodetoy.co/w7BhuuAcZ2ESIjU5", //,
+          url: "https://draft.nodetoy.co/CaZIA3BY8nwlGymO", //"https://draft.nodetoy.co/w7BhuuAcZ2ESIjU5", //https://draft.nodetoy.co/ECrNY8O4MMUUagsb,
         });
-        glass.side = THREE.DoubleSide;
+        //glass.side = THREE.DoubleSide;
 
         function loadHDRI() {
           return new Promise((resolve, reject) => {
@@ -209,14 +209,14 @@ export function loadAssetsWithPromise(
         });
 
         // const scan_lines_plane =
-        //   capsule_model.getObjectByName("scan_lines_mesh");
+        //   capsule_model.getObjectByName("cockpit_canopy");
         // scan_lines_plane.material = new NodeToyMaterial({
-        //   data,
-        //   //url: "https://draft.nodetoy.co/teCGtR1LIJGk4CO1",
+        //   // data,
+        //   url: "https://draft.nodetoy.co/teCGtR1LIJGk4CO1",
         // });
         // scan_lines_plane.material.side = THREE.DoubleSide;
 
-        console.log(capsule_model);
+        // console.log(capsule_model);
 
         loadProjectModels();
       },
@@ -255,7 +255,7 @@ export function loadAssetsWithPromise(
       );
       loadModels(
         1,
-        "models/Consolidated models/saperated_animated_models/virtual_mart/virtual_mart.glb", //"models/positioned assets 2/virtual_mart_2.glb",
+        "models/Consolidated models/saperated_animated_models/virtual_mart/virtual_mart1.glb", //"models/positioned assets 2/virtual_mart_2.glb",
         "anchor",
         null,
         null,
@@ -264,7 +264,7 @@ export function loadAssetsWithPromise(
       );
       loadModels(
         2,
-        "models/Consolidated models/saperated_animated_models/fashion_ix/fashion_ix.glb", //"models/positioned assets 2/fashion_ix.glb",
+        "models/Consolidated models/saperated_animated_models/fashion_ix/fashion_ix1.glb", //"models/positioned assets 2/fashion_ix.glb",
         "anchor",
         null,
         null,
@@ -273,7 +273,7 @@ export function loadAssetsWithPromise(
       );
       loadModels(
         3,
-        "models/Consolidated models/saperated_animated_models/edulab/edulab.glb", //"models/positioned assets 2/edulab_2.glb",
+        "models/Consolidated models/saperated_animated_models/edulab/edulab1.glb", //"models/positioned assets 2/edulab_2.glb",
         "anchor",
         null,
         null,

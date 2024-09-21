@@ -2,6 +2,7 @@
 
 import StartingMessage from "../components/startingMessage/startingMessage.jsx";
 import GetStarted from "../components/GetStarted/GetStarted.jsx";
+import HamburgerMenu from "../components/HamburgerMenu/hamburgerMenu.jsx";
 
 import { useRef, useState, useEffect } from "react";
 import * as THREE from "three";
@@ -34,6 +35,7 @@ import { mat2 } from "three/examples/jsm/nodes/Nodes";
 
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ScrollToPlugin } from "gsap/dist/ScrollToPlugin";
 import { CustomEase } from "gsap/CustomEase";
 
 import PositionAlongPathState from "../lib/positionAlongPathTools/PositionAlongPathState.js";
@@ -144,10 +146,12 @@ export default function Horizon() {
 
   const [getStartedCompleted, setGetStartedCompleted] = useState(false);
 
+  const [isHamburgerMenuVisible, setIsHamburgerMenuVisible] = useState(false);
+
   const activeCameraRef = useRef(null);
   const startSequenceCompleteRef = useRef(false);
 
-  gsap.registerPlugin(ScrollTrigger);
+  gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
   gsap.registerPlugin(CustomEase);
 
   function setupFBO() {
@@ -164,10 +168,10 @@ export default function Horizon() {
         vScale: scaleJS,
         mt1: { value: 8 / totalLengthOfAnimation }, //7
         mt2: { value: 16 / totalLengthOfAnimation }, //18
-        mt3: { value: 30 / totalLengthOfAnimation }, //30
-        mt4: { value: 40 / totalLengthOfAnimation }, //40
-        mt5: { value: 50 / totalLengthOfAnimation }, //50
-        mt6: { value: 60 / totalLengthOfAnimation }, //60
+        mt3: { value: 25 / totalLengthOfAnimation }, //30
+        mt4: { value: 31 / totalLengthOfAnimation }, //40
+        mt5: { value: 39 / totalLengthOfAnimation }, //50
+        mt6: { value: 48 / totalLengthOfAnimation }, //60
         step1: {
           value: new THREE.TextureLoader().load("/images/metavian-logo.png"),
         },
@@ -208,8 +212,8 @@ export default function Horizon() {
 
   async function setupScene(canvas) {
     if (sceneRef.current == null) {
-      stats = new Stats();
-      document.body.appendChild(stats.dom);
+      // stats = new Stats();
+      // document.body.appendChild(stats.dom);
       //Scene is container for objects, cameras, and lights
       sceneRef.current = new THREE.Scene();
 
@@ -610,28 +614,28 @@ export default function Horizon() {
 
       composer.addPass(new OutputPass());
 
-      const effectController = {
-        focus: 500.0,
-        aperture: 5,
-        maxblur: 0.01,
-      };
+      // const effectController = {
+      //   focus: 500.0,
+      //   aperture: 5,
+      //   maxblur: 0.01,
+      // };
 
-      const matChanger = function () {
-        bokehPass.uniforms["focus"].value = effectController.focus;
-        bokehPass.uniforms["aperture"].value =
-          effectController.aperture * 0.00001;
-        bokehPass.uniforms["maxblur"].value = effectController.maxblur;
-      };
+      // const matChanger = function () {
+      //   bokehPass.uniforms["focus"].value = effectController.focus;
+      //   bokehPass.uniforms["aperture"].value =
+      //     effectController.aperture * 0.00001;
+      //   bokehPass.uniforms["maxblur"].value = effectController.maxblur;
+      // };
 
-      const gui = new GUI();
-      gui.add(effectController, "focus", 0.1, 100.0, 0.1).onChange(matChanger);
-      gui.add(effectController, "aperture", 0, 10, 0.1).onChange(matChanger);
-      gui
-        .add(effectController, "maxblur", 0.0, 0.01, 0.001)
-        .onChange(matChanger);
-      gui.close();
+      // const gui = new GUI();
+      // gui.add(effectController, "focus", 0.1, 100.0, 0.1).onChange(matChanger);
+      // gui.add(effectController, "aperture", 0, 10, 0.1).onChange(matChanger);
+      // gui
+      //   .add(effectController, "maxblur", 0.0, 0.01, 0.001)
+      //   .onChange(matChanger);
+      // gui.close();
 
-      matChanger();
+      // matChanger();
 
       function lookAtCamera() {
         // if (fashionIXanchorRef.current != null)
@@ -665,6 +669,8 @@ export default function Horizon() {
       function animate() {
         requestAnimationFrame(animate);
 
+        console.log(cameraRef.current.position);
+
         //console.log(progressJSRef.current.value);
 
         // if (capsule_anchor) {
@@ -674,7 +680,7 @@ export default function Horizon() {
         if (cubeCamera != null)
           cubeCamera.update(rendererRef.current, sceneRef.current);
 
-        stats.update();
+        //stats.update();
 
         //getAssetPositions();
 
@@ -867,9 +873,9 @@ export default function Horizon() {
       let Currentprogress = 0.0;
 
       const cameraEndPosition = {
-        x: 0,
+        x: -13,
         y: 4,
-        z: -100,
+        z: -95,
       };
       const cameraTargetPosition = {
         x: 53.8746,
@@ -988,7 +994,7 @@ export default function Horizon() {
 
   useEffect(() => {
     if (getStartedCompleted) {
-      const cameraLeftPanEndPos = { x: 8.54455, y: 4, z: -105.943 };
+      const cameraLeftPanEndPos = { x: 0.0, y: 4, z: -105.943 };
       const cameraForwardPanEndPos = {
         x: 26.844, // blender_x
         y: 4, // blender_z
@@ -1047,6 +1053,7 @@ export default function Horizon() {
         onComplete: () => {
           controlsRef.current.enabled = true;
           startSequenceCompleteRef.current = true;
+          setIsHamburgerMenuVisible(true);
 
           addScrollTrigger();
         },
@@ -1101,7 +1108,7 @@ export default function Horizon() {
       start: "top",
       end: "25000",
       pin: true,
-      markers: true,
+      // markers: true,
       onUpdate: (self) => {
         const min = 0.15;
         const max = 1.0;
@@ -1140,17 +1147,35 @@ export default function Horizon() {
 
         //copy the position and rotation of the imported camera from blender .glb///////////////////////////////
 
-        // if (blenderCameraRef.current != null) {
-        //   cameraRef.current.position.copy(blenderCameraRef.current.position);
-        //   cameraRef.current.position.y =
-        //     blenderCameraRef.current.position.y - 3;
-        //   cameraRef.current.rotation.copy(blenderCameraRef.current.rotation);
-        //   cameraRef.current.quaternion.copy(
-        //     blenderCameraRef.current.quaternion
-        //   );
-        //   //console.log(blenderCameraRef.current.position);
-        //   cameraRef.current.updateMatrix();
-        // }
+        if (blenderCameraRef.current != null) {
+          cameraRef.current.position.copy(blenderCameraRef.current.position);
+          cameraRef.current.position.y =
+            blenderCameraRef.current.position.y - 3;
+          cameraRef.current.rotation.copy(blenderCameraRef.current.rotation);
+          cameraRef.current.quaternion.copy(
+            blenderCameraRef.current.quaternion
+          );
+          //console.log(blenderCameraRef.current.position);
+          cameraRef.current.updateMatrix();
+        }
+      },
+    });
+  }
+
+  function animateToProgress(targetProgress) {
+    // Get the total scrollable distance
+    const totalScroll = 25000; //ScrollTrigger.maxScroll(window);
+
+    // Calculate the scroll position based on the target progress
+    const targetScroll = totalScroll * targetProgress;
+
+    // Use gsap to animate the scroll position smoothly
+    gsap.to(window, {
+      scrollTo: targetScroll,
+      duration: 3, // Adjust the duration for smoothness
+      ease: "power2.inOut", // You can change the easing for different effects
+      onUpdate: () => {
+        ScrollTrigger.refresh(); // Refresh ScrollTrigger on update to ensure correct behavior
       },
     });
   }
@@ -1240,10 +1265,39 @@ export default function Horizon() {
     setGetStartedCompleted(true);
   };
 
+  const selectedItemInMenu = (item) => {
+    console.log(item);
+    switch (item) {
+      case "home":
+        animateToProgress(0.0);
+        break;
+      case "Car Configurator":
+        animateToProgress(0.12); //0.12;
+        break;
+      case "MetaRealty":
+        animateToProgress(0.258); //0.258
+        break;
+      case "Virtual Production":
+        animateToProgress(0.403); //0.403
+        break;
+      case "Edulab":
+        animateToProgress(0.5); //0.5
+        break;
+      case "Fashion-IX":
+        animateToProgress(0.629); //0.629
+        break;
+      case "Virtual Mart":
+        animateToProgress(0.774); //0.774
+        break;
+      default:
+        console.warn("Unknown item");
+    }
+  };
+
   return (
     <div id="container">
       <div className={styles.slidecontainer}>
-        <div id="rotation_slider" className={styles.rotation_slider}>
+        {/* <div id="rotation_slider" className={styles.rotation_slider}>
           <p>rotation</p>
           <input
             type="range"
@@ -1265,7 +1319,7 @@ export default function Horizon() {
             id="myRange"
             onChange={(e) => onScaleChange(e.target.value)}
           ></input>
-        </div>
+        </div> */}
 
         {/* <div id="prgress_slider" className={styles.prgress_slider}>
           <p>progress</p>
@@ -1285,6 +1339,9 @@ export default function Horizon() {
       )}
       {isGetStartedVisible && <GetStarted continue={GetStartedContinue} />}
       {/* {isStartingMessageVisible && <GetStarted />} */}
+      {isHamburgerMenuVisible && (
+        <HamburgerMenu selectedItem={selectedItemInMenu} />
+      )}
     </div>
   );
 }

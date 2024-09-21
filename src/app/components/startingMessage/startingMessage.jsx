@@ -19,6 +19,7 @@ export default function StartingMessage(props) {
           limited, whereas imagination embraces the entire world, stimulating
           progress, giving birth to evolution.
         </p>
+        {/* <p className={styles.albert}>- Albert Einstein</p> */}
       </div>
     </div>
   );

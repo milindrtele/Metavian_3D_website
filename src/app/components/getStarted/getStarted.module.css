@@ -18,7 +18,7 @@
   position: relative;
   width: 70%;
   height: 100%;
-  margin: auto;
+  /* margin: auto; */
   display: flex; /* Enable Flexbox */
   flex-direction: column;
   justify-content: center; /* Center horizontally */
@@ -38,12 +38,17 @@
   position: absolute;
   width: 100%;
   bottom: 55vh;
-  font-size: 1vw;
+  font-size: 1.5vw;
   /* margin-bottom: 5%; */
 }
 
 .inputs {
   position: absolute !important;
+  border-radius: 15px;
+  border-width: 3px;
+  border-style: solid;
+  border-color: #ffffff;
+  background-color: #00000069;
 }
 
 .input_1 {
@@ -58,6 +63,14 @@
   height: 5%;
 }
 
+.inputs::placeholder {
+  font-weight: bold;
+  opacity: 0.5;
+  color: rgb(255, 255, 255);
+  font-size: 1vw;
+  padding-left: 2.5%;
+}
+
 .get_started_button {
   position: absolute;
   width: 100%;
@@ -65,6 +78,11 @@
   width: 100%;
   height: 5%;
   /* margin-bottom: 5%; */
+  border-radius: 15px;
+  border-width: 3px;
+  border-style: solid;
+  border-color: #ffffff;
+  background-color: #747474;
 }
 
 .text-content span {

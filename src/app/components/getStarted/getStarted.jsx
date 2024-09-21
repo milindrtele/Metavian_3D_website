@@ -161,10 +161,8 @@ export default function GetStarted(props) {
             ].join(" ")}
             id="text-content"
           >
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industrys standard dummy text
-            ever since the 1500s, when an unknown printer took a galley of type
-            and scrambled it to make a type specimen book.
+            A Venture into Infinite Possibilities in AR, VR, and Spatial
+            Computing.
           </p>
           <input
             id="input_1"
@@ -176,6 +174,7 @@ export default function GetStarted(props) {
               styles.animate,
             ].join(" ")}
             type="text"
+            placeholder="Your Name"
           />
           <input
             id="input_2"
@@ -187,6 +186,7 @@ export default function GetStarted(props) {
               styles.animate,
             ].join(" ")}
             type="text"
+            placeholder="Email"
           />
           <button
             id="button"
