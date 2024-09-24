@@ -1,4 +1,8 @@
 import * as THREE from "three";
+import {
+  CSS3DRenderer,
+  CSS3DObject,
+} from "three/addons/renderers/CSS3DRenderer.js";
 import { NodeToyMaterial } from "@nodetoy/three-nodetoy";
 import { data } from "../shaders/scan_lines/scan_lines_shader_data.js";
 import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
@@ -105,7 +109,7 @@ export function loadAssetsWithPromise(
     //load the capsule
     loader.load(
       //"models/capsule/cosmos ship of imagination.glb",
-      "models/capsule/capsule/capsule_with_baked_textures1.glb",
+      "models/capsule/capsule/capsule_textured_with projection_display.glb",
       (gltf) => {
         capsule_model = gltf.scene;
         console.log(capsule_model);
@@ -167,9 +171,17 @@ export function loadAssetsWithPromise(
         // });
 
         const glass = new NodeToyMaterial({
-          url: "https://draft.nodetoy.co/CaZIA3BY8nwlGymO", //"https://draft.nodetoy.co/w7BhuuAcZ2ESIjU5", //https://draft.nodetoy.co/ECrNY8O4MMUUagsb,
+          url: "https://draft.nodetoy.co/dcJa9nhyWG5d8MeY", //https://draft.nodetoy.co/bzBoaIaQXpLm3UTR, //"https://draft.nodetoy.co/w7BhuuAcZ2ESIjU5", //https://draft.nodetoy.co/ECrNY8O4MMUUagsb,
         });
         //glass.side = THREE.DoubleSide;
+
+        const projection = new NodeToyMaterial({
+          url: "https://draft.nodetoy.co/Hn1pix3Jl1UDs5jH", //https://draft.nodetoy.co/bzBoaIaQXpLm3UTR, //"https://draft.nodetoy.co/w7BhuuAcZ2ESIjU5", //https://draft.nodetoy.co/ECrNY8O4MMUUagsb,
+        });
+        projection.side = THREE.DoubleSide;
+
+        const projection_object = capsule_model.getObjectByName("projection");
+        projection_object.material = projection;
 
         function loadHDRI() {
           return new Promise((resolve, reject) => {

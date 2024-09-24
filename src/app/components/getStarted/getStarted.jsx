@@ -10,10 +10,13 @@ export default function GetStarted(props) {
   const allRef = useRef(null);
   const [areAnimationsCompleted, setAreAnimationsCompleted] = useState(false);
 
+  const mapAllTextRef = useRef(null);
+  const loopThroughElementsRef = useRef(null);
+
   useEffect(() => {
     // document.getElementById("input_1").style.position = "absolute";
     // document.getElementById("input_2").style.position = "absolute";
-    function mapAllText(callback) {
+    mapAllTextRef.current = (callback) => {
       const textElement = document.getElementById("text-content");
       const text = textElement.textContent;
       const words = text.split(" ");
@@ -25,7 +28,7 @@ export default function GetStarted(props) {
       if (callback) {
         callback();
       }
-    }
+    };
 
     function animateElements(element, random, bottom) {
       let position = { x: 0, y: bottom / 10 };
@@ -61,7 +64,7 @@ export default function GetStarted(props) {
       });
     }
 
-    function loopThroughElements() {
+    loopThroughElementsRef.current = () => {
       // Get all direct children of the right_container
       let rightContainerChildren = Array.from(
         document.getElementById("right_container").children
@@ -87,9 +90,9 @@ export default function GetStarted(props) {
         const bottom = parseFloat(computedStyle.bottom); // || 1000; // Default to 0 if bottom is not set
         const random = Math.random();
 
-        setTimeout(() => {
-          animateWords(element, random, bottom);
-        }, 2000);
+        // setTimeout(() => {
+        animateWords(element, random, bottom);
+        // }, 2000);
       });
       // Loop through all elements and apply animations
       rightContainerChildren.forEach((element) => {
@@ -97,13 +100,13 @@ export default function GetStarted(props) {
         const bottom = parseFloat(computedStyle.bottom); // Default to 0 if bottom is not set
         const random = Math.random();
 
-        setTimeout(() => {
-          animateElements(element, random, bottom);
-        }, 3000);
+        // setTimeout(() => {
+        animateElements(element, random, bottom);
+        // }, 3000);
       });
-    }
+    };
 
-    mapAllText(loopThroughElements);
+    //mapAllText(loopThroughElements);
 
     // button.addEventListener("click", animate);
 
@@ -113,7 +116,10 @@ export default function GetStarted(props) {
   }, []); // Empty dependency array ensures this effect runs only once when the component mounts
 
   useEffect(() => {
-    if (allRef.current.length == animationCompletedObjects.length) {
+    if (
+      allRef.current != null &&
+      allRef.current.length == animationCompletedObjects.length
+    ) {
       console.log("All animations completed");
       setAreAnimationsCompleted(true);
     }
@@ -139,6 +145,10 @@ export default function GetStarted(props) {
       delay = delay + 200;
     });
   }, []);
+
+  function submitClicked() {
+    mapAllTextRef.current(loopThroughElementsRef.current);
+  }
 
   return (
     <div className={styles.get_started_container}>
@@ -197,7 +207,7 @@ export default function GetStarted(props) {
               styles.animate,
             ].join(" ")}
             onClick={() => {
-              props.continue();
+              submitClicked();
             }}
           >
             Get Started

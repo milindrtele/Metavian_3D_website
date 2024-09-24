@@ -17,10 +17,12 @@ function HamburgerMenu(props) {
     if (!menuIsVisible) {
       menuRef.current.style.transform = "translateX(-100%)";
       buttonRef.current.style.backgroundImage = "url(icons/bars-solid.svg)"; //topIcon01Src;
+      buttonRef.current.style.transform = "translateX(0%)";
     } else {
       menuRef.current.style.transform = "translateX(0%)";
       buttonRef.current.style.backgroundImage =
-        "url(icons/circle-xmark-regular.svg)"; //topIcon02Src;
+        "url(icons/chevron-left-solid.svg)"; //topIcon02Src;
+      buttonRef.current.style.transform = "translateX(600%)";
     }
   }, [menuIsVisible]);
 
@@ -40,62 +42,146 @@ function HamburgerMenu(props) {
       ></div>
       <div className={[styles.menu_container].join(" ")} id="menu">
         <div className={styles.menu}>
+          {/* Home (top-level menu item) */}
           <div
             className={[styles.menu_item, styles.menu_0].join(" ")}
             onClick={handleClick}
             name="home"
           >
-            {/* <div className={[styles.menu_logo, styles.i_0].join(" ")}></div> */}
             <div className={styles.menu_text}>Home</div>
           </div>
+
           <div className={styles.line_in_menu}></div>
+
+          {/* Menu Item 1 (main menu with submenu) */}
           <div
-            className={[styles.menu_item, styles.menu_1].join(" ")}
-            onClick={handleClick}
-            name="Car Configurator"
+            className={[
+              styles.menu_item,
+              styles.menu_dropdown,
+              styles.menu_item_1,
+            ].join(" ")}
           >
-            {/* <div className={[styles.menu_logo, styles.i_1].join(" ")}></div> */}
-            <div className={styles.menu_text}>Car Configurator</div>
+            <div className={styles.menu_text}>Menu Item 1</div>
           </div>
-          <div
-            className={[styles.menu_item, styles.menu_2].join(" ")}
-            onClick={handleClick}
-            name="MetaRealty"
-          >
-            {/* <div className={[styles.menu_logo, styles.i_2].join(" ")}></div> */}
-            <div className={styles.menu_text}>MetaRealty</div>
+          <div className={[styles.submenu, styles.submenu_1].join(" ")}>
+            <div
+              className={[styles.menu_item, styles.menu_1].join(" ")}
+              onClick={handleClick}
+              name="Car Configurator"
+            >
+              <div className={styles.menu_text}>Car Configurator</div>
+            </div>
+            <div className={styles.line_in_menu}></div>
+            <div
+              className={[styles.menu_item, styles.menu_2].join(" ")}
+              onClick={handleClick}
+              name="MetaRealty"
+            >
+              <div className={styles.menu_text}>MetaRealty</div>
+            </div>
+            <div className={styles.line_in_menu}></div>
+            <div
+              className={[styles.menu_item, styles.menu_3].join(" ")}
+              onClick={handleClick}
+              name="Virtual Production"
+            >
+              <div className={styles.menu_text}>Virtual Production</div>
+            </div>
+            <div className={styles.line_in_menu}></div>
+            <div
+              className={[styles.menu_item, styles.menu_4].join(" ")}
+              onClick={handleClick}
+              name="Edulab"
+            >
+              <div className={styles.menu_text}>Edulab</div>
+            </div>
+            <div className={styles.line_in_menu}></div>
+            <div
+              className={[styles.menu_item, styles.menu_5].join(" ")}
+              onClick={handleClick}
+              name="Fashion-IX"
+            >
+              <div className={styles.menu_text}>Fashion-IX</div>
+            </div>
+            <div className={styles.line_in_menu}></div>
+            <div
+              className={[styles.menu_item, styles.menu_6].join(" ")}
+              onClick={handleClick}
+              name="Virtual Mart"
+            >
+              <div className={styles.menu_text}>Virtual Mart</div>
+            </div>
           </div>
+
+          <div className={styles.line_in_menu}></div>
+
+          {/* Menu Item 2 (another main menu) */}
           <div
-            className={[styles.menu_item, styles.menu_3].join(" ")}
-            onClick={handleClick}
-            name="Virtual Production"
+            className={[
+              styles.menu_item,
+              styles.menu_dropdown,
+              styles.menu_item_2,
+            ].join(" ")}
           >
-            {/* <div className={[styles.menu_logo, styles.i_3].join(" ")}></div> */}
-            <div className={styles.menu_text}>Virtual Production</div>
+            <div className={styles.menu_text}>Menu Item 2</div>
+            {/* You can add submenu here if needed */}
           </div>
-          <div
-            className={[styles.menu_item, styles.menu_4].join(" ")}
-            onClick={handleClick}
-            name="Edulab"
-          >
-            {/* <div className={[styles.menu_logo, styles.i_4].join(" ")}></div> */}
-            <div className={styles.menu_text}>Edulab</div>
+          <div className={[styles.submenu, styles.submenu_2].join(" ")}>
+            <div
+              className={[styles.menu_item, styles.menu_1].join(" ")}
+              onClick={handleClick}
+              name="Car Configurator"
+            >
+              <div className={styles.menu_text}>Car Configurator</div>
+            </div>
+            <div className={styles.line_in_menu}></div>
+            <div
+              className={[styles.menu_item, styles.menu_2].join(" ")}
+              onClick={handleClick}
+              name="MetaRealty"
+            >
+              <div className={styles.menu_text}>MetaRealty</div>
+            </div>
+            <div className={styles.line_in_menu}></div>
+            <div
+              className={[styles.menu_item, styles.menu_3].join(" ")}
+              onClick={handleClick}
+              name="Virtual Production"
+            >
+              <div className={styles.menu_text}>Virtual Production</div>
+            </div>
+            <div className={styles.line_in_menu}></div>
+            <div
+              className={[styles.menu_item, styles.menu_4].join(" ")}
+              onClick={handleClick}
+              name="Edulab"
+            >
+              <div className={styles.menu_text}>Edulab</div>
+            </div>
+            <div className={styles.line_in_menu}></div>
+            <div
+              className={[styles.menu_item, styles.menu_5].join(" ")}
+              onClick={handleClick}
+              name="Fashion-IX"
+            >
+              <div className={styles.menu_text}>Fashion-IX</div>
+            </div>
+            <div className={styles.line_in_menu}></div>
+            <div
+              className={[styles.menu_item, styles.menu_6].join(" ")}
+              onClick={handleClick}
+              name="Virtual Mart"
+            >
+              <div className={styles.menu_text}>Virtual Mart</div>
+            </div>
           </div>
-          <div
-            className={[styles.menu_item, styles.menu_5].join(" ")}
-            onClick={handleClick}
-            name="Fashion-IX"
-          >
-            {/* <div className={[styles.menu_logo, styles.i_5].join(" ")}></div> */}
-            <div className={styles.menu_text}>Fashion-IX</div>
-          </div>
-          <div
-            className={[styles.menu_item, styles.menu_6].join(" ")}
-            onClick={handleClick}
-            name="Virtual Mart"
-          >
-            {/* <div className={[styles.menu_logo, styles.i_6].join(" ")}></div> */}
-            <div className={styles.menu_text}>Virtual Mart</div>
+
+          <div className={styles.line_in_menu}></div>
+
+          {/* Menu Item 3 (another main menu) */}
+          <div className={[styles.menu_item, styles.menu_dropdown].join(" ")}>
+            <div className={styles.menu_text}>Menu Item 3</div>
+            {/* You can add submenu here if needed */}
           </div>
         </div>
       </div>

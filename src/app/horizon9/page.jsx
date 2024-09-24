@@ -6,6 +6,10 @@ import HamburgerMenu from "../components/HamburgerMenu/hamburgerMenu.jsx";
 
 import { useRef, useState, useEffect } from "react";
 import * as THREE from "three";
+import {
+  CSS3DRenderer,
+  CSS3DObject,
+} from "three/addons/renderers/CSS3DRenderer.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { TransformControls } from "three/addons/controls/TransformControls.js";
@@ -89,8 +93,10 @@ export default function Horizon() {
   let stats = null;
   const canvasRef = useRef(null);
   const sceneRef = useRef(null);
+  const cssSceneRef = useRef(null);
   const cameraRef = useRef(null);
   const rendererRef = useRef(null);
+  const css3dRendererRef = useRef(null);
   const controlsRef = useRef(null);
   const transformControlRef = useRef(null);
 
@@ -217,15 +223,30 @@ export default function Horizon() {
       //Scene is container for objects, cameras, and lights
       sceneRef.current = new THREE.Scene();
 
+      cssSceneRef.current = new THREE.Scene();
+
       rendererRef.current = new THREE.WebGLRenderer({
         canvas: canvasRef.current,
         antialias: true,
       });
 
+      // rendererRef.current = new CSS3DRenderer({
+      //   canvas: canvasRef.current,
+      //   antialias: true,
+      // });
+
       //rendererRef.current.shadowMap.enabled = true;
       //rendererRef.current.shadowMap.type = THREE.VSMShadowMap;
 
       rendererRef.current.setSize(window.innerWidth, window.innerHeight);
+
+      // CSS3D Renderer
+      css3dRendererRef.current = new CSS3DRenderer();
+      css3dRendererRef.current.setSize(window.innerWidth, window.innerHeight);
+      css3dRendererRef.current.domElement.style.position = "absolute";
+      css3dRendererRef.current.domElement.style.top = 0;
+      css3dRendererRef.current.domElement.style.pointerEvents = "none";
+      document.body.appendChild(css3dRendererRef.current.domElement);
 
       // Create a camera and set its position and orientation
       cameraRef.current = new THREE.PerspectiveCamera(
@@ -261,6 +282,27 @@ export default function Horizon() {
 
       // Add the camera to the scene
       sceneRef.current.add(cameraRef.current);
+
+      // Set up CSS3D objects and add them to cssScene
+      const element = document.createElement("div");
+      element.style.pointerEvents = "none";
+
+      const id = "SJOz3qjfQXU";
+      const iframe = document.createElement("iframe");
+      iframe.style.width = "480px";
+      iframe.style.height = "240px";
+      iframe.style.border = "0px";
+      //iframe.src = ["https://www.youtube.com/embed/", id, "?rel=0"].join("");
+      iframe.src = "https://metavian.tech/";
+
+      iframe.style.opacity = 0.4;
+      element.appendChild(iframe);
+
+      element.style.pointerEvents = "none";
+      iframe.style.pointerEvents = "none";
+
+      const css3dObject = new CSS3DObject(element);
+      cssSceneRef.current.add(css3dObject);
 
       // circlepath = await loadCurveFromJSON(
       //   sceneRef.current,
@@ -557,7 +599,7 @@ export default function Horizon() {
 
       setupGrid(loader, uniformsForGrid, sceneRef.current);
 
-      const composer = new EffectComposer(rendererRef.current);
+      //const composer = new EffectComposer(rendererRef.current);
 
       //ssrPass
       const ssrPass = new SSRPass({
@@ -609,10 +651,10 @@ export default function Horizon() {
 
       //composer.addPass(ssrPass);
       //composer.addPass(bloomPass);
-      composer.addPass(taaRenderPassRef.current);
+      //composer.addPass(taaRenderPassRef.current);
       //composer.addPass(bokehPass);
 
-      composer.addPass(new OutputPass());
+      //composer.addPass(new OutputPass());
 
       // const effectController = {
       //   focus: 500.0,
@@ -655,7 +697,7 @@ export default function Horizon() {
         cameraRef.current.aspect =
           canvasRef.current.width / canvasRef.current.height;
 
-        composer.setSize(canvasRef.current.width, canvasRef.current.height);
+        //composer.setSize(canvasRef.current.width, canvasRef.current.height);
         rendererRef.current.setSize(
           canvasRef.current.width,
           canvasRef.current.height
@@ -668,8 +710,6 @@ export default function Horizon() {
       let time = 0;
       function animate() {
         requestAnimationFrame(animate);
-
-        console.log(cameraRef.current.position);
 
         //console.log(progressJSRef.current.value);
 
@@ -717,6 +757,9 @@ export default function Horizon() {
         //   rendererRef.current.render(sceneRef.current, cameraRef.current);
         // }
         rendererRef.current.render(sceneRef.current, cameraRef.current);
+
+        // Render CSS3D scene
+        css3dRendererRef.current.render(cssSceneRef.current, cameraRef.current);
         //composer.render();
 
         NodeToyMaterial.tick();
@@ -1110,6 +1153,8 @@ export default function Horizon() {
       pin: true,
       // markers: true,
       onUpdate: (self) => {
+        console.log(self.progress);
+
         const min = 0.15;
         const max = 1.0;
 
@@ -1212,8 +1257,6 @@ export default function Horizon() {
 
       mixerRef.current.setTime(elapsedTime);
       mixerArrayRef.current.forEach((mixer) => {
-        console.log(elapsedTime);
-        console.log(mixer);
         mixer.setTime(elapsedTime);
         mixer._root.updateMatrix();
       });
@@ -1269,25 +1312,25 @@ export default function Horizon() {
     console.log(item);
     switch (item) {
       case "home":
-        animateToProgress(0.0);
+        animateToProgress(0.0); //0.0
         break;
       case "Car Configurator":
-        animateToProgress(0.12); //0.12;
+        animateToProgress(0.2); //0.12;
         break;
       case "MetaRealty":
-        animateToProgress(0.258); //0.258
+        animateToProgress(0.34); //0.258
         break;
       case "Virtual Production":
-        animateToProgress(0.403); //0.403
+        animateToProgress(0.51); //0.403
         break;
       case "Edulab":
-        animateToProgress(0.5); //0.5
+        animateToProgress(0.64); //0.5
         break;
       case "Fashion-IX":
-        animateToProgress(0.629); //0.629
+        animateToProgress(0.78); //0.629
         break;
       case "Virtual Mart":
-        animateToProgress(0.774); //0.774
+        animateToProgress(0.92); //0.774
         break;
       default:
         console.warn("Unknown item");
