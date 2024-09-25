@@ -13,6 +13,7 @@ let mixer = null;
 let capsule_model = null;
 let capsule_anchor = null;
 let cockpit_canopy = null;
+let projection_screen_anchor = null;
 
 let cubeCamera, cubeRenderTarget;
 
@@ -40,17 +41,12 @@ export function loadAssetsWithPromise(
 
     const checkIfAllLoaded = () => {
       loadedModels++;
-      console.log(loadedModels);
-      console.log(totalModels);
-      console.log(cameraLoaded);
-      console.log(capsule_model);
-      console.log(animationMixers);
       if (
         loadedModels === totalModels &&
         cameraLoaded &&
         capsule_model != null
       ) {
-        console.log("check");
+        //console.log("check");
         resolve(); // Resolve the promise once all models are loaded
       }
     };
@@ -67,7 +63,7 @@ export function loadAssetsWithPromise(
       loader.load(
         url,
         (gltf) => {
-          console.log(gltf);
+          //console.log(gltf);
           //mixerRef.current = mixer;
           const assetScene = gltf.scene;
           assetScene.name = name;
@@ -109,7 +105,7 @@ export function loadAssetsWithPromise(
     //load the capsule
     loader.load(
       //"models/capsule/cosmos ship of imagination.glb",
-      "models/capsule/capsule/capsule_textured_with projection_display.glb",
+      "models/capsule/capsule/capsule_textured_with projection_display_2.glb",
       (gltf) => {
         capsule_model = gltf.scene;
         console.log(capsule_model);
@@ -183,6 +179,10 @@ export function loadAssetsWithPromise(
         const projection_object = capsule_model.getObjectByName("projection");
         projection_object.material = projection;
 
+        projection_screen_anchor = capsule_model.getObjectByName(
+          "projected_screen_anchor"
+        );
+
         function loadHDRI() {
           return new Promise((resolve, reject) => {
             new RGBELoader()
@@ -190,7 +190,7 @@ export function loadAssetsWithPromise(
               .load("brown_photostudio_01_1k.hdr", function (texture) {
                 hdrImage = texture;
                 hdrImage.mapping = THREE.EquirectangularReflectionMapping;
-                console.log(hdrImage);
+                //console.log(hdrImage);
                 resolve();
               });
           });
@@ -209,7 +209,7 @@ export function loadAssetsWithPromise(
                 cockpit_canopy.material.side = THREE.DoubleSide;
               }
 
-              console.log(object.material);
+              //console.log(object.material);
 
               // if (object.material.name == "metal") {
               //   object.material = reflectiveMaterial;
@@ -319,6 +319,7 @@ export {
   mixer,
   capsule_model,
   capsule_anchor,
+  projection_screen_anchor,
   cockpit_canopy,
   cubeCamera,
   projectModels,

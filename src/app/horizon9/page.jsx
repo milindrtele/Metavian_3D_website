@@ -55,12 +55,18 @@ import {
   mixer,
   capsule_model,
   capsule_anchor,
+  projection_screen_anchor,
   cockpit_canopy,
   cubeCamera,
   projectModels,
   projectModelsAnchors,
   animationMixers,
 } from "../lib/scripts/assetLoader_02.js";
+
+import {
+  setUpProjectionScreen,
+  projected_screen,
+} from "../lib/scripts/projection_screen.js";
 
 import { setupGrid } from "../lib/scripts/setupGrid.js";
 
@@ -246,6 +252,7 @@ export default function Horizon() {
       css3dRendererRef.current.domElement.style.position = "absolute";
       css3dRendererRef.current.domElement.style.top = 0;
       css3dRendererRef.current.domElement.style.pointerEvents = "none";
+      css3dRendererRef.current.domElement.style.position = "fixed";
       document.body.appendChild(css3dRendererRef.current.domElement);
 
       // Create a camera and set its position and orientation
@@ -282,27 +289,6 @@ export default function Horizon() {
 
       // Add the camera to the scene
       sceneRef.current.add(cameraRef.current);
-
-      // Set up CSS3D objects and add them to cssScene
-      const element = document.createElement("div");
-      element.style.pointerEvents = "none";
-
-      const id = "SJOz3qjfQXU";
-      const iframe = document.createElement("iframe");
-      iframe.style.width = "480px";
-      iframe.style.height = "240px";
-      iframe.style.border = "0px";
-      //iframe.src = ["https://www.youtube.com/embed/", id, "?rel=0"].join("");
-      iframe.src = "https://metavian.tech/";
-
-      iframe.style.opacity = 0.4;
-      element.appendChild(iframe);
-
-      element.style.pointerEvents = "none";
-      iframe.style.pointerEvents = "none";
-
-      const css3dObject = new CSS3DObject(element);
-      cssSceneRef.current.add(css3dObject);
 
       // circlepath = await loadCurveFromJSON(
       //   sceneRef.current,
@@ -571,8 +557,10 @@ export default function Horizon() {
           scan_lines_meshRef.current = capsule_model;
           capsule_anchorRef.current = capsule_anchor;
           sceneRef.current.add(capsule_model);
-          // transformControlRef.current.attach(capsule_anchor);
+          // transformControlRef.current.attach(projection_screen_anchor);
           // sceneRef.current.add(transformControlRef.current);
+
+          setUpProjectionScreen(projection_screen_anchor, cssSceneRef.current);
           setAssetsLoadedSuccessfully(true);
         })
         .catch((error) => {
@@ -711,6 +699,7 @@ export default function Horizon() {
       function animate() {
         requestAnimationFrame(animate);
 
+        positionProjectionScreen();
         //console.log(progressJSRef.current.value);
 
         // if (capsule_anchor) {
@@ -1021,6 +1010,9 @@ export default function Horizon() {
               },
             });
           },
+          onUpdate: () => {
+            positionProjectionScreen();
+          },
           onComplete: () => {
             setIsGetStartedVisible(true);
             setInitialSequenceCompleted(true);
@@ -1141,6 +1133,27 @@ export default function Horizon() {
   //   });
   // }, []);
 
+  function positionProjectionScreen() {
+    if (projection_screen_anchor != null && projected_screen) {
+      console.log(
+        "screen object : " +
+          JSON.stringify(projected_screen.position.toArray()) +
+          " anchor : " +
+          JSON.stringify(projection_screen_anchor.position.toArray())
+      );
+
+      // Copy world position
+      projected_screen.position.copy(
+        projection_screen_anchor.getWorldPosition(new THREE.Vector3())
+      );
+
+      // Copy world rotation (as a quaternion)
+      projected_screen.quaternion.copy(
+        projection_screen_anchor.getWorldQuaternion(new THREE.Quaternion())
+      );
+    }
+  }
+
   function addScrollTrigger() {
     console.log("adding scroll trigger");
     //setGetStartedCompleted(true);
@@ -1153,8 +1166,6 @@ export default function Horizon() {
       pin: true,
       // markers: true,
       onUpdate: (self) => {
-        console.log(self.progress);
-
         const min = 0.15;
         const max = 1.0;
 
