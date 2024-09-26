@@ -14,6 +14,7 @@ let capsule_model = null;
 let capsule_anchor = null;
 let cockpit_canopy = null;
 let projection_screen_anchor = null;
+let projection_object = null;
 
 let cubeCamera, cubeRenderTarget;
 
@@ -105,7 +106,7 @@ export function loadAssetsWithPromise(
     //load the capsule
     loader.load(
       //"models/capsule/cosmos ship of imagination.glb",
-      "models/capsule/capsule/capsule_textured_with projection_display_2.glb",
+      "models/capsule/capsule/capsule_textured_with projection_display_legs.glb",
       (gltf) => {
         capsule_model = gltf.scene;
         console.log(capsule_model);
@@ -176,7 +177,7 @@ export function loadAssetsWithPromise(
         });
         projection.side = THREE.DoubleSide;
 
-        const projection_object = capsule_model.getObjectByName("projection");
+        projection_object = capsule_model.getObjectByName("projection");
         projection_object.material = projection;
 
         projection_screen_anchor = capsule_model.getObjectByName(
@@ -320,6 +321,7 @@ export {
   capsule_model,
   capsule_anchor,
   projection_screen_anchor,
+  projection_object,
   cockpit_canopy,
   cubeCamera,
   projectModels,

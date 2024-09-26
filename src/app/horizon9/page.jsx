@@ -56,6 +56,7 @@ import {
   capsule_model,
   capsule_anchor,
   projection_screen_anchor,
+  projection_object,
   cockpit_canopy,
   cubeCamera,
   projectModels,
@@ -67,6 +68,10 @@ import {
   setUpProjectionScreen,
   projected_screen,
 } from "../lib/scripts/projection_screen.js";
+
+import { setupRaycaster } from "../lib/scripts/raycaster.js";
+
+import { animateCapsuleRotation } from "../lib/scripts/animateCapsuleRotation.js";
 
 import { setupGrid } from "../lib/scripts/setupGrid.js";
 
@@ -289,6 +294,30 @@ export default function Horizon() {
 
       // Add the camera to the scene
       sceneRef.current.add(cameraRef.current);
+
+      // Callback function to handle intersects
+      const handleIntersects = (intersects) => {
+        if (intersects.length > 0) {
+          console.log("Intersected objects:", intersects);
+          if (
+            intersects[0].object.parent &&
+            intersects[0].object.parent.parent &&
+            intersects[0].object.parent.parent.name == "legs_parent" &&
+            projection_object
+          ) {
+            animateCapsuleRotation(
+              intersects[0].object,
+              capsule_anchorRef.current,
+              projection_object
+            );
+          }
+        } else {
+          console.log("No intersection");
+        }
+      };
+
+      // Setup raycaster with the callback
+      setupRaycaster(sceneRef.current, cameraRef.current, handleIntersects);
 
       // circlepath = await loadCurveFromJSON(
       //   sceneRef.current,
@@ -687,6 +716,10 @@ export default function Horizon() {
 
         //composer.setSize(canvasRef.current.width, canvasRef.current.height);
         rendererRef.current.setSize(
+          canvasRef.current.width,
+          canvasRef.current.height
+        );
+        css3dRendererRef.current.setSize(
           canvasRef.current.width,
           canvasRef.current.height
         );
