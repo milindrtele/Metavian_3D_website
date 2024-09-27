@@ -12,6 +12,7 @@ let animationMixers = [];
 let mixer = null;
 let capsule_model = null;
 let capsule_anchor = null;
+let capsule_body = null;
 let cockpit_canopy = null;
 let projection_screen_anchor = null;
 let projection_object = null;
@@ -109,7 +110,7 @@ export function loadAssetsWithPromise(
       "models/capsule/capsule/capsule_textured_with projection_display_legs.glb",
       (gltf) => {
         capsule_model = gltf.scene;
-        console.log(capsule_model);
+        //console.log(capsule_model);
 
         ///////////////////////////For ship of imagination/////////////////////////////////
         // const reflectiveMaterial = new THREE.MeshStandardMaterial({
@@ -142,6 +143,8 @@ export function loadAssetsWithPromise(
         spotForCapsule.distance = 500;
         //spotlight1.angle = (Math.PI / 180) * 35;
         capsule_anchor = capsule_model.getObjectByName("capsule_anchor");
+        capsule_body = capsule_model.getObjectByName("capsule_body");
+        console.log(capsule_body.rotation.y);
         capsule_anchor.position.set(
           capsuleStartingPos.x,
           capsuleStartingPos.y,
@@ -173,12 +176,18 @@ export function loadAssetsWithPromise(
         //glass.side = THREE.DoubleSide;
 
         const projection = new NodeToyMaterial({
-          url: "https://draft.nodetoy.co/Hn1pix3Jl1UDs5jH", //https://draft.nodetoy.co/bzBoaIaQXpLm3UTR, //"https://draft.nodetoy.co/w7BhuuAcZ2ESIjU5", //https://draft.nodetoy.co/ECrNY8O4MMUUagsb,
+          url: "https://draft.nodetoy.co/aGF4LmIuvNDYZYJi", //https://draft.nodetoy.co/bzBoaIaQXpLm3UTR, //"https://draft.nodetoy.co/w7BhuuAcZ2ESIjU5", //https://draft.nodetoy.co/ECrNY8O4MMUUagsb,
         });
         projection.side = THREE.DoubleSide;
 
         projection_object = capsule_model.getObjectByName("projection");
         projection_object.material = projection;
+
+        const helix_1 = capsule_model.getObjectByName("helix_1");
+        const helix_2 = capsule_model.getObjectByName("helix_2");
+
+        // helix_1.material = projection;
+        // helix_2.material = projection;
 
         projection_screen_anchor = capsule_model.getObjectByName(
           "projected_screen_anchor"
@@ -320,6 +329,7 @@ export {
   mixer,
   capsule_model,
   capsule_anchor,
+  capsule_body,
   projection_screen_anchor,
   projection_object,
   cockpit_canopy,

@@ -55,6 +55,7 @@ import {
   mixer,
   capsule_model,
   capsule_anchor,
+  capsule_body,
   projection_screen_anchor,
   projection_object,
   cockpit_canopy,
@@ -307,8 +308,9 @@ export default function Horizon() {
           ) {
             animateCapsuleRotation(
               intersects[0].object,
-              capsule_anchorRef.current,
-              projection_object
+              capsule_body,
+              projection_object,
+              projected_screen
             );
           }
         } else {
@@ -575,10 +577,10 @@ export default function Horizon() {
         sceneRef.current
       )
         .then(() => {
-          console.log("All assets loaded successfully!");
-          console.log(projectModels[0]);
-          console.log(projectModelsAnchors);
-          console.log(animationMixers);
+          // console.log("All assets loaded successfully!");
+          // console.log(projectModels[0]);
+          // console.log(projectModelsAnchors);
+          // console.log(animationMixers);
 
           blenderCameraRef.current = blenderCamera;
           mixerRef.current = mixer;
@@ -1049,6 +1051,7 @@ export default function Horizon() {
           onComplete: () => {
             setIsGetStartedVisible(true);
             setInitialSequenceCompleted(true);
+            console.log(capsule_body.rotation.y);
           },
         }
       );
@@ -1168,12 +1171,12 @@ export default function Horizon() {
 
   function positionProjectionScreen() {
     if (projection_screen_anchor != null && projected_screen) {
-      console.log(
-        "screen object : " +
-          JSON.stringify(projected_screen.position.toArray()) +
-          " anchor : " +
-          JSON.stringify(projection_screen_anchor.position.toArray())
-      );
+      // console.log(
+      //   "screen object : " +
+      //     JSON.stringify(projected_screen.position.toArray()) +
+      //     " anchor : " +
+      //     JSON.stringify(projection_screen_anchor.position.toArray())
+      // );
 
       // Copy world position
       projected_screen.position.copy(
