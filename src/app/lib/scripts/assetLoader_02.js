@@ -60,7 +60,8 @@ export function loadAssetsWithPromise(
       position,
       rotation,
       scale,
-      name
+      name,
+      callback
     ) => {
       loader.load(
         url,
@@ -98,6 +99,9 @@ export function loadAssetsWithPromise(
           action.play();
           cameraLoaded = true;
           checkIfAllLoaded(); // Check if all models are loaded
+          if (callback) {
+            callback;
+          }
         },
         undefined,
         reject
@@ -107,7 +111,7 @@ export function loadAssetsWithPromise(
     //load the capsule
     loader.load(
       //"models/capsule/cosmos ship of imagination.glb",
-      "models/capsule/capsule/capsule_textured_with projection_display_legs.glb",
+      "models/capsule/capsule/capsule_textured_with projection_display_legs_1.glb",
       (gltf) => {
         capsule_model = gltf.scene;
         //console.log(capsule_model);
@@ -176,11 +180,15 @@ export function loadAssetsWithPromise(
         //glass.side = THREE.DoubleSide;
 
         const projection = new NodeToyMaterial({
-          url: "https://draft.nodetoy.co/aGF4LmIuvNDYZYJi", //https://draft.nodetoy.co/bzBoaIaQXpLm3UTR, //"https://draft.nodetoy.co/w7BhuuAcZ2ESIjU5", //https://draft.nodetoy.co/ECrNY8O4MMUUagsb,
+          url: "https://draft.nodetoy.co/3AFHZMh0a2doiywy", //https://draft.nodetoy.co/bzBoaIaQXpLm3UTR, //"https://draft.nodetoy.co/w7BhuuAcZ2ESIjU5", //https://draft.nodetoy.co/ECrNY8O4MMUUagsb,
         });
         projection.side = THREE.DoubleSide;
 
+        console.log(projection.uniforms);
+        //projection.uniforms.offset.value.y = 1;
+
         projection_object = capsule_model.getObjectByName("projection");
+
         projection_object.material = projection;
 
         const helix_1 = capsule_model.getObjectByName("helix_1");
@@ -241,10 +249,15 @@ export function loadAssetsWithPromise(
         // console.log(capsule_model);
 
         loadProjectModels();
+        hideProjectionScreen(projection_object);
       },
       undefined,
       reject
     );
+
+    function hideProjectionScreen(object) {
+      object.visible = false;
+    }
 
     // Load camera animation
     loader.load(

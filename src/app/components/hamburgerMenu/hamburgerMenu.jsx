@@ -26,9 +26,14 @@ function HamburgerMenu(props) {
     }
   }, [menuIsVisible]);
 
-  function handleClick(e) {
-    let selectedMenu = e.currentTarget.getAttribute("name");
-    props.selectedItem(selectedMenu);
+  function handleClickSubMenu1(e) {
+    const selectedMenu = e.currentTarget.getAttribute("name");
+    props.selectedItemSubMenu1(selectedMenu);
+  }
+
+  function handleClickSubMenu2(e) {
+    const selectedMenu = e.currentTarget.getAttribute("name");
+    props.selectedItemSubMenu2(selectedMenu);
   }
 
   return (
@@ -45,7 +50,7 @@ function HamburgerMenu(props) {
           {/* Home (top-level menu item) */}
           <div
             className={[styles.menu_item, styles.menu_0].join(" ")}
-            onClick={handleClick}
+            onClick={handleClickSubMenu1}
             name="home"
           >
             <div className={styles.menu_text}>Home</div>
@@ -66,7 +71,7 @@ function HamburgerMenu(props) {
           <div className={[styles.submenu, styles.submenu_1].join(" ")}>
             <div
               className={[styles.menu_item, styles.menu_1].join(" ")}
-              onClick={handleClick}
+              onClick={handleClickSubMenu1}
               name="Car Configurator"
             >
               <div className={styles.menu_text}>Car Configurator</div>
@@ -74,7 +79,7 @@ function HamburgerMenu(props) {
             <div className={styles.line_in_menu}></div>
             <div
               className={[styles.menu_item, styles.menu_2].join(" ")}
-              onClick={handleClick}
+              onClick={handleClickSubMenu1}
               name="MetaRealty"
             >
               <div className={styles.menu_text}>MetaRealty</div>
@@ -82,7 +87,7 @@ function HamburgerMenu(props) {
             <div className={styles.line_in_menu}></div>
             <div
               className={[styles.menu_item, styles.menu_3].join(" ")}
-              onClick={handleClick}
+              onClick={handleClickSubMenu1}
               name="Virtual Production"
             >
               <div className={styles.menu_text}>Virtual Production</div>
@@ -90,7 +95,7 @@ function HamburgerMenu(props) {
             <div className={styles.line_in_menu}></div>
             <div
               className={[styles.menu_item, styles.menu_4].join(" ")}
-              onClick={handleClick}
+              onClick={handleClickSubMenu1}
               name="Edulab"
             >
               <div className={styles.menu_text}>Edulab</div>
@@ -98,7 +103,7 @@ function HamburgerMenu(props) {
             <div className={styles.line_in_menu}></div>
             <div
               className={[styles.menu_item, styles.menu_5].join(" ")}
-              onClick={handleClick}
+              onClick={handleClickSubMenu1}
               name="Fashion-IX"
             >
               <div className={styles.menu_text}>Fashion-IX</div>
@@ -106,7 +111,7 @@ function HamburgerMenu(props) {
             <div className={styles.line_in_menu}></div>
             <div
               className={[styles.menu_item, styles.menu_6].join(" ")}
-              onClick={handleClick}
+              onClick={handleClickSubMenu1}
               name="Virtual Mart"
             >
               <div className={styles.menu_text}>Virtual Mart</div>
@@ -129,31 +134,31 @@ function HamburgerMenu(props) {
           <div className={[styles.submenu, styles.submenu_2].join(" ")}>
             <div
               className={[styles.menu_item, styles.menu_1].join(" ")}
-              onClick={handleClick}
+              onClick={handleClickSubMenu2}
+              name="Meta Realty"
+            >
+              <div className={styles.menu_text}>Meta Realty</div>
+            </div>
+            <div className={styles.line_in_menu}></div>
+            <div
+              className={[styles.menu_item, styles.menu_2].join(" ")}
+              onClick={handleClickSubMenu2}
               name="Car Configurator"
             >
               <div className={styles.menu_text}>Car Configurator</div>
             </div>
             <div className={styles.line_in_menu}></div>
             <div
-              className={[styles.menu_item, styles.menu_2].join(" ")}
-              onClick={handleClick}
-              name="MetaRealty"
-            >
-              <div className={styles.menu_text}>MetaRealty</div>
-            </div>
-            <div className={styles.line_in_menu}></div>
-            <div
               className={[styles.menu_item, styles.menu_3].join(" ")}
-              onClick={handleClick}
-              name="Virtual Production"
+              onClick={handleClickSubMenu2}
+              name="Fashion IX"
             >
-              <div className={styles.menu_text}>Virtual Production</div>
+              <div className={styles.menu_text}>Fashion IX</div>
             </div>
             <div className={styles.line_in_menu}></div>
             <div
               className={[styles.menu_item, styles.menu_4].join(" ")}
-              onClick={handleClick}
+              onClick={handleClickSubMenu2}
               name="Edulab"
             >
               <div className={styles.menu_text}>Edulab</div>
@@ -161,18 +166,18 @@ function HamburgerMenu(props) {
             <div className={styles.line_in_menu}></div>
             <div
               className={[styles.menu_item, styles.menu_5].join(" ")}
-              onClick={handleClick}
-              name="Fashion-IX"
+              onClick={handleClickSubMenu2}
+              name="Virtual Mart"
             >
-              <div className={styles.menu_text}>Fashion-IX</div>
+              <div className={styles.menu_text}>Virtual Mart</div>
             </div>
             <div className={styles.line_in_menu}></div>
             <div
               className={[styles.menu_item, styles.menu_6].join(" ")}
-              onClick={handleClick}
-              name="Virtual Mart"
+              onClick={handleClickSubMenu2}
+              name="Virtual Museum"
             >
-              <div className={styles.menu_text}>Virtual Mart</div>
+              <div className={styles.menu_text}>Virtual Museum</div>
             </div>
           </div>
 

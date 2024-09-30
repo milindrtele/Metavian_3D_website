@@ -68,6 +68,7 @@ import {
 import {
   setUpProjectionScreen,
   projected_screen,
+  iframe,
 } from "../lib/scripts/projection_screen.js";
 
 import { setupRaycaster } from "../lib/scripts/raycaster.js";
@@ -310,7 +311,8 @@ export default function Horizon() {
               intersects[0].object,
               capsule_body,
               projection_object,
-              projected_screen
+              projected_screen,
+              iframe
             );
           }
         } else {
@@ -591,6 +593,8 @@ export default function Horizon() {
           // transformControlRef.current.attach(projection_screen_anchor);
           // sceneRef.current.add(transformControlRef.current);
 
+          //projection_object.material.uniforms.offset.value.y = 1;
+
           setUpProjectionScreen(projection_screen_anchor, cssSceneRef.current);
           setAssetsLoadedSuccessfully(true);
         })
@@ -618,7 +622,7 @@ export default function Horizon() {
 
       setupGrid(loader, uniformsForGrid, sceneRef.current);
 
-      //const composer = new EffectComposer(rendererRef.current);
+      const composer = new EffectComposer(rendererRef.current);
 
       //ssrPass
       const ssrPass = new SSRPass({
@@ -669,11 +673,11 @@ export default function Horizon() {
       });
 
       //composer.addPass(ssrPass);
-      //composer.addPass(bloomPass);
+      composer.addPass(bloomPass);
       //composer.addPass(taaRenderPassRef.current);
       //composer.addPass(bokehPass);
 
-      //composer.addPass(new OutputPass());
+      composer.addPass(new OutputPass());
 
       // const effectController = {
       //   focus: 500.0,
@@ -716,7 +720,7 @@ export default function Horizon() {
         cameraRef.current.aspect =
           canvasRef.current.width / canvasRef.current.height;
 
-        //composer.setSize(canvasRef.current.width, canvasRef.current.height);
+        composer.setSize(canvasRef.current.width, canvasRef.current.height);
         rendererRef.current.setSize(
           canvasRef.current.width,
           canvasRef.current.height
@@ -1355,11 +1359,46 @@ export default function Horizon() {
     setGetStartedCompleted(true);
   };
 
-  const selectedItemInMenu = (item) => {
+  const selectedItemInSubMenu1 = (item) => {
     console.log(item);
     switch (item) {
       case "home":
         animateToProgress(0.0); //0.0
+        break;
+      case "Car Configurator":
+        animateToProgress(0.2); //0.12;
+        break;
+      case "MetaRealty":
+        animateToProgress(0.34); //0.258
+        break;
+      case "Virtual Production":
+        animateToProgress(0.51); //0.403
+        break;
+      case "Edulab":
+        animateToProgress(0.64); //0.5
+        break;
+      case "Fashion-IX":
+        animateToProgress(0.78); //0.629
+        break;
+      case "Virtual Mart":
+        animateToProgress(0.92); //0.774
+        break;
+      default:
+        console.warn("Unknown item");
+    }
+  };
+
+  const selectedItemInSubMenu2 = () => {
+    console.log(item);
+    switch (item) {
+      case "home":
+        animateCapsuleRotation(
+          intersects[0].object,
+          capsule_body,
+          projection_object,
+          projected_screen,
+          iframe
+        );
         break;
       case "Car Configurator":
         animateToProgress(0.2); //0.12;
@@ -1430,7 +1469,10 @@ export default function Horizon() {
       {isGetStartedVisible && <GetStarted continue={GetStartedContinue} />}
       {/* {isStartingMessageVisible && <GetStarted />} */}
       {isHamburgerMenuVisible && (
-        <HamburgerMenu selectedItem={selectedItemInMenu} />
+        <HamburgerMenu
+          selectedItemSubMenu1={selectedItemInSubMenu1}
+          selectedItemSubMenu2={selectedItemInSubMenu2}
+        />
       )}
     </div>
   );
