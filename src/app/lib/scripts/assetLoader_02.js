@@ -16,6 +16,7 @@ let capsule_body = null;
 let cockpit_canopy = null;
 let projection_screen_anchor = null;
 let projection_object = null;
+let legs_parent = null;
 
 let cubeCamera, cubeRenderTarget;
 
@@ -194,6 +195,8 @@ export function loadAssetsWithPromise(
         const helix_1 = capsule_model.getObjectByName("helix_1");
         const helix_2 = capsule_model.getObjectByName("helix_2");
 
+        legs_parent = capsule_model.getObjectByName("legs_parent");
+
         // helix_1.material = projection;
         // helix_2.material = projection;
 
@@ -345,6 +348,7 @@ export {
   capsule_body,
   projection_screen_anchor,
   projection_object,
+  legs_parent,
   cockpit_canopy,
   cubeCamera,
   projectModels,

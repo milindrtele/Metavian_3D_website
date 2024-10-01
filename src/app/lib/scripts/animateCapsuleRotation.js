@@ -150,39 +150,51 @@ const animateCapsuleRotation = (
       // Trigger the corresponding capsule animation based on the selected leg
       switch (leg.name) {
         case "leg_01_1":
-          iframe.src = ["https://www.youtube.com/embed/", id1, "?rel=0"].join(
-            ""
-          );
+          iframe.src = [
+            "https://www.youtube.com/embed/",
+            id1,
+            "?rel=0&autoplay=1",
+          ].join("");
           animate_capsule(0 + 30);
           break;
         case "leg_02_1":
-          iframe.src = ["https://www.youtube.com/embed/", id2, "?rel=0"].join(
-            ""
-          );
+          iframe.src = [
+            "https://www.youtube.com/embed/",
+            id2,
+            "?rel=0&autoplay=1",
+          ].join("");
           animate_capsule(60 + 30);
           break;
         case "leg_03_1":
-          iframe.src = ["https://www.youtube.com/embed/", id3, "?rel=0"].join(
-            ""
-          );
+          iframe.src = [
+            "https://www.youtube.com/embed/",
+            id3,
+            "?rel=0&autoplay=1",
+          ].join("");
           animate_capsule(120 + 30);
           break;
         case "leg_04_1":
-          iframe.src = ["https://www.youtube.com/embed/", id4, "?rel=0"].join(
-            ""
-          );
+          iframe.src = [
+            "https://www.youtube.com/embed/",
+            id4,
+            "?rel=0&autoplay=1",
+          ].join("");
           animate_capsule(180 + 30);
           break;
         case "leg_05_1":
-          iframe.src = ["https://www.youtube.com/embed/", id5, "?rel=0"].join(
-            ""
-          );
+          iframe.src = [
+            "https://www.youtube.com/embed/",
+            id5,
+            "?rel=0&autoplay=1",
+          ].join("");
           animate_capsule(240 + 30);
           break;
         case "leg_06_1":
-          iframe.src = ["https://www.youtube.com/embed/", id6, "?rel=0"].join(
-            ""
-          );
+          iframe.src = [
+            "https://www.youtube.com/embed/",
+            id6,
+            "?rel=0&autoplay=1",
+          ].join("");
           animate_capsule(300 + 30);
           break;
         default:

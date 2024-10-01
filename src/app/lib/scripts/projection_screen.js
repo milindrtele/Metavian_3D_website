@@ -14,6 +14,7 @@ export function setUpProjectionScreen(anchor, cssScene) {
   element.style.height = "405px";
   element.style.pointerEvents = "none";
   element.style.position = "fixed";
+  element.style.zIndex = 1;
 
   const id = "N7FkXKMPRDY";
   iframe = document.createElement("iframe");
@@ -21,9 +22,12 @@ export function setUpProjectionScreen(anchor, cssScene) {
   iframe.style.height = "405px";
   iframe.style.border = "0px";
   // iframe.style.borderRadius = "20px";
-  iframe.src = ["https://www.youtube.com/embed/", id, "?rel=0"].join("");
+  iframe.src = ["https://www.youtube.com/embed/", id, "?rel=0&autoplay=1"].join(
+    ""
+  );
   //iframe.src = "https://metavian.tech/";
   iframe.style.opacity = 1;
+  iframe.allowFullscreen = true;
   element.appendChild(iframe);
 
   element.style.pointerEvents = "none";

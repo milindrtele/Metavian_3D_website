@@ -58,6 +58,7 @@ import {
   capsule_body,
   projection_screen_anchor,
   projection_object,
+  legs_parent,
   cockpit_canopy,
   cubeCamera,
   projectModels,
@@ -74,6 +75,8 @@ import {
 import { setupRaycaster } from "../lib/scripts/raycaster.js";
 
 import { animateCapsuleRotation } from "../lib/scripts/animateCapsuleRotation.js";
+
+import { tweenCameraToNewPositionAndRotation } from "../lib/scripts/tweenCameraToPosition.js";
 
 import { setupGrid } from "../lib/scripts/setupGrid.js";
 
@@ -1126,7 +1129,7 @@ export default function Horizon() {
           // });
         },
         onComplete: () => {
-          controlsRef.current.enabled = true;
+          //controlsRef.current.enabled = true;
           startSequenceCompleteRef.current = true;
           setIsHamburgerMenuVisible(true);
 
@@ -1359,6 +1362,33 @@ export default function Horizon() {
     setGetStartedCompleted(true);
   };
 
+  const selectedItemInMainMenu = (item) => {
+    switch (item) {
+      case "home":
+        tweenCameraToNewPositionAndRotation(
+          cameraRef.current,
+          controlsRef.current,
+          { x: 53.8746, y: 0.041356, z: -30.8687 },
+          { x: -13, y: 4, z: -95 },
+          null
+          // { x: 0, y: 0, z: 0 }
+        ); //0.0
+        break;
+
+      case "Car Configurator":
+        tweenCameraToNewPositionAndRotation(
+          cameraRef.current, //camera,
+          controlsRef.current, //controls,
+          { x: 0, y: 0, z: 0 }, //cameraTarget,
+          { x: -13, y: 4, z: -95 }, //newPosition,
+          { x: 0, y: 0, z: 0 } //newRotation
+        ); //0.0
+        break;
+      default:
+        console.warn("Unknown item");
+    }
+  };
+
   const selectedItemInSubMenu1 = (item) => {
     console.log(item);
     switch (item) {
@@ -1388,7 +1418,7 @@ export default function Horizon() {
     }
   };
 
-  const selectedItemInSubMenu2 = () => {
+  const selectedItemInSubMenu2 = (item) => {
     console.log(item);
     switch (item) {
       case "home":
@@ -1400,23 +1430,59 @@ export default function Horizon() {
           iframe
         );
         break;
+      case "Meta Realty":
+        animateCapsuleRotation(
+          legs_parent.children[0].children[0],
+          capsule_body,
+          projection_object,
+          projected_screen,
+          iframe
+        );
+        break;
       case "Car Configurator":
-        animateToProgress(0.2); //0.12;
+        animateCapsuleRotation(
+          legs_parent.children[1].children[0],
+          capsule_body,
+          projection_object,
+          projected_screen,
+          iframe
+        );
         break;
-      case "MetaRealty":
-        animateToProgress(0.34); //0.258
-        break;
-      case "Virtual Production":
-        animateToProgress(0.51); //0.403
+      case "Fashion IX":
+        animateCapsuleRotation(
+          legs_parent.children[2].children[0],
+          capsule_body,
+          projection_object,
+          projected_screen,
+          iframe
+        );
         break;
       case "Edulab":
-        animateToProgress(0.64); //0.5
-        break;
-      case "Fashion-IX":
-        animateToProgress(0.78); //0.629
+        animateCapsuleRotation(
+          legs_parent.children[3].children[0],
+          capsule_body,
+          projection_object,
+          projected_screen,
+          iframe
+        );
         break;
       case "Virtual Mart":
-        animateToProgress(0.92); //0.774
+        animateCapsuleRotation(
+          legs_parent.children[4].children[0],
+          capsule_body,
+          projection_object,
+          projected_screen,
+          iframe
+        );
+        break;
+      case "Virtual Museum":
+        animateCapsuleRotation(
+          legs_parent.children[5].children[0],
+          capsule_body,
+          projection_object,
+          projected_screen,
+          iframe
+        );
         break;
       default:
         console.warn("Unknown item");
@@ -1470,6 +1536,7 @@ export default function Horizon() {
       {/* {isStartingMessageVisible && <GetStarted />} */}
       {isHamburgerMenuVisible && (
         <HamburgerMenu
+          handleClickTopLevelMenu={selectedItemInMainMenu}
           selectedItemSubMenu1={selectedItemInSubMenu1}
           selectedItemSubMenu2={selectedItemInSubMenu2}
         />

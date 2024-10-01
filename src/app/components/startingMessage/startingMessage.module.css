@@ -3,29 +3,37 @@
   width: 100vw;
   height: 100vh;
   display: flex; /* Enable Flexbox */
+  flex-direction: row;
   justify-content: center; /* Center horizontally */
   align-items: center; /* Center vertically */
   background-color: rgba(0, 0, 0, 0.442);
 }
 
+.vitruvian_man_canvas {
+  width: 50vw;
+  height: 100vh;
+}
+
 .starting_message_container {
+  padding: 12%;
+  padding-left: 0;
   margin: auto;
-  width: 70vw;
+  width: 50vw;
   height: max-content;
   text-align: center;
 }
 
 .starting_message_title {
-  font-size: 3vw;
+  font-size: 1vw;
   margin-bottom: 5%;
 }
 
 .starting_message {
-  font-size: 2vw;
+  font-size: 1.5vw;
 }
 
 .albert {
   margin-top: 5%;
-  font-size: 2vw;
+  font-size: 1vw;
   text-align: end;
 }

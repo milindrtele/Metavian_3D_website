@@ -26,6 +26,11 @@ function HamburgerMenu(props) {
     }
   }, [menuIsVisible]);
 
+  function handleClickTopLevelMenu(e) {
+    const selectedMenu = e.currentTarget.getAttribute("name");
+    props.handleClickTopLevelMenu(selectedMenu);
+  }
+
   function handleClickSubMenu1(e) {
     const selectedMenu = e.currentTarget.getAttribute("name");
     props.selectedItemSubMenu1(selectedMenu);
@@ -50,7 +55,7 @@ function HamburgerMenu(props) {
           {/* Home (top-level menu item) */}
           <div
             className={[styles.menu_item, styles.menu_0].join(" ")}
-            onClick={handleClickSubMenu1}
+            onClick={handleClickTopLevelMenu}
             name="home"
           >
             <div className={styles.menu_text}>Home</div>
@@ -65,6 +70,8 @@ function HamburgerMenu(props) {
               styles.menu_dropdown,
               styles.menu_item_1,
             ].join(" ")}
+            onClick={handleClickTopLevelMenu}
+            name="Menu Item 1"
           >
             <div className={styles.menu_text}>Menu Item 1</div>
           </div>
@@ -127,6 +134,8 @@ function HamburgerMenu(props) {
               styles.menu_dropdown,
               styles.menu_item_2,
             ].join(" ")}
+            onClick={handleClickTopLevelMenu}
+            name="Menu Item 2"
           >
             <div className={styles.menu_text}>Menu Item 2</div>
             {/* You can add submenu here if needed */}
