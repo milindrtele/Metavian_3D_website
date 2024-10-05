@@ -82,7 +82,7 @@ export default function StartingMessage(props) {
         controls.enableDamping = true;
         controls.dampingFactor = 0.1;
         controls.update();
-        console.log(controls);
+        //console.log(controls);
       }
 
       RectAreaLightUniformsLib.init();
@@ -253,7 +253,7 @@ export default function StartingMessage(props) {
             z: camera.position.z,
             ease: "power2.inOut", // similar to Quadratic.InOut in TWEEN
             onUpdate: () => {
-              console.log(target.position);
+              //console.log(target.position);
               if (parent != null) parent.lookAt(target.position);
             },
           });

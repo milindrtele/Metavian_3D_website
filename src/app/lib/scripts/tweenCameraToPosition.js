@@ -13,26 +13,58 @@ const tweenCameraToNewPositionAndRotation = (
   //   duration: 1,
   //   onUpdate: () => {},
   // });
-  let target = { x: 0, y: 0, z: 0 };
-  gsap.to(target, {
-    ...cameraTarget,
-    duration: 1,
-    onUpdate: () => {
-      camera.lookAt(target.x, target.y, target.z);
-    },
-  });
-  const tweenPosition = gsap.to(camera.position, {
-    ...newPosition,
-    duration: 1,
-    onUpdate: () => {},
-  });
-  if (newRotation != null) {
-    const tweenRotation = gsap.to(camera.rotation, {
-      ...newRotation,
+  return new Promise((resolve, reject) => {
+    let animationCompletionArray = [];
+
+    function addToAnimationArray() {
+      animationCompletionArray.push(true);
+    }
+
+    function checkAllAnimationsCompleted() {
+      if (newRotation == null) {
+        if (animationCompletionArray.length == 2) {
+          resolve();
+        }
+      } else {
+        if (animationCompletionArray.length == 3) {
+          resolve();
+        }
+      }
+    }
+
+    let target = { x: 0, y: 0, z: 0 };
+    gsap.to(target, {
+      ...cameraTarget,
+      duration: 1,
+      onUpdate: () => {
+        camera.lookAt(target.x, target.y, target.z);
+      },
+      onComlete: () => {
+        addToAnimationArray();
+        checkAllAnimationsCompleted();
+      },
+    });
+    const tweenPosition = gsap.to(camera.position, {
+      ...newPosition,
       duration: 1,
       onUpdate: () => {},
+      onComlete: () => {
+        addToAnimationArray();
+        checkAllAnimationsCompleted();
+      },
     });
-  }
+    if (newRotation != null) {
+      const tweenRotation = gsap.to(camera.rotation, {
+        ...newRotation,
+        duration: 1,
+        onUpdate: () => {},
+        onComlete: () => {
+          addToAnimationArray();
+          checkAllAnimationsCompleted();
+        },
+      });
+    }
+  });
 };
 
 export { tweenCameraToNewPositionAndRotation };

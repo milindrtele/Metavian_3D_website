@@ -122,6 +122,10 @@
   display: block;
 }
 
+.menu_item_3:hover ~ .submenu_3 {
+  display: block;
+}
+
 /* .menu_dropdown:hover ~ .submenu_1 {
   display: block;
 } */

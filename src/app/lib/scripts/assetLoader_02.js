@@ -25,6 +25,8 @@ let projectModelsAnchors = [];
 
 let hdrImage = null;
 
+let media_model_array = null;
+
 export function loadAssetsWithPromise(
   loader,
   clip,
@@ -109,6 +111,41 @@ export function loadAssetsWithPromise(
       );
     };
 
+    // Load the social media models
+    loader.load(
+      "/models/contact models/consolidated_media_models_v_01.glb",
+      (gltf) => {
+        const social_media_models_scene = gltf.scene;
+        const media_01_anchor =
+          social_media_models_scene.getObjectByName("media_1");
+        const media_02_anchor =
+          social_media_models_scene.getObjectByName("media_2");
+        const media_03_anchor =
+          social_media_models_scene.getObjectByName("media_3");
+        const media_04_anchor =
+          social_media_models_scene.getObjectByName("media_4");
+        const media_05_anchor =
+          social_media_models_scene.getObjectByName("media_5");
+
+        media_model_array = [
+          media_01_anchor,
+          media_02_anchor,
+          media_03_anchor,
+          media_04_anchor,
+          media_05_anchor,
+        ];
+
+        media_model_array.forEach((object) => {
+          console.log(object);
+          scene.add(object);
+          //object.visible = false;
+        });
+      },
+      undefined,
+      (error) => {
+        console.log("social media models not loaded" + error);
+      }
+    );
     //load the capsule
     loader.load(
       //"models/capsule/cosmos ship of imagination.glb",
@@ -178,7 +215,7 @@ export function loadAssetsWithPromise(
         const glass = new NodeToyMaterial({
           url: "https://draft.nodetoy.co/dcJa9nhyWG5d8MeY", //https://draft.nodetoy.co/bzBoaIaQXpLm3UTR, //"https://draft.nodetoy.co/w7BhuuAcZ2ESIjU5", //https://draft.nodetoy.co/ECrNY8O4MMUUagsb,
         });
-        //glass.side = THREE.DoubleSide;
+        glass.side = THREE.FrontSide;
 
         const projection = new NodeToyMaterial({
           url: "https://draft.nodetoy.co/3AFHZMh0a2doiywy", //https://draft.nodetoy.co/bzBoaIaQXpLm3UTR, //"https://draft.nodetoy.co/w7BhuuAcZ2ESIjU5", //https://draft.nodetoy.co/ECrNY8O4MMUUagsb,
@@ -354,4 +391,5 @@ export {
   projectModels,
   projectModelsAnchors,
   animationMixers,
+  media_model_array,
 };

@@ -151,9 +151,10 @@ const animateCapsuleRotation = (
       switch (leg.name) {
         case "leg_01_1":
           iframe.src = [
+            // "https://cloud.protopie.io/p/604e1b159ff813ff97faa66a?ui=true&scaleToFit=true&enableHotspotHints=false&cursorType=arrow&mockup=true&bgColor=%23000000&bgImage=undefined&playSpeed=1",
             "https://www.youtube.com/embed/",
-            id1,
-            "?rel=0&autoplay=1",
+            //id1,
+            //"?rel=0&autoplay=1",
           ].join("");
           animate_capsule(0 + 30);
           break;

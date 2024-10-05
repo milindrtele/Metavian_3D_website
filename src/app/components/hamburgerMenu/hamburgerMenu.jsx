@@ -28,17 +28,25 @@ function HamburgerMenu(props) {
 
   function handleClickTopLevelMenu(e) {
     const selectedMenu = e.currentTarget.getAttribute("name");
-    props.handleClickTopLevelMenu(selectedMenu);
+    props.handleClickTopLevelMenuProp(selectedMenu);
   }
 
   function handleClickSubMenu1(e) {
     const selectedMenu = e.currentTarget.getAttribute("name");
+    props.handleClickTopLevelMenuProp("Menu Item 1");
     props.selectedItemSubMenu1(selectedMenu);
   }
 
   function handleClickSubMenu2(e) {
     const selectedMenu = e.currentTarget.getAttribute("name");
+    props.handleClickTopLevelMenuProp("Menu Item 2");
     props.selectedItemSubMenu2(selectedMenu);
+  }
+
+  function handleClickSubMenu3(e) {
+    const selectedMenu = e.currentTarget.getAttribute("name");
+    props.handleClickTopLevelMenuProp("Menu Item 3");
+    props.selectedItemSubMenu3(selectedMenu);
   }
 
   return (
@@ -193,9 +201,66 @@ function HamburgerMenu(props) {
           <div className={styles.line_in_menu}></div>
 
           {/* Menu Item 3 (another main menu) */}
-          <div className={[styles.menu_item, styles.menu_dropdown].join(" ")}>
+          <div
+            className={[
+              styles.menu_item,
+              styles.menu_dropdown,
+              styles.menu_item_3,
+            ].join(" ")}
+            onClick={handleClickTopLevelMenu}
+            name="Menu Item 3"
+          >
             <div className={styles.menu_text}>Menu Item 3</div>
             {/* You can add submenu here if needed */}
+          </div>
+          <div className={[styles.submenu, styles.submenu_3].join(" ")}>
+            <div
+              className={[styles.menu_item, styles.menu_1].join(" ")}
+              onClick={handleClickSubMenu3}
+              name="social media 1"
+            >
+              <div className={styles.menu_text}>social media 1</div>
+            </div>
+            <div className={styles.line_in_menu}></div>
+            <div
+              className={[styles.menu_item, styles.menu_2].join(" ")}
+              onClick={handleClickSubMenu3}
+              name="social media 2"
+            >
+              <div className={styles.menu_text}>social media 2</div>
+            </div>
+            <div className={styles.line_in_menu}></div>
+            <div
+              className={[styles.menu_item, styles.menu_3].join(" ")}
+              onClick={handleClickSubMenu3}
+              name="social media 3"
+            >
+              <div className={styles.menu_text}>social media 3</div>
+            </div>
+            <div className={styles.line_in_menu}></div>
+            <div
+              className={[styles.menu_item, styles.menu_4].join(" ")}
+              onClick={handleClickSubMenu3}
+              name="social media 4"
+            >
+              <div className={styles.menu_text}>social media 4</div>
+            </div>
+            <div className={styles.line_in_menu}></div>
+            <div
+              className={[styles.menu_item, styles.menu_5].join(" ")}
+              onClick={handleClickSubMenu3}
+              name="social media 5"
+            >
+              <div className={styles.menu_text}>social media 5</div>
+            </div>
+            <div className={styles.line_in_menu}></div>
+            <div
+              className={[styles.menu_item, styles.menu_6].join(" ")}
+              onClick={handleClickSubMenu3}
+              name="social media 6"
+            >
+              <div className={styles.menu_text}>social media 6</div>
+            </div>
           </div>
         </div>
       </div>

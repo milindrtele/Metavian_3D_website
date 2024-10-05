@@ -64,6 +64,7 @@ import {
   projectModels,
   projectModelsAnchors,
   animationMixers,
+  media_model_array,
 } from "../lib/scripts/assetLoader_02.js";
 
 import {
@@ -91,6 +92,9 @@ import { NodeToyMaterial } from "@nodetoy/three-nodetoy";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 export default function Horizon() {
+  const currentUserPositionRef = useRef(null);
+  const productCameraTravelScrollTriggerRef = useRef(null);
+
   const blenderCameraAnimationFrames = 1500;
   const blenderCameraAnimationFrameRate = 24;
   const totalLengthOfAnimation =
@@ -1133,6 +1137,7 @@ export default function Horizon() {
           startSequenceCompleteRef.current = true;
           setIsHamburgerMenuVisible(true);
 
+          currentUserPositionRef.current = "Menu Item 1";
           addScrollTrigger();
         },
       });
@@ -1143,6 +1148,114 @@ export default function Horizon() {
     if (startSequenceCompleteRef.current) {
     }
   }, [startSequenceCompleteRef.current]);
+
+  // useEffect(() => {
+  //   console.log(currentUserPositionRef.current + " => useEffect");
+  //   if (currentUserPositionRef.current == "home") {
+  //     animateToProgress(0.0);
+  //     tweenCameraToNewPositionAndRotation(
+  //       cameraRef.current, //camera,
+  //       controlsRef.current, //controls,
+  //       { x: 0, y: 0, z: 0 }, //cameraTarget,
+  //       { x: 0, y: 100, z: 0 } //newPosition,
+  //       // { x: 0, y: 0, z: 0 } //newRotation
+  //     ); //0.0
+  //   } else if (currentUserPositionRef.current == "Menu Item 1") {
+  //     tweenCameraToNewPositionAndRotation(
+  //       cameraRef.current, //camera,
+  //       controlsRef.current, //controls,
+  //       { x: 0, y: 0, z: 0 }, //cameraTarget,
+  //       {
+  //         x: 26.844,
+  //         y: 4,
+  //         z: -83.10922187556825,
+  //       }
+  //       // { x: 0, y: 0, z: 0 } //newRotation
+  //     ); //0.0
+  //   } else if (currentUserPositionRef.current == "Menu Item 2") {
+  //     animateToProgress(0.0);
+  //     tweenCameraToNewPositionAndRotation(
+  //       cameraRef.current, //camera,
+  //       controlsRef.current, //controls,
+  //       { x: 53.8746, y: 0.041356, z: -30.8687 }, //cameraTarget,
+  //       { x: -13, y: 4, z: -95 } //newPosition,
+  //       // { x: 0, y: 0, z: 0 } //newRotation
+  //     ); //0.0
+  //   } else if (currentUserPositionRef.current == "menu item 3") {
+  //     tweenCameraToNewPositionAndRotation(
+  //       cameraRef.current, //camera,
+  //       controlsRef.current, //controls,
+  //       { x: 0, y: 0, z: 0 }, //cameraTarget,
+  //       { x: -13, y: 4, z: -95 }, //newPosition,
+  //       { x: 0, y: 0, z: 0 } //newRotation
+  //     ); //0.0
+  //   }
+  // }, [currentUserPositionRef.current]);
+
+  let old_pos = null;
+  function actOnUserPositionChange() {
+    const current_pos = currentUserPositionRef.current;
+    console.log(currentUserPositionRef.current + " => useEffect");
+
+    if (old_pos != current_pos) {
+      if (currentUserPositionRef.current == "home") {
+        capsule_anchorRef.current.visible = false;
+        projected_screen.visible = false;
+        //ScrollTrigger.disable();
+        animateToProgress(0.0);
+        tweenCameraToNewPositionAndRotation(
+          cameraRef.current, //camera,
+          controlsRef.current, //controls,
+          { x: 0, y: 0, z: 0 }, //cameraTarget,
+          { x: 0, y: 100, z: 0 } //newPosition,
+          // { x: 0, y: 0, z: 0 } //newRotation
+        ); //0.0
+      } else if (currentUserPositionRef.current == "Menu Item 1") {
+        capsule_anchorRef.current.visible = false;
+        projected_screen.visible = false;
+        productCameraTravelScrollTriggerRef.current.enable();
+        tweenCameraToNewPositionAndRotation(
+          cameraRef.current, //camera,
+          controlsRef.current, //controls,
+          { x: 0, y: 0, z: 0 }, //cameraTarget,
+          {
+            x: 26.844,
+            y: 4,
+            z: -83.10922187556825,
+          }
+          // { x: 0, y: 0, z: 0 } //newRotation
+        ); //0.0
+      } else if (currentUserPositionRef.current == "Menu Item 2") {
+        capsule_anchorRef.current.visible = true;
+        projected_screen.visible = true;
+
+        animateToProgress(0.0).then(() => {
+          productCameraTravelScrollTriggerRef.current.disable();
+        });
+        tweenCameraToNewPositionAndRotation(
+          cameraRef.current, //camera,
+          controlsRef.current, //controls,
+          { x: 53.8746, y: 0.041356, z: -30.8687 }, //cameraTarget,
+          { x: -13, y: 4, z: -95 } //newPosition,
+          // { x: 0, y: 0, z: 0 } //newRotation
+        ); //0.0
+      } else if (currentUserPositionRef.current == "Menu Item 3") {
+        capsule_anchorRef.current.visible = false;
+        projected_screen.visible = false;
+        animateToProgress(0.0).then(() => {
+          productCameraTravelScrollTriggerRef.current.disable();
+        });
+        tweenCameraToNewPositionAndRotation(
+          cameraRef.current, //camera,
+          controlsRef.current, //controls,
+          { x: 0, y: 0, z: 0 }, //cameraTarget,
+          { x: 0, y: 100, z: 100 } //newPosition,
+          // { x: 0, y: 0, z: 0 } //newRotation
+        ); //0.0
+      }
+      old_pos = current_pos;
+    }
+  }
 
   // useEffect(() => {
   //   ScrollTrigger.create({
@@ -1202,7 +1315,7 @@ export default function Horizon() {
     //setGetStartedCompleted(true);
     //controlsRef.current.enabled = false; // desable the orbit controls
     logoAnimationCompletedRef.current = true;
-    ScrollTrigger.create({
+    productCameraTravelScrollTriggerRef.current = ScrollTrigger.create({
       trigger: "#container",
       start: "top",
       end: "25000",
@@ -1246,7 +1359,12 @@ export default function Horizon() {
 
         //copy the position and rotation of the imported camera from blender .glb///////////////////////////////
 
-        if (blenderCameraRef.current != null) {
+        console.log(currentUserPositionRef.current);
+
+        if (
+          blenderCameraRef.current != null &&
+          currentUserPositionRef.current == "Menu Item 1"
+        ) {
           cameraRef.current.position.copy(blenderCameraRef.current.position);
           cameraRef.current.position.y =
             blenderCameraRef.current.position.y - 3;
@@ -1262,20 +1380,25 @@ export default function Horizon() {
   }
 
   function animateToProgress(targetProgress) {
-    // Get the total scrollable distance
-    const totalScroll = 25000; //ScrollTrigger.maxScroll(window);
+    return new Promise((resolve, reject) => {
+      // Get the total scrollable distance
+      const totalScroll = 25000; //ScrollTrigger.maxScroll(window);
 
-    // Calculate the scroll position based on the target progress
-    const targetScroll = totalScroll * targetProgress;
+      // Calculate the scroll position based on the target progress
+      const targetScroll = totalScroll * targetProgress;
 
-    // Use gsap to animate the scroll position smoothly
-    gsap.to(window, {
-      scrollTo: targetScroll,
-      duration: 3, // Adjust the duration for smoothness
-      ease: "power2.inOut", // You can change the easing for different effects
-      onUpdate: () => {
-        ScrollTrigger.refresh(); // Refresh ScrollTrigger on update to ensure correct behavior
-      },
+      // Use gsap to animate the scroll position smoothly
+      gsap.to(window, {
+        scrollTo: targetScroll,
+        duration: 3, // Adjust the duration for smoothness
+        ease: "power2.inOut", // You can change the easing for different effects
+        onUpdate: () => {
+          productCameraTravelScrollTriggerRef.current.refresh(); // Refresh ScrollTrigger on update to ensure correct behavior
+        },
+        onComplete: () => {
+          resolve();
+        },
+      });
     });
   }
 
@@ -1363,38 +1486,43 @@ export default function Horizon() {
   };
 
   const selectedItemInMainMenu = (item) => {
-    switch (item) {
-      case "home":
-        tweenCameraToNewPositionAndRotation(
-          cameraRef.current,
-          controlsRef.current,
-          { x: 53.8746, y: 0.041356, z: -30.8687 },
-          { x: -13, y: 4, z: -95 },
-          null
-          // { x: 0, y: 0, z: 0 }
-        ); //0.0
-        break;
-
-      case "Car Configurator":
-        tweenCameraToNewPositionAndRotation(
-          cameraRef.current, //camera,
-          controlsRef.current, //controls,
-          { x: 0, y: 0, z: 0 }, //cameraTarget,
-          { x: -13, y: 4, z: -95 }, //newPosition,
-          { x: 0, y: 0, z: 0 } //newRotation
-        ); //0.0
-        break;
-      default:
-        console.warn("Unknown item");
-    }
+    currentUserPositionRef.current = item;
+    actOnUserPositionChange();
   };
+
+  // const selectedItemInMainMenu = (item) => {
+  //   switch (item) {
+  //     case "home":
+  //       tweenCameraToNewPositionAndRotation(
+  //         cameraRef.current,
+  //         controlsRef.current,
+  //         { x: 53.8746, y: 0.041356, z: -30.8687 },
+  //         { x: -13, y: 4, z: -95 },
+  //         null
+  //         // { x: 0, y: 0, z: 0 }
+  //       ); //0.0
+  //       break;
+
+  //     case "Car Configurator":
+  //       tweenCameraToNewPositionAndRotation(
+  //         cameraRef.current, //camera,
+  //         controlsRef.current, //controls,
+  //         { x: 0, y: 0, z: 0 }, //cameraTarget,
+  //         { x: -13, y: 4, z: -95 }, //newPosition,
+  //         { x: 0, y: 0, z: 0 } //newRotation
+  //       ); //0.0
+  //       break;
+  //     default:
+  //       console.warn("Unknown item");
+  //   }
+  // };
 
   const selectedItemInSubMenu1 = (item) => {
     console.log(item);
     switch (item) {
-      case "home":
-        animateToProgress(0.0); //0.0
-        break;
+      // case "home":
+      //   animateToProgress(0.0); //0.0
+      //   break;
       case "Car Configurator":
         animateToProgress(0.2); //0.12;
         break;
@@ -1489,6 +1617,15 @@ export default function Horizon() {
     }
   };
 
+  const selectedItemInSubMenu3 = (item) => {
+    switch (item) {
+      case "facebook":
+        break;
+      default:
+        console.warn("Unknown item");
+    }
+  };
+
   return (
     <div id="container">
       <div className={styles.slidecontainer}>
@@ -1536,9 +1673,10 @@ export default function Horizon() {
       {/* {isStartingMessageVisible && <GetStarted />} */}
       {isHamburgerMenuVisible && (
         <HamburgerMenu
-          handleClickTopLevelMenu={selectedItemInMainMenu}
+          handleClickTopLevelMenuProp={selectedItemInMainMenu}
           selectedItemSubMenu1={selectedItemInSubMenu1}
           selectedItemSubMenu2={selectedItemInSubMenu2}
+          selectedItemSubMenu3={selectedItemInSubMenu3}
         />
       )}
     </div>
