@@ -52,7 +52,9 @@ import { loadCurveFromJSON } from "../lib/curveTools/CurveMethods.js";
 import {
   loadAssetsWithPromise,
   blenderCamera,
+  contact_model_Camera,
   mixer,
+  contact_models_animation_mixer,
   capsule_model,
   capsule_anchor,
   capsule_body,
@@ -154,9 +156,11 @@ export default function Horizon() {
   const logoAnimationCompletedRef = useRef(false);
 
   const blenderCameraRef = useRef(null);
+  const contact_model_CameraRef = useRef(null);
   const clipRef = useRef(null);
   const mixerRef = useRef(null);
   const mixerArrayRef = useRef(null);
+  const contact_models_animation_mixerRef = useRef(null);
 
   const scan_lines_meshRef = useRef(null);
   const capsule_anchorRef = useRef(null);
@@ -592,6 +596,9 @@ export default function Horizon() {
           // console.log(animationMixers);
 
           blenderCameraRef.current = blenderCamera;
+          contact_model_CameraRef.current = contact_model_Camera;
+          contact_models_animation_mixerRef.current =
+            contact_models_animation_mixer;
           mixerRef.current = mixer;
           mixerArrayRef.current = animationMixers;
           scan_lines_meshRef.current = capsule_model;
@@ -1133,7 +1140,7 @@ export default function Horizon() {
           // });
         },
         onComplete: () => {
-          //controlsRef.current.enabled = true;
+          controlsRef.current.enabled = true;
           startSequenceCompleteRef.current = true;
           setIsHamburgerMenuVisible(true);
 
@@ -1249,7 +1256,7 @@ export default function Horizon() {
           cameraRef.current, //camera,
           controlsRef.current, //controls,
           { x: 0, y: 0, z: 0 }, //cameraTarget,
-          { x: 0, y: 100, z: 100 } //newPosition,
+          { x: 0, y: 100, z: -250 } //newPosition,
           // { x: 0, y: 0, z: 0 } //newRotation
         ); //0.0
       }
@@ -1308,6 +1315,42 @@ export default function Horizon() {
         projection_screen_anchor.getWorldQuaternion(new THREE.Quaternion())
       );
     }
+  }
+
+  function addScrollTriggerForContactsModels() {
+    productCameraTravelScrollTriggerRef.current = ScrollTrigger.create({
+      trigger: "#container",
+      start: "top",
+      end: "2500",
+      pin: true,
+      // markers: true,
+      onUpdate: (self) => {
+        const min = 0.15;
+        const max = 1.0;
+
+        let progressForProductAnimation = Math.max(
+          0.0,
+          Math.min(1.0, (self.progress - 0.15) / (1 - 0.15))
+        );
+
+        onMouseScrollForContactsModels(progressForProductAnimation);
+
+        if (
+          blenderCameraRef.current != null &&
+          currentUserPositionRef.current == "Menu Item 1"
+        ) {
+          cameraRef.current.position.copy(blenderCameraRef.current.position);
+          cameraRef.current.position.y =
+            blenderCameraRef.current.position.y - 3;
+          cameraRef.current.rotation.copy(blenderCameraRef.current.rotation);
+          cameraRef.current.quaternion.copy(
+            blenderCameraRef.current.quaternion
+          );
+          //console.log(blenderCameraRef.current.position);
+          cameraRef.current.updateMatrix();
+        }
+      },
+    });
   }
 
   function addScrollTrigger() {
@@ -1420,6 +1463,13 @@ export default function Horizon() {
   let Currentprogress = 0.0;
   const totalAnimationSeconds =
     blenderCameraAnimationFrames / blenderCameraAnimationFrameRate;
+
+  function onMouseScrollForContactsModels(progress) {
+    if (mixerRef.current !== null) {
+      const elapsedTime = progress * 10.0; //totalAnimationSeconds;
+      contact_models_animation_mixerRef.current.setTime(elapsedTime);
+    }
+  }
 
   function onMouseScroll(progress) {
     if (mixerRef.current !== null) {

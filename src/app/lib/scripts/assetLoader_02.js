@@ -8,8 +8,10 @@ import { data } from "../shaders/scan_lines/scan_lines_shader_data.js";
 import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
 
 let blenderCamera = null;
+let contact_model_Camera = null;
 let animationMixers = [];
 let mixer = null;
+let contact_models_animation_mixer = null;
 let capsule_model = null;
 let capsule_anchor = null;
 let capsule_body = null;
@@ -113,9 +115,13 @@ export function loadAssetsWithPromise(
 
     // Load the social media models
     loader.load(
-      "/models/contact models/consolidated_media_models_v_01.glb",
+      "/models/contact models/contact_models_with_vr_headset_with_camera_animation_v1.glb",
       (gltf) => {
         const social_media_models_scene = gltf.scene;
+        scene.add(social_media_models_scene);
+        console.log(social_media_models_scene);
+        const headset_anchor =
+          social_media_models_scene.getObjectByName("headset_anchor");
         const media_01_anchor =
           social_media_models_scene.getObjectByName("media_1");
         const media_02_anchor =
@@ -127,6 +133,12 @@ export function loadAssetsWithPromise(
         const media_05_anchor =
           social_media_models_scene.getObjectByName("media_5");
 
+        social_media_models_scene.traverse((object) => {
+          if (object.isMesh) {
+            object.material.envMap = cubeRenderTarget.texture;
+          }
+        });
+
         media_model_array = [
           media_01_anchor,
           media_02_anchor,
@@ -135,11 +147,24 @@ export function loadAssetsWithPromise(
           media_05_anchor,
         ];
 
+        scene.add(headset_anchor);
+
         media_model_array.forEach((object) => {
           console.log(object);
           scene.add(object);
           //object.visible = false;
         });
+
+        contact_model_Camera = gltf.cameras[0];
+        const camera_clip = THREE.AnimationClip.findByName(
+          gltf.animations,
+          "Action"
+        );
+        contact_models_animation_mixer = new THREE.AnimationMixer(
+          contact_model_Camera
+        );
+        const action = mixer.clipAction(camera_clip);
+        action.play();
       },
       undefined,
       (error) => {
@@ -379,7 +404,9 @@ export function loadAssetsWithPromise(
 
 export {
   blenderCamera,
+  contact_model_Camera,
   mixer,
+  contact_models_animation_mixer,
   capsule_model,
   capsule_anchor,
   capsule_body,
