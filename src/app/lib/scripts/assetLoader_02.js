@@ -115,11 +115,12 @@ export function loadAssetsWithPromise(
 
     // Load the social media models
     loader.load(
-      "/models/contact models/contact_models_with_vr_headset_with_camera_animation_v1.glb",
+      //"/models/contact models/contact_models_with_vr_headset_with_camera_animation_v1-v1.glb",
+      "/models/contact models/contact_models_with_vr_headset_with_animations.glb",
       (gltf) => {
         const social_media_models_scene = gltf.scene;
         scene.add(social_media_models_scene);
-        console.log(social_media_models_scene);
+        console.log(gltf);
         const headset_anchor =
           social_media_models_scene.getObjectByName("headset_anchor");
         const media_01_anchor =
@@ -147,11 +148,11 @@ export function loadAssetsWithPromise(
           media_05_anchor,
         ];
 
-        scene.add(headset_anchor);
+        //scene.add(headset_anchor);
 
         media_model_array.forEach((object) => {
           console.log(object);
-          scene.add(object);
+          //scene.add(object);
           //object.visible = false;
         });
 
@@ -163,7 +164,7 @@ export function loadAssetsWithPromise(
         contact_models_animation_mixer = new THREE.AnimationMixer(
           contact_model_Camera
         );
-        const action = mixer.clipAction(camera_clip);
+        const action = contact_models_animation_mixer.clipAction(camera_clip);
         action.play();
       },
       undefined,
@@ -328,6 +329,7 @@ export function loadAssetsWithPromise(
     loader.load(
       "models/positioned assets 2/camera_01.glb",
       (gltf) => {
+        console.log(gltf);
         blenderCamera = gltf.cameras[0];
         clip = THREE.AnimationClip.findByName(
           gltf.animations,

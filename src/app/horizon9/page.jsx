@@ -96,6 +96,7 @@ import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 export default function Horizon() {
   const currentUserPositionRef = useRef(null);
   const productCameraTravelScrollTriggerRef = useRef(null);
+  const contactsSceneCameraTravelScrollTriggerRef = useRef(null);
 
   const blenderCameraAnimationFrames = 1500;
   const blenderCameraAnimationFrameRate = 24;
@@ -310,7 +311,10 @@ export default function Horizon() {
 
       // Callback function to handle intersects
       const handleIntersects = (intersects) => {
-        if (intersects.length > 0) {
+        if (
+          currentUserPositionRef.current == "Menu Item 2" &&
+          intersects.length > 0
+        ) {
           console.log("Intersected objects:", intersects);
           if (
             intersects[0].object.parent &&
@@ -1140,7 +1144,7 @@ export default function Horizon() {
           // });
         },
         onComplete: () => {
-          controlsRef.current.enabled = true;
+          //controlsRef.current.enabled = true;
           startSequenceCompleteRef.current = true;
           setIsHamburgerMenuVisible(true);
 
@@ -1220,7 +1224,17 @@ export default function Horizon() {
       } else if (currentUserPositionRef.current == "Menu Item 1") {
         capsule_anchorRef.current.visible = false;
         projected_screen.visible = false;
-        productCameraTravelScrollTriggerRef.current.enable();
+        if (productCameraTravelScrollTriggerRef.current == null) {
+          addScrollTrigger();
+        }
+        // if (productCameraTravelScrollTriggerRef.current != null) {
+        //   productCameraTravelScrollTriggerRef.current.enable();
+        // }
+        // if (contactsSceneCameraTravelScrollTriggerRef.current != null) {
+        //   contactsSceneCameraTravelScrollTriggerRef.current.disable({
+        //     revert: true,
+        //   });
+        // }
         tweenCameraToNewPositionAndRotation(
           cameraRef.current, //camera,
           controlsRef.current, //controls,
@@ -1237,7 +1251,14 @@ export default function Horizon() {
         projected_screen.visible = true;
 
         animateToProgress(0.0).then(() => {
-          productCameraTravelScrollTriggerRef.current.disable();
+          // if (productCameraTravelScrollTriggerRef.current != null) {
+          //   productCameraTravelScrollTriggerRef.current.disable({
+          //     revert: true,
+          //   });
+          // }
+          // if (contactsSceneCameraTravelScrollTriggerRef.current != null) {
+          //   contactsSceneCameraTravelScrollTriggerRef.current.enable();
+          // }
         });
         tweenCameraToNewPositionAndRotation(
           cameraRef.current, //camera,
@@ -1250,8 +1271,9 @@ export default function Horizon() {
         capsule_anchorRef.current.visible = false;
         projected_screen.visible = false;
         animateToProgress(0.0).then(() => {
-          productCameraTravelScrollTriggerRef.current.disable();
+          addScrollTriggerForContactsModels();
         });
+
         tweenCameraToNewPositionAndRotation(
           cameraRef.current, //camera,
           controlsRef.current, //controls,
@@ -1318,91 +1340,78 @@ export default function Horizon() {
   }
 
   function addScrollTriggerForContactsModels() {
-    productCameraTravelScrollTriggerRef.current = ScrollTrigger.create({
-      trigger: "#container",
-      start: "top",
-      end: "2500",
-      pin: true,
-      // markers: true,
-      onUpdate: (self) => {
-        const min = 0.15;
-        const max = 1.0;
+    // Kill the product scroll trigger if it exists
+    if (productCameraTravelScrollTriggerRef.current) {
+      productCameraTravelScrollTriggerRef.current.kill();
+      productCameraTravelScrollTriggerRef.current = null; // Reset reference
+    }
 
-        let progressForProductAnimation = Math.max(
-          0.0,
-          Math.min(1.0, (self.progress - 0.15) / (1 - 0.15))
-        );
+    console.log(contactsSceneCameraTravelScrollTriggerRef.current);
+    if (contactsSceneCameraTravelScrollTriggerRef.current == null) {
+      console.log("adding contacts model scroll trigger");
+      contactsSceneCameraTravelScrollTriggerRef.current = ScrollTrigger.create({
+        trigger: "#container",
+        start: "top",
+        end: "25000",
+        pin: true,
+        markers: true,
+        onUpdate: (self) => {
+          const min = 0.15;
+          const max = 1.0;
 
-        onMouseScrollForContactsModels(progressForProductAnimation);
-
-        if (
-          blenderCameraRef.current != null &&
-          currentUserPositionRef.current == "Menu Item 1"
-        ) {
-          cameraRef.current.position.copy(blenderCameraRef.current.position);
-          cameraRef.current.position.y =
-            blenderCameraRef.current.position.y - 3;
-          cameraRef.current.rotation.copy(blenderCameraRef.current.rotation);
-          cameraRef.current.quaternion.copy(
-            blenderCameraRef.current.quaternion
+          let progressForProductAnimation = Math.max(
+            0.0,
+            Math.min(1.0, (self.progress - 0.15) / (1 - 0.15))
           );
-          //console.log(blenderCameraRef.current.position);
-          cameraRef.current.updateMatrix();
-        }
-      },
-    });
+
+          onMouseScrollForContactsModels(self.progress);
+
+          if (
+            contact_model_CameraRef.current != null &&
+            currentUserPositionRef.current == "Menu Item 3"
+          ) {
+            cameraRef.current.position.copy(
+              contact_model_CameraRef.current.position
+            );
+            cameraRef.current.rotation.copy(
+              contact_model_CameraRef.current.rotation
+            );
+            cameraRef.current.quaternion.copy(
+              contact_model_CameraRef.current.quaternion
+            );
+            cameraRef.current.updateMatrix();
+          }
+        },
+      });
+    }
   }
 
   function addScrollTrigger() {
+    // Kill the contacts scroll trigger if it exists
+    if (contactsSceneCameraTravelScrollTriggerRef.current) {
+      contactsSceneCameraTravelScrollTriggerRef.current.kill();
+      contactsSceneCameraTravelScrollTriggerRef.current = null; // Reset reference
+    }
+
     console.log("adding scroll trigger");
-    //setGetStartedCompleted(true);
-    //controlsRef.current.enabled = false; // desable the orbit controls
     logoAnimationCompletedRef.current = true;
     productCameraTravelScrollTriggerRef.current = ScrollTrigger.create({
       trigger: "#container",
       start: "top",
       end: "25000",
       pin: true,
-      // markers: true,
       onUpdate: (self) => {
         const min = 0.15;
         const max = 1.0;
 
         progressJSRef.current.value = self.progress * (max - min) + min;
 
-        // progressJSRef.current.value = Math.max(
-        //   0.2,
-        //   Math.min(self.progress + 0.2, 1.0)
-        // ); //self.progress + 0.2;
-        // showHideAssets();
-
-        // let progressForProductAnimation = Math.max(
-        //   0.1,
-        //   (progressJSRef.current.value - 0.2) * (max - 0.2)
-        // );
-
-        // let progressForProductAnimation = Math.max(0.0, self.progress - 0.15);
         let progressForProductAnimation = Math.max(
           0.0,
           Math.min(1.0, (self.progress - 0.15) / (1 - 0.15))
         );
 
-        // console.log(
-        //   "scroll : " +
-        //     self.progress +
-        //     " , " +
-        //     "product : " +
-        //     progressForProductAnimation +
-        //     " , " +
-        //     "shader : " +
-        //     progressJSRef.current.value
-        // );
-
         onMouseScroll(progressForProductAnimation);
-
-        //copy the position and rotation of the imported camera from blender .glb///////////////////////////////
-
-        console.log(currentUserPositionRef.current);
 
         if (
           blenderCameraRef.current != null &&
@@ -1415,7 +1424,6 @@ export default function Horizon() {
           cameraRef.current.quaternion.copy(
             blenderCameraRef.current.quaternion
           );
-          //console.log(blenderCameraRef.current.position);
           cameraRef.current.updateMatrix();
         }
       },
@@ -1436,7 +1444,9 @@ export default function Horizon() {
         duration: 3, // Adjust the duration for smoothness
         ease: "power2.inOut", // You can change the easing for different effects
         onUpdate: () => {
-          productCameraTravelScrollTriggerRef.current.refresh(); // Refresh ScrollTrigger on update to ensure correct behavior
+          if (productCameraTravelScrollTriggerRef.current != null) {
+            productCameraTravelScrollTriggerRef.current.refresh(); // Refresh ScrollTrigger on update to ensure correct behavior
+          }
         },
         onComplete: () => {
           resolve();
@@ -1465,34 +1475,22 @@ export default function Horizon() {
     blenderCameraAnimationFrames / blenderCameraAnimationFrameRate;
 
   function onMouseScrollForContactsModels(progress) {
-    if (mixerRef.current !== null) {
+    if (contact_models_animation_mixerRef.current != null) {
       const elapsedTime = progress * 10.0; //totalAnimationSeconds;
       contact_models_animation_mixerRef.current.setTime(elapsedTime);
     }
+    console.log(contact_models_animation_mixerRef.current.time);
   }
 
   function onMouseScroll(progress) {
     if (mixerRef.current !== null) {
       const elapsedTime = progress * totalAnimationSeconds;
 
-      // animateProductModels(
-      //   sceneRef.current,
-      //   projectModels,
-      //   projectModelsAnchors,
-      //   elapsedTime
-      // );
-
       mixerRef.current.setTime(elapsedTime);
       mixerArrayRef.current.forEach((mixer) => {
         mixer.setTime(elapsedTime);
         mixer._root.updateMatrix();
       });
-
-      // if (checkScrollDirectionIsUp(progress)) {
-      //   mixerRef.current.setTime(elapsedTime);
-      // } else {
-      //   mixerRef.current.setTime(elapsedTime);
-      // }
     }
   }
 
