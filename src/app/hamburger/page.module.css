@@ -1,0 +1,140 @@
+/* app/page.module.css */
+.body {
+    padding: 0;
+    margin: 0;
+    background: #596778;
+    color: #EEEEEE;
+    text-align: center;
+    font-family: "Lato", sans-serif;
+  }
+  
+  @media screen and (max-width: 700px) {
+    .body {
+      padding: 170px 0 0 0;
+      width: 100%;
+    }
+  }
+  
+  .menuItem {
+    color: inherit;
+  }
+  
+  .menuItem,
+  .menuOpenButton {
+    background: #EEEEEE;
+    border-radius: 100%;
+    width: 80px;
+    height: 80px;
+    margin-left: -40px;
+    position: absolute;
+    color: #FFFFFF;
+    text-align: center;
+    line-height: 80px;
+    transform: translate3d(0, 0, 0);
+    transition: transform ease-out 200ms;
+  }
+  
+  .menuOpen {
+    display: none;
+  }
+  
+  .lines {
+    width: 25px;
+    height: 3px;
+    background: #596778;
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -12.5px;
+    margin-top: -1.5px;
+    transition: transform 200ms;
+  }
+  
+  .line1 {
+    transform: translate3d(0, -8px, 0);
+  }
+  
+  .line2 {
+    transform: translate3d(0, 0, 0);
+  }
+  
+  .line3 {
+    transform: translate3d(0, 8px, 0);
+  }
+  
+  .menuOpen:checked + .menuOpenButton .line1 {
+    transform: translate3d(0, 0, 0) rotate(45deg);
+  }
+  
+  .menuOpen:checked + .menuOpenButton .line2 {
+    transform: translate3d(0, 0, 0) scale(0.1, 1);
+  }
+  
+  .menuOpen:checked + .menuOpenButton .line3 {
+    transform: translate3d(0, 0, 0) rotate(-45deg);
+  }
+  
+  .menu {
+    margin: auto;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 80px;
+    height: 80px;
+    text-align: center;
+    box-sizing: border-box;
+    font-size: 26px;
+  }
+  
+  .menuItem:hover {
+    background: #EEEEEE;
+    color: #3290B1;
+  }
+  
+  .menuOpenButton {
+    z-index: 2;
+    transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition-duration: 400ms;
+    transform: scale(1.1, 1.1) translate3d(0, 0, 0);
+    cursor: pointer;
+    box-shadow: 3px 3px 0 0 rgba(0, 0, 0, 0.14);
+  }
+  
+  .menuOpenButton:hover {
+    transform: scale(1.2, 1.2) translate3d(0, 0, 0);
+  }
+  
+  /* Color classes */
+  .blue {
+    background-color: #669AE1;
+    box-shadow: 3px 3px 0 0 rgba(0, 0, 0, 0.14);
+  }
+  
+  .green {
+    background-color: #70CC72;
+    box-shadow: 3px 3px 0 0 rgba(0, 0, 0, 0.14);
+  }
+  
+  .red {
+    background-color: #FE4365;
+    box-shadow: 3px 3px 0 0 rgba(0, 0, 0, 0.14);
+  }
+  
+  .purple {
+    background-color: #C49CDE;
+    box-shadow: 3px 3px 0 0 rgba(0, 0, 0, 0.14);
+  }
+  
+  .orange {
+    background-color: #FC913A;
+    box-shadow: 3px 3px 0 0 rgba(0, 0, 0, 0.14);
+  }
+  
+  .lightblue {
+    background-color: #62C2E4;
+    box-shadow: 3px 3px 0 0 rgba(0, 0, 0, 0.14);
+  }
+  
