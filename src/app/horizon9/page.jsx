@@ -1,5 +1,6 @@
 "use client";
 
+import Beepie from "../components/beepie/beepie.jsx";
 import StartingMessage from "../components/startingMessage/startingMessage.jsx";
 import GetStarted from "../components/GetStarted/GetStarted.jsx";
 import HamburgerMenu from "../components/HamburgerMenu/hamburgerMenu.jsx";
@@ -1714,9 +1715,10 @@ export default function Horizon() {
         </div> */}
       </div>
       <canvas id="canvas" className="canvas" ref={canvasRef}></canvas>
-      {isStartingMessageVisible && (
+      {<Beepie />}
+      {/* {isStartingMessageVisible && (
         <StartingMessage continue={startingMessageContinue} />
-      )}
+      )} */}
       {isGetStartedVisible && <GetStarted continue={GetStartedContinue} />}
       {/* {isStartingMessageVisible && <GetStarted />} */}
       {isHamburgerMenuVisible && (

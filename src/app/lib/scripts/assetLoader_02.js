@@ -119,7 +119,7 @@ export function loadAssetsWithPromise(
       "/models/contact models/contact_models_with_vr_headset_with_animations.glb",
       (gltf) => {
         const social_media_models_scene = gltf.scene;
-        scene.add(social_media_models_scene);
+        //scene.add(social_media_models_scene);
         console.log(gltf);
         const headset_anchor =
           social_media_models_scene.getObjectByName("headset_anchor");
