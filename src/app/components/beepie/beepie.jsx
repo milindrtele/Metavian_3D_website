@@ -13,6 +13,12 @@ import { data } from "../../lib/shaders/thrusters/thrusters.js";
 import { Text } from "troika-three-text";
 
 export default function Beepie(props) {
+  const [displayText, setDisplayText] = useState("Hi I'm BeePie!");
+  const [fullText, setFullText] = useState(
+    "Hi I'm BeePie! This is a scrolling text example! 😀"
+  ); // Long text for scrolling
+  const indexRef = useRef(0); // To track the current index for the letters
+  const myTextRef = useRef(null); // Ref for the troika Text instance
   useEffect(() => {
     const beepie_canvas = document.getElementById("beepie_canvas");
     let camera, scene, renderer, controls;
@@ -96,11 +102,13 @@ export default function Beepie(props) {
         // Create the Text instance
         const myText = new Text();
         parent.add(myText);
+        myTextRef.current = myText;
 
         // Set properties to configure:
-        myText.text = "Hi I'm BeePie !";
+        myText.text = displayText;
         myText.fontSize = 0.2;
         myText.color = 0xffffff;
+        myText.font = "/models/chat_bot/LLPIXEL3.ttf";
 
         // Position the text in front of the parent
         myText.position.set(0, 0.65, 1); // Adjust based on your scene
@@ -114,6 +122,14 @@ export default function Beepie(props) {
 
         // Update the rendering:
         myText.sync();
+
+        // Animate the text position to create scrolling effect
+        gsap.to(myText, {
+          duration: 10, // Duration of the scroll animation
+          x: -10, // Move the text off-screen to the left
+          repeat: -1, // Infinite scrolling
+          ease: "linear",
+        });
 
         const thrusters_parent = gltf.scene.getObjectByName("thrusters_parent");
 
@@ -206,6 +222,38 @@ export default function Beepie(props) {
 
     init();
   }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const maxLetters = 12; // Maximum number of letters to display
+      const fullTextWithSpace = fullText + "    "; // Add 4 spaces at the end of the text
+      const nextIndex = (indexRef.current + 1) % fullTextWithSpace.length; // Move to the next index
+      let newDisplayText;
+
+      // If we are close to the end of the text, wrap around to the beginning
+      if (nextIndex + maxLetters > fullTextWithSpace.length) {
+        const part1 = fullTextWithSpace.slice(nextIndex); // Get the remaining part at the end
+        const part2 = fullTextWithSpace.slice(0, maxLetters - part1.length); // Wrap around to the beginning
+        newDisplayText = part1 + part2; // Combine both parts
+      } else {
+        newDisplayText = fullTextWithSpace.slice(
+          nextIndex,
+          nextIndex + maxLetters
+        );
+      }
+
+      setDisplayText(newDisplayText); // Update the state with the new text
+      indexRef.current = nextIndex; // Update the index reference
+
+      // Update the troika text instance if it's ready
+      if (myTextRef.current) {
+        myTextRef.current.text = newDisplayText;
+        myTextRef.current.sync(); // Sync the text to update rendering
+      }
+    }, 100); // 0.1 second interval
+
+    return () => clearInterval(interval); // Clear interval on unmount
+  }, [fullText]);
 
   useEffect(() => {}, []);
   return (

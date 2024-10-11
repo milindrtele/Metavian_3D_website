@@ -28,6 +28,9 @@ let projectModelsAnchors = [];
 let hdrImage = null;
 
 let media_model_array = null;
+let spot_lights_array = null;
+
+let social_media_models_scene = null;
 
 export function loadAssetsWithPromise(
   loader,
@@ -115,10 +118,10 @@ export function loadAssetsWithPromise(
 
     // Load the social media models
     loader.load(
-      //"/models/contact models/contact_models_with_vr_headset_with_camera_animation_v1-v1.glb",
-      "/models/contact models/contact_models_with_vr_headset_with_animations.glb",
+      //"/models/contact models/contact_models_with_vr_headset_with_animations.glb",
+      "/models/contact models/contact_models_with_vr_headset_with_animation_and_optimisation.glb",
       (gltf) => {
-        const social_media_models_scene = gltf.scene;
+        social_media_models_scene = gltf.scene;
         //scene.add(social_media_models_scene);
         console.log(gltf);
         const headset_anchor =
@@ -131,8 +134,24 @@ export function loadAssetsWithPromise(
           social_media_models_scene.getObjectByName("media_3");
         const media_04_anchor =
           social_media_models_scene.getObjectByName("media_4");
-        const media_05_anchor =
-          social_media_models_scene.getObjectByName("media_5");
+
+        /////spot lights
+        const spot_headset =
+          social_media_models_scene.getObjectByName("spot_headset");
+        const media_spot_light_01 = social_media_models_scene.getObjectByName(
+          "spot_social_media_1"
+        );
+        const media_spot_light_02 = social_media_models_scene.getObjectByName(
+          "spot_social_media_2"
+        );
+        const media_spot_light_03 = social_media_models_scene.getObjectByName(
+          "spot_social_media_3"
+        );
+        const media_spot_light_04 = social_media_models_scene.getObjectByName(
+          "spot_social_media_4"
+        );
+
+        //spot_headset.intensity = 0;
 
         social_media_models_scene.traverse((object) => {
           if (object.isMesh) {
@@ -145,7 +164,13 @@ export function loadAssetsWithPromise(
           media_02_anchor,
           media_03_anchor,
           media_04_anchor,
-          media_05_anchor,
+        ];
+
+        spot_lights_array = [
+          media_spot_light_01,
+          media_spot_light_02,
+          media_spot_light_03,
+          media_spot_light_04,
         ];
 
         //scene.add(headset_anchor);
@@ -159,7 +184,7 @@ export function loadAssetsWithPromise(
         contact_model_Camera = gltf.cameras[0];
         const camera_clip = THREE.AnimationClip.findByName(
           gltf.animations,
-          "Action"
+          "Camera"
         );
         contact_models_animation_mixer = new THREE.AnimationMixer(
           contact_model_Camera
@@ -421,4 +446,6 @@ export {
   projectModelsAnchors,
   animationMixers,
   media_model_array,
+  social_media_models_scene,
+  spot_lights_array,
 };

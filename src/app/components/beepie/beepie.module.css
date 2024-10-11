@@ -1,9 +1,9 @@
 .beepi_container {
   position: absolute;
   right: 0;
-  bottom: 0;
-  width: 25vw;
-  height: 25vw;
+  top: 70vh;
+  width: 30vh;
+  height: 30vh;
 }
 
 .beepie_canvas {

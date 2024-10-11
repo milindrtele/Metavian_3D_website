@@ -68,7 +68,11 @@ import {
   projectModelsAnchors,
   animationMixers,
   media_model_array,
+  social_media_models_scene,
+  spot_lights_array,
 } from "../lib/scripts/assetLoader_02.js";
+
+import animateSpotLights from "../lib/scripts/animateSpotLights.js";
 
 import {
   setUpProjectionScreen,
@@ -1223,8 +1227,23 @@ export default function Horizon() {
           // { x: 0, y: 0, z: 0 } //newRotation
         ); //0.0
       } else if (currentUserPositionRef.current == "Menu Item 1") {
-        capsule_anchorRef.current.visible = false;
-        projected_screen.visible = false;
+        sceneRef.current.remove(social_media_models_scene);
+        // capsule_anchorRef.current.visible = false;
+        // projected_screen.visible = false;
+        if (capsule_anchorRef.current.visible) {
+          if (
+            animateCapsuleRotation(
+              null,
+              capsule_body,
+              projection_object,
+              projected_screen,
+              iframe
+            )
+          ) {
+            capsule_anchorRef.current.visible = false;
+            projected_screen.visible = false;
+          }
+        }
         if (productCameraTravelScrollTriggerRef.current == null) {
           addScrollTrigger();
         }
@@ -1248,6 +1267,7 @@ export default function Horizon() {
           // { x: 0, y: 0, z: 0 } //newRotation
         ); //0.0
       } else if (currentUserPositionRef.current == "Menu Item 2") {
+        sceneRef.current.remove(social_media_models_scene);
         capsule_anchorRef.current.visible = true;
         projected_screen.visible = true;
 
@@ -1270,7 +1290,23 @@ export default function Horizon() {
         ); //0.0
       } else if (currentUserPositionRef.current == "Menu Item 3") {
         capsule_anchorRef.current.visible = false;
-        projected_screen.visible = false;
+        // projected_screen.visible = false;
+        sceneRef.current.add(social_media_models_scene);
+        if (capsule_anchorRef.current.visible) {
+          if (
+            animateCapsuleRotation(
+              null,
+              capsule_body,
+              projection_object,
+              projected_screen,
+              iframe
+            )
+          ) {
+            capsule_anchorRef.current.visible = false;
+            projected_screen.visible = false;
+          }
+        }
+
         animateToProgress(0.0).then(() => {
           addScrollTriggerForContactsModels();
         });
@@ -1353,7 +1389,7 @@ export default function Horizon() {
       contactsSceneCameraTravelScrollTriggerRef.current = ScrollTrigger.create({
         trigger: "#container",
         start: "top",
-        end: "25000",
+        end: "10000",
         pin: true,
         markers: true,
         onUpdate: (self) => {
@@ -1477,10 +1513,10 @@ export default function Horizon() {
 
   function onMouseScrollForContactsModels(progress) {
     if (contact_models_animation_mixerRef.current != null) {
-      const elapsedTime = progress * 10.0; //totalAnimationSeconds;
+      const elapsedTime = progress * 11.0; //totalAnimationSeconds;
       contact_models_animation_mixerRef.current.setTime(elapsedTime);
+      animateSpotLights(spot_lights_array, progress);
     }
-    console.log(contact_models_animation_mixerRef.current.time);
   }
 
   function onMouseScroll(progress) {
@@ -1715,10 +1751,10 @@ export default function Horizon() {
         </div> */}
       </div>
       <canvas id="canvas" className="canvas" ref={canvasRef}></canvas>
-      {<Beepie />}
-      {/* {isStartingMessageVisible && (
+      {/* {<Beepie />} */}
+      {isStartingMessageVisible && (
         <StartingMessage continue={startingMessageContinue} />
-      )} */}
+      )}
       {isGetStartedVisible && <GetStarted continue={GetStartedContinue} />}
       {/* {isStartingMessageVisible && <GetStarted />} */}
       {isHamburgerMenuVisible && (
@@ -1729,6 +1765,7 @@ export default function Horizon() {
           selectedItemSubMenu3={selectedItemInSubMenu3}
         />
       )}
+      {isHamburgerMenuVisible && <Beepie />}
     </div>
   );
 }
