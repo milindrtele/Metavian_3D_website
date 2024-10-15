@@ -380,6 +380,13 @@ export default function Horizon() {
 
       //dlight.castShadow = true;
 
+      // const dirLight = new THREE.DirectionalLight(0xffffff, 10);
+      // dirLight.position.set(100, 50, 100);
+      // sceneRef.current.add(dirLight);
+
+      // const light = new THREE.AmbientLight(0xffffff, 15); // soft white light
+      // sceneRef.current.add(light);
+
       const spotLightParent = new THREE.Object3D();
       spotLightParent.position.set(0, 0, 0);
       sceneRef.current.add(spotLightParent);
@@ -643,7 +650,7 @@ export default function Horizon() {
         },
       };
 
-      setupGrid(loader, uniformsForGrid, sceneRef.current);
+      setupGrid(rendererRef.current, loader, uniformsForGrid, sceneRef.current);
 
       const composer = new EffectComposer(rendererRef.current);
 
@@ -1465,6 +1472,16 @@ export default function Horizon() {
         }
       },
     });
+
+    //
+
+    // ScrollTrigger.current.observe({
+    //   trigger: "#container",
+    //   type: "touch,pointer", // comma-delimited list of what to listen for ("wheel,touch,scroll,pointer")
+    //   onUp: () => {
+    //     ScrollTrigger.current.refresh();
+    //   },
+    // });
   }
 
   function animateToProgress(targetProgress) {
