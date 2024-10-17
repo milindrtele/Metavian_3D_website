@@ -32,6 +32,8 @@ let spot_lights_array = null;
 
 let social_media_models_scene = null;
 
+let highlighter_objects_array = null;
+
 export function loadAssetsWithPromise(
   loader,
   clip,
@@ -120,6 +122,7 @@ export function loadAssetsWithPromise(
     loader.load(
       //"/models/contact models/contact_models_with_vr_headset_with_animations.glb",
       "/models/contact models/contact_models_with_vr_headset_with_animation_and_optimisation.glb",
+      //"/models/contact models/contacts_model_with_highliter_v01.glb",
       (gltf) => {
         social_media_models_scene = gltf.scene;
         //scene.add(social_media_models_scene);
@@ -151,6 +154,56 @@ export function loadAssetsWithPromise(
           "spot_social_media_4"
         );
 
+        ////highliters
+        const highLighter_address_vertical_1 =
+          social_media_models_scene.getObjectByName("highlighter_address001");
+        const highLighter_address_vertical_2 =
+          social_media_models_scene.getObjectByName("highlighter_address002");
+        const highLighter_address_container =
+          social_media_models_scene.getObjectByName("highlighter_address");
+        //
+        const highLighter_email_container =
+          social_media_models_scene.getObjectByName("highlighter_email");
+        const highLighter_email_vertical_1 =
+          social_media_models_scene.getObjectByName("highlighter_email001");
+        const highLighter_email_vertical_2 =
+          social_media_models_scene.getObjectByName("highlighter_email002");
+        //
+        const highLighter_phone_container =
+          social_media_models_scene.getObjectByName("highlighter_phone");
+        const highLighter_phone_vertical_1 =
+          social_media_models_scene.getObjectByName("highlighter_phone001");
+        const highLighter_phone_vertical_2 =
+          social_media_models_scene.getObjectByName("highlighter_phone002");
+
+        highlighter_objects_array = [
+          highLighter_address_container,
+          highLighter_address_vertical_1,
+          highLighter_address_vertical_2,
+          highLighter_email_container,
+          highLighter_email_vertical_1,
+          highLighter_email_vertical_2,
+          highLighter_phone_container,
+          highLighter_phone_vertical_1,
+          highLighter_phone_vertical_2,
+        ];
+
+        const highliter_material_vertical = new NodeToyMaterial({
+          url: "https://draft.nodetoy.co/DuJx74XfnsNXkANU",
+        });
+        const highliter_material_horizontal = new NodeToyMaterial({
+          url: "https://draft.nodetoy.co/3XP4G9zeQ6rdQNx5",
+        });
+
+        highliter_material_vertical.side = THREE.DoubleSide;
+        highliter_material_horizontal.side = THREE.DoubleSide;
+
+        highLighter_address_vertical_1.material = highliter_material_vertical;
+        highLighter_address_vertical_2.material = highliter_material_vertical;
+        highLighter_email_vertical_1.material = highliter_material_vertical;
+        highLighter_email_vertical_2.material = highliter_material_vertical;
+        highLighter_phone_vertical_1.material = highliter_material_vertical;
+        highLighter_phone_vertical_2.material = highliter_material_vertical;
         //spot_headset.intensity = 0;
 
         social_media_models_scene.traverse((object) => {
@@ -448,4 +501,5 @@ export {
   media_model_array,
   social_media_models_scene,
   spot_lights_array,
+  highlighter_objects_array,
 };

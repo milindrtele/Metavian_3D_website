@@ -70,6 +70,7 @@ import {
   media_model_array,
   social_media_models_scene,
   spot_lights_array,
+  highlighter_objects_array,
 } from "../lib/scripts/assetLoader_02.js";
 
 import animateSpotLights from "../lib/scripts/animateSpotLights.js";
@@ -80,7 +81,7 @@ import {
   iframe,
 } from "../lib/scripts/projection_screen.js";
 
-import { setupRaycaster } from "../lib/scripts/raycaster.js";
+import { RaycasterHandler } from "../lib/scripts/raycaster.js";
 
 import { animateCapsuleRotation } from "../lib/scripts/animateCapsuleRotation.js";
 
@@ -186,6 +187,8 @@ export default function Horizon() {
 
   const activeCameraRef = useRef(null);
   const startSequenceCompleteRef = useRef(false);
+
+  const raycasterHandlerRef = useRef(null);
 
   gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
   gsap.registerPlugin(CustomEase);
@@ -315,7 +318,7 @@ export default function Horizon() {
       sceneRef.current.add(cameraRef.current);
 
       // Callback function to handle intersects
-      const handleIntersects = (intersects) => {
+      function handleIntersects(intersects) {
         if (
           currentUserPositionRef.current == "Menu Item 2" &&
           intersects.length > 0
@@ -336,12 +339,98 @@ export default function Horizon() {
             );
           }
         } else {
-          console.log("No intersection");
+          console.log(intersects[0].object.name);
         }
-      };
+      }
+
+      const bottomPos = -5;
+      const topPos = 7;
+
+      function highlighter(intersects) {
+        console.log(intersects);
+        if (intersects.length > 0) {
+          if (intersects[0].object.name == "highlighter_address") {
+            // Set initial position
+            let yValue = topPos;
+
+            // highlighter_objects_array[1].position.y = yValue;
+            // highlighter_objects_array[2].position.y = yValue;
+
+            let position = highlighter_objects_array[1].position;
+
+            gsap.to(position, {
+              duration: 2.5,
+              ease: "elastic.out(1, 0.3)",
+              y: topPos, // Toggle to opposite value
+              onUpdate: () => {
+                highlighter_objects_array[1].position.set(...position);
+                highlighter_objects_array[2].position.set(...position);
+              },
+            });
+          } else if (intersects[0].object.name == "highlighter_email") {
+            // Set initial position
+            let yValue = topPos;
+
+            // highlighter_objects_array[4].position.y = yValue;
+            // highlighter_objects_array[5].position.y = yValue;
+
+            let position = highlighter_objects_array[4].position;
+
+            gsap.to(position, {
+              duration: 2.5,
+              ease: "elastic.out(1, 0.3)",
+              y: topPos, // Toggle to opposite value
+              onUpdate: () => {
+                highlighter_objects_array[4].position.set(...position);
+                highlighter_objects_array[5].position.set(...position);
+              },
+            });
+          } else if (intersects[0].object.name == "highlighter_phone") {
+            // Set initial position
+            let yValue = topPos;
+
+            // highlighter_objects_array[7].position.y = yValue;
+            // highlighter_objects_array[8].position.y = yValue;
+
+            let position = highlighter_objects_array[7].position;
+
+            gsap.to(position, {
+              duration: 2.5,
+              ease: "elastic.out(1, 0.3)",
+              y: topPos, // Toggle to opposite value
+              onUpdate: () => {
+                highlighter_objects_array[7].position.set(...position);
+                highlighter_objects_array[8].position.set(...position);
+              },
+            });
+          } else {
+            let position = highlighter_objects_array[1].position;
+            gsap.to(position, {
+              duration: 2.5,
+              ease: "elastic.out(1, 0.3)",
+              y: bottomPos, // Toggle to opposite value
+              onUpdate: () => {
+                highlighter_objects_array[1].position.y = position.y;
+                highlighter_objects_array[2].position.y = position.y;
+                highlighter_objects_array[4].position.y = position.y;
+                highlighter_objects_array[5].position.y = position.y;
+                highlighter_objects_array[7].position.y = position.y;
+                highlighter_objects_array[8].position.y = position.y;
+              },
+            });
+          }
+        }
+      }
 
       // Setup raycaster with the callback
-      setupRaycaster(sceneRef.current, cameraRef.current, handleIntersects);
+      // Instantiate the raycaster handler
+      raycasterHandlerRef.current = new RaycasterHandler(
+        sceneRef.current,
+        cameraRef.current
+      );
+      raycasterHandlerRef.current.addClickCallback(handleIntersects);
+      raycasterHandlerRef.current.addHoverCallback(highlighter);
+      //setupRaycaster(sceneRef.current, cameraRef.current, handleIntersects);
 
       // circlepath = await loadCurveFromJSON(
       //   sceneRef.current,
@@ -1222,8 +1311,10 @@ export default function Horizon() {
 
     if (old_pos != current_pos) {
       if (currentUserPositionRef.current == "home") {
-        capsule_anchorRef.current.visible = false;
-        projected_screen.visible = false;
+        sceneRef.current.remove(capsule_anchorRef.current);
+        sceneRef.current.remove(projection_object);
+        // capsule_anchorRef.current.visible = false;
+        // projected_screen.visible = false;
         //ScrollTrigger.disable();
         animateToProgress(0.0);
         tweenCameraToNewPositionAndRotation(
@@ -1247,8 +1338,10 @@ export default function Horizon() {
               iframe
             )
           ) {
-            capsule_anchorRef.current.visible = false;
-            projected_screen.visible = false;
+            sceneRef.current.remove(capsule_anchorRef.current);
+            sceneRef.current.remove(projection_object);
+            // capsule_anchorRef.current.visible = false;
+            // projected_screen.visible = false;
           }
         }
         if (productCameraTravelScrollTriggerRef.current == null) {
@@ -1309,8 +1402,10 @@ export default function Horizon() {
               iframe
             )
           ) {
-            capsule_anchorRef.current.visible = false;
-            projected_screen.visible = false;
+            sceneRef.current.remove(capsule_anchorRef.current);
+            sceneRef.current.remove(projection_object);
+            // capsule_anchorRef.current.visible = false;
+            // projected_screen.visible = false;
           }
         }
 
@@ -1396,7 +1491,7 @@ export default function Horizon() {
       contactsSceneCameraTravelScrollTriggerRef.current = ScrollTrigger.create({
         trigger: "#container",
         start: "top",
-        end: "10000",
+        end: "20000",
         pin: true,
         markers: true,
         onUpdate: (self) => {

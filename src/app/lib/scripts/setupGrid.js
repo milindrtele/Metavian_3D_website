@@ -4,6 +4,9 @@ import { InstancedMesh2 } from "@three.ez/instanced-mesh";
 import gridVertex from "../shaders/grid_shader/gridVertex.glsl";
 import gridFragment from "../shaders/grid_shader/gridFragment.glsl";
 
+import testVertex from "../shaders/grid_shader/testVertex.glsl";
+import testFragment from "../shaders/grid_shader/testFragment.glsl";
+
 let hexagon = null;
 let matcapTexture = null;
 let instancedMeshObject1 = null;
@@ -40,6 +43,11 @@ export function setupGrid(renderer, loader, uniformsForGrid, scene) {
       // sheenRoughness: 0,
       aoMap: aoTexture,
     });
+
+    // let mat2 = new THREE.MeshMatcapMaterial({
+    //   matcap: matcapTexture,
+    // });
+
     let mat2 = new THREE.MeshPhysicalMaterial({
       color: 0x5d294f, //0x363636
       roughness: 0.3,
@@ -63,8 +71,8 @@ export function setupGrid(renderer, loader, uniformsForGrid, scene) {
         ...uniformsForGrid,
       },
 
-      vertexShader: gridVertex,
-      fragmentShader: gridFragment,
+      vertexShader: testVertex,
+      fragmentShader: testFragment,
     });
 
     // uniformsForGrid = {
@@ -119,8 +127,8 @@ export function setupGrid(renderer, loader, uniformsForGrid, scene) {
       scene.add(blank_planeMesh);
     });
 
-    const multiplyer = 2;
-    let rows = 250 / multiplyer;
+    const multiplyer = 1.5;
+    let rows = Math.floor(250 / multiplyer);
     let count = rows * rows;
 
     let random = new Float32Array(count);
@@ -129,21 +137,23 @@ export function setupGrid(renderer, loader, uniformsForGrid, scene) {
     let instance2UV = new Float32Array(count * 2);
 
     hexagon.children[0].geometry.scale(multiplyer, multiplyer, multiplyer);
-    hexagon.children[0].geometry.setAttribute(
-      "aRandom",
-      new THREE.InstancedBufferAttribute(random, 1)
-    );
-    hexagon.children[0].geometry.setAttribute(
-      "instanceUV",
-      new THREE.InstancedBufferAttribute(instanceUV, 2)
-    );
 
     // instancedMeshObject1 = new InstancedMesh2(
     //   renderer,
     //   count,
     //   hexagon.children[0].geometry,
-    //   //dummyMaterial1
-    //   gridShaderMaterial
+    //   dummyMaterial1
+    //   //gridShaderMaterial
+    //   //mat2
+    // );
+
+    // instancedMeshObject1.geometry.setAttribute(
+    //   "aRandom",
+    //   new THREE.InstancedBufferAttribute(random, 1)
+    // );
+    // instancedMeshObject1.geometry.setAttribute(
+    //   "instanceUV",
+    //   new THREE.InstancedBufferAttribute(instanceUV, 2)
     // );
     // instancedMeshObject2 = new InstancedMesh2(
     //   renderer,
@@ -162,6 +172,22 @@ export function setupGrid(renderer, loader, uniformsForGrid, scene) {
     //   count
     // );
 
+    // instancedMeshObject1 = new InstancedMesh2(
+    //   hexagon.children[0].geometry,
+    //   dummyMaterial1,
+    //   count,
+    //   (obj, index) => {
+    //     obj.position.set(
+    //       Math.floor((index - count / 2) / size),
+    //       Math.floor(Math.cos(index / 10) * 4),
+    //       (index % size) - size / 2
+    //     );
+    //     obj.updateMatrix();
+    //     // textureOffset[index * 2] = Math.floor(Math.random() * 2);
+    //     // textureOffset[index * 2 + 1] = 14 + Math.floor(Math.random() * 2);
+    //   }
+    // );
+
     if (instancedMeshObject1.parent != scene) {
       scene.add(instancedMeshObject1);
     }
@@ -177,6 +203,7 @@ export function setupGrid(renderer, loader, uniformsForGrid, scene) {
     let indexNo = 0;
     let dummy = new THREE.Object3D();
     //let dummy2 = new THREE.Object3D();
+
     for (let i = 0; i < rows; i++) {
       for (let j = 0; j < rows; j++) {
         random[index] = Math.random();
@@ -218,14 +245,14 @@ export function setupGrid(renderer, loader, uniformsForGrid, scene) {
     //instancedMeshObject1.instanceMatrix.needsUpdate = true;
     //instancedMeshObject2.instanceMatrix.needsUpdate = true;
 
-    // instancedMeshObject1.geometry.setAttribute(
-    //   "aRandom",
-    //   new THREE.InstancedBufferAttribute(random, 1)
-    // );
-    // instancedMeshObject1.geometry.setAttribute(
-    //   "instanceUV",
-    //   new THREE.InstancedBufferAttribute(instanceUV, 2)
-    // );
+    instancedMeshObject1.geometry.setAttribute(
+      "aRandom",
+      new THREE.InstancedBufferAttribute(random, 1)
+    );
+    instancedMeshObject1.geometry.setAttribute(
+      "instanceUV",
+      new THREE.InstancedBufferAttribute(instanceUV, 2)
+    );
     console.log(instancedMeshObject1);
     //
     // instancedMeshObject2.geometry.setAttribute(
@@ -386,136 +413,100 @@ export function setupGrid(renderer, loader, uniformsForGrid, scene) {
 
     mat2.onBeforeCompile = (shader) => {
       shader.uniforms = Object.assign(shader.uniforms, uniformsForGrid);
+
       shader.vertexShader = shader.vertexShader.replace(
         "#include <common>",
         `
-          uniform sampler2D uFBO;
-          uniform sampler2D uFBO2;
-          uniform float time;
-          uniform vec3 light_color;
-          varying vec4 mvPosition;
-          varying vec3 vPosition;
-          varying vec3 uvHeight;
-          varying float vHeight;
-          varying float randomNumber;
-          varying float rValue;
+      uniform sampler2D uFBO;
+      uniform sampler2D uFBO2;
+      uniform float time;
+      uniform vec3 light_color;
+      varying vec4 mvPosition;
+      varying vec3 vPosition;
+      varying float vHeight;
+      varying float randomNumber;
+      varying float rValue;
 
-          attribute vec2 instanceUV;
-          attribute float aRandom;
-          uniform float rotationAngle;
-          uniform float vScale;
-          uniform float vScaleRing;
-          uniform float overallAnimationLevel;
-          uniform float bottom_level;
-          uniform float crest;
-          uniform float amplitude;
-          uniform float start_level;
-          uniform float frequency;
-          `
+      attribute vec2 instanceUV;
+      attribute float aRandom;
+      uniform float rotationAngle;
+      uniform float vScale;
+      uniform float vScaleRing;
+      uniform float overallAnimationLevel;
+      uniform float bottom_level;
+      uniform float crest;
+      uniform float start_level;
+      uniform float frequency;
+    `
       );
+
       shader.vertexShader = shader.vertexShader.replace(
         "#include <begin_vertex>",
         `
-          #include <begin_vertex>
+      #include <begin_vertex>
 
-          //float bottom_level = bottom_levelJS;
-          //float crest = crestJS;
-          //float amplitude = amplitudeJS;
-          //float start_level = start_levelJS;
-          //float frequency = frequencyJS;
+      float angle = radians(rotationAngle);
+      vec2 pivot = vec2(0.5, 0.4);
+      vec2 centeredUV = instanceUV - pivot;
 
-          float angle = rotationAngle * 3.14159265/180.0;
-          vec2 pivot = vec2(0.5, 0.4);
-          vec2 centeredUV = instanceUV - pivot;
+      // Calculate cosine and sine once, reuse them for both logo and ring rotations
+      float cosAngle = cos(angle);
+      float sinAngle = sin(angle);
 
-          // Scaling for logo
-          float scale = vScale; // Change this to your desired scaling factor
-          vec2 scaledUV = centeredUV * scale;
+      // Scale and rotate logo UV
+      vec2 rotatedUV = (centeredUV * vScale) * mat2(cosAngle, -sinAngle, sinAngle, cosAngle) + pivot;
 
-          // Rotation for logo
-          vec2 rotatedUV = vec2(
-          scaledUV.x * cos(angle) - scaledUV.y * sin(angle),
-          scaledUV.x * sin(angle) + scaledUV.y * cos(angle)
-          );
+      // Scale and rotate ring UV
+      vec2 rotatedRingUV = (centeredUV * vScaleRing) * mat2(cosAngle, -sinAngle, sinAngle, cosAngle) + pivot;
 
-          // Scaling for ring
-          float scaleRing = vScaleRing; // Change this to your desired scaling factor
-          vec2 scaledRingUV = centeredUV * scaleRing;
+      // Sample from FBO textures
+      vec4 transition = texture2D(uFBO, rotatedUV);
+      vec4 transition2 = texture2D(uFBO2, rotatedRingUV);
 
-          // Rotation for ring
-          vec2 rotatedRingUV = vec2(
-          scaledRingUV.x * cos(angle) - scaledRingUV.y * sin(angle),
-          scaledRingUV.x * sin(angle) + scaledRingUV.y * cos(angle)
-          );
+      rValue = transition.r;
 
-          vec2 newUV = rotatedUV + pivot;
-          vec2 newRingUV = rotatedRingUV + pivot;
-          vec4 transition = texture2D(uFBO, newUV);
-          vec4 transition2 = texture2D(uFBO2, newRingUV);
+      // Calculate the amplitude for height displacement
+      float vAmplitude = (sin(time * frequency * aRandom) + aRandom + start_level) * transition.g;
 
-          rValue = transition.r;
-          //transformed *= transition.g;
+      // Clamp the amplitude to the crest
+      float normalized_vAmplitude = clamp(vAmplitude, 0.0, crest);
 
-          //float vAmplitude = (aRandom + sin(time * frequency * aRandom) + start_level) * transition.g * crest * overallAnimationLevel;
-          float vAmplitude = ((sin(time * frequency * aRandom) ) + aRandom + start_level) * transition.g;
-          //float vAmplitude =  start_level * transition.g * crest * overallAnimationLevel;
-          //float normalized_vAmplitude = clamp((vAmplitude - bottom_level) / (crest - bottom_level), 0.0, crest);
-          float normalized_vAmplitude = clamp(vAmplitude, 0.0, crest);
+      // Apply the height displacement
+      transformed.y += normalized_vAmplitude;
 
-          transformed.y += normalized_vAmplitude;
-
-          vHeight = transformed.y;
-          randomNumber = aRandom;
-          `
+      vHeight = transformed.y;
+      randomNumber = aRandom;
+    `
       );
       shader.fragmentShader = shader.fragmentShader.replace(
         "#include <common>",
         `
-          #include <common>
-          varying vec3 uvHeight;
-          varying float vHeight;
-          varying float rValue;
-          varying vec4 mvPosition;
-          varying float randomNumber;
-          `
+        #include <common>
+        varying float vHeight;
+        varying float rValue;
+        varying float randomNumber;
+        `
       );
+
       shader.fragmentShader = shader.fragmentShader.replace(
         "#include <color_fragment>",
         `
-          #include <color_fragment>
-          // Define the expected range of vHeight values
-          const float minHeight = 0.0;
-          const float maxHeight = 1.0; // Adjust based on your specific range
+        #include <color_fragment>
 
-          // Normalize vHeight between 0 and 1
-          float normalized_vHeight = clamp((vHeight - minHeight) / (maxHeight - minHeight) , 0.05, 0.6);
+        // Define min/max height only once, as constants
+        const float minHeight = 0.0;
+        const float maxHeight = 1.0;
 
-          //float color1 = diffuseColor.r;
+        // Normalize vHeight between minHeight and maxHeight
+        float normalized_vHeight = clamp((vHeight - minHeight) / (maxHeight - minHeight), 0.2, 1.0);
 
-          //diffuseColor.rgb = vec3(normalized_vHeight);
+        // Precompute base color adjustment factor (halving it once)
+        const vec3 baseColor = vec3(0.867, 0.341, 0.98) * 0.5;
 
-          // diffuseColor.rgb = vec3(normalized_vHeight*randomNumber*0.773/2.0, normalized_vHeight*randomNumber*0.459/2.0, normalized_vHeight*randomNumber*0.969/2.0);
-
-          const vec3 baseColor = vec3(0.867, 0.341, 0.98); //vec3(0.773, 0.459, 0.969);
-          diffuseColor.rgb = vec3(normalized_vHeight * randomNumber * baseColor.r/2.0, normalized_vHeight * randomNumber * baseColor.g/2.0, normalized_vHeight * randomNumber * baseColor.b/2.0);
-
-          //const vec3 color2 = vec3(0.678, 0.788, 0.129);
-          //const vec3 color1 = vec3(0.365, 0.161, 0.31);
-
-          //vec3 gradientColor = mix(color1, color2, normalized_vHeight);
-
-          //diffuseColor.rgb = vec3(gradientColor);
-
-          // if (normalized_vHeight > 0.0) {
-          //   //diffuseColor.rgb = vec3(1.0, 1.0, 1.0);
-          //   diffuseColor.rgb = vec3(normalized_vHeight);
-          // }
-          // if(rValue > 0.0 ){
-          //   //diffuseColor.rgb = vec3(0.36, 0.16, 0.30);
-          //   diffuseColor.rgb = vec3(clamp(rValue/20.0, 0.0, 1.0));
-          // }
-          //diffuseColor.rgb = vec3(color1, diffuseColor.g, diffuseColor.b);
-          `
+        float clamped_randomNumber = clamp(randomNumber, 0.15, 1.0);
+        // Compute final diffuse color by scaling baseColor using normalized_vHeight and randomNumber
+        diffuseColor.rgb = normalized_vHeight * baseColor * clamped_randomNumber;
+        `
       );
     };
 
