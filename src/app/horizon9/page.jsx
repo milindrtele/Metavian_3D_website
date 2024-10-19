@@ -71,6 +71,8 @@ import {
   social_media_models_scene,
   spot_lights_array,
   highlighter_objects_array,
+  letters_anchor,
+  icon_animations,
 } from "../lib/scripts/assetLoader_02.js";
 
 import animateSpotLights from "../lib/scripts/animateSpotLights.js";
@@ -339,23 +341,64 @@ export default function Horizon() {
             );
           }
         } else {
-          console.log(intersects[0].object.name);
+          //console.log(intersects[0].object.name);
         }
       }
 
       const bottomPos = -5;
       const topPos = 7;
+      const letters_top_position = 2;
 
-      function highlighter(intersects) {
-        console.log(intersects);
+      function highlighterClickEffect(intersects) {
         if (intersects.length > 0) {
           if (intersects[0].object.name == "highlighter_address") {
-            // Set initial position
-            let yValue = topPos;
+            let position = letters_anchor.children[0].position;
+            console.log(icon_animations);
+            icon_animations[0].vars.stagger.repeat = 0;
+            icon_animations[0].pause();
+            gsap.to(position, {
+              duration: 2.5,
+              ease: "elastic.out(1, 0.3)",
+              y: letters_top_position, // Toggle to opposite value
+              onUpdate: () => {
+                letters_anchor.children[0].position.set(...position);
+                letters_anchor.children[0].position.set(...position);
+              },
+            });
+          } else if (intersects[0].object.name == "highlighter_email") {
+            let position = letters_anchor.children[1].position;
+            icon_animations[1].pause();
+            //icon_animations[1].stagger.repeat = 0;
+            gsap.to(position, {
+              duration: 2.5,
+              ease: "elastic.out(1, 0.3)",
+              y: letters_top_position, // Toggle to opposite value
+              onUpdate: () => {
+                letters_anchor.children[1].position.set(...position);
+                letters_anchor.children[1].position.set(...position);
+              },
+            });
+          } else if (intersects[0].object.name == "highlighter_phone") {
+            let position = letters_anchor.children[2].position;
+            //icon_animations[2].stagger.repeat = 0;
+            icon_animations[2].pause();
 
-            // highlighter_objects_array[1].position.y = yValue;
-            // highlighter_objects_array[2].position.y = yValue;
+            gsap.to(position, {
+              duration: 2.5,
+              ease: "elastic.out(1, 0.3)",
+              y: letters_top_position, // Toggle to opposite value
+              onUpdate: () => {
+                letters_anchor.children[2].position.set(...position);
+                letters_anchor.children[2].position.set(...position);
+              },
+            });
+          }
+        }
+      }
 
+      function highlighterHoverEffect(intersects) {
+        if (intersects.length > 0) {
+          if (intersects[0].object.name == "highlighter_address") {
             let position = highlighter_objects_array[1].position;
 
             gsap.to(position, {
@@ -404,20 +447,26 @@ export default function Horizon() {
               },
             });
           } else {
-            let position = highlighter_objects_array[1].position;
-            gsap.to(position, {
-              duration: 2.5,
-              ease: "elastic.out(1, 0.3)",
-              y: bottomPos, // Toggle to opposite value
-              onUpdate: () => {
-                highlighter_objects_array[1].position.y = position.y;
-                highlighter_objects_array[2].position.y = position.y;
-                highlighter_objects_array[4].position.y = position.y;
-                highlighter_objects_array[5].position.y = position.y;
-                highlighter_objects_array[7].position.y = position.y;
-                highlighter_objects_array[8].position.y = position.y;
-              },
-            });
+            if (
+              highlighter_objects_array[1].position.y >= bottomPos ||
+              highlighter_objects_array[4].position.y >= bottomPos ||
+              highlighter_objects_array[7].position.y >= bottomPos
+            ) {
+              let position = highlighter_objects_array[1].position;
+              gsap.to(position, {
+                duration: 2.5,
+                ease: "elastic.out(1, 0.3)",
+                y: bottomPos, // Toggle to opposite value
+                onUpdate: () => {
+                  highlighter_objects_array[1].position.y = position.y;
+                  highlighter_objects_array[2].position.y = position.y;
+                  highlighter_objects_array[4].position.y = position.y;
+                  highlighter_objects_array[5].position.y = position.y;
+                  highlighter_objects_array[7].position.y = position.y;
+                  highlighter_objects_array[8].position.y = position.y;
+                },
+              });
+            }
           }
         }
       }
@@ -429,7 +478,8 @@ export default function Horizon() {
         cameraRef.current
       );
       raycasterHandlerRef.current.addClickCallback(handleIntersects);
-      raycasterHandlerRef.current.addHoverCallback(highlighter);
+      raycasterHandlerRef.current.addClickCallback(highlighterClickEffect);
+      raycasterHandlerRef.current.addHoverCallback(highlighterHoverEffect);
       //setupRaycaster(sceneRef.current, cameraRef.current, handleIntersects);
 
       // circlepath = await loadCurveFromJSON(

@@ -7,6 +7,8 @@ import { NodeToyMaterial } from "@nodetoy/three-nodetoy";
 import { data } from "../shaders/scan_lines/scan_lines_shader_data.js";
 import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
 
+import { gsap } from "gsap";
+
 let blenderCamera = null;
 let contact_model_Camera = null;
 let animationMixers = [];
@@ -33,6 +35,13 @@ let spot_lights_array = null;
 let social_media_models_scene = null;
 
 let highlighter_objects_array = null;
+
+let letters_anchor = null;
+let address_icon_anchor = null;
+let email_icon_anchor = null;
+let phone_icon_anchor = null;
+
+let icon_animations = null;
 
 export function loadAssetsWithPromise(
   loader,
@@ -205,6 +214,50 @@ export function loadAssetsWithPromise(
         highLighter_phone_vertical_1.material = highliter_material_vertical;
         highLighter_phone_vertical_2.material = highliter_material_vertical;
         //spot_headset.intensity = 0;
+
+        //letters
+        letters_anchor =
+          social_media_models_scene.getObjectByName("letters_anchor");
+
+        //anchor_icons
+        address_icon_anchor = social_media_models_scene.getObjectByName(
+          "address_icon_anchor"
+        );
+        email_icon_anchor =
+          social_media_models_scene.getObjectByName("email_icon_anchor");
+        phone_icon_anchor =
+          social_media_models_scene.getObjectByName("phone_icon_anchor");
+
+        // // click to modify the underlined values
+        let position_address_icon_anchor = address_icon_anchor.position;
+        const address_icon_animation = gsap.to(position_address_icon_anchor, {
+          duration: 2.5,
+          ease: "power1.inOut",
+          y: 1.5,
+          stagger: { each: 0.15, yoyo: true, repeat: -1 },
+        });
+        let position_email_icon_anchor = email_icon_anchor.position;
+        const email_icon_animation = gsap.to(position_email_icon_anchor, {
+          duration: 2.5,
+          delay: 0.5,
+          ease: "power1.inOut",
+          y: 1.5,
+          stagger: { each: 0.15, yoyo: true, repeat: -1 },
+        });
+        let position_phone_icon_anchor = phone_icon_anchor.position;
+        const phone_icon_animation = gsap.to(position_phone_icon_anchor, {
+          duration: 2.5,
+          delay: 1,
+          ease: "power1.inOut",
+          y: 1.5,
+          stagger: { each: 0.15, yoyo: true, repeat: -1 },
+        });
+
+        icon_animations = [
+          address_icon_animation,
+          email_icon_animation,
+          phone_icon_animation,
+        ];
 
         social_media_models_scene.traverse((object) => {
           if (object.isMesh) {
@@ -502,4 +555,6 @@ export {
   social_media_models_scene,
   spot_lights_array,
   highlighter_objects_array,
+  letters_anchor,
+  icon_animations,
 };
