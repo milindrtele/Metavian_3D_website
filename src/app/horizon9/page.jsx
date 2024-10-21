@@ -81,6 +81,8 @@ import {
   setUpProjectionScreen,
   projected_screen,
   iframe,
+  hideiFrame,
+  showiFrame,
 } from "../lib/scripts/projection_screen.js";
 
 import { RaycasterHandler } from "../lib/scripts/raycaster.js";
@@ -1359,118 +1361,165 @@ export default function Horizon() {
     const current_pos = currentUserPositionRef.current;
     console.log(currentUserPositionRef.current + " => useEffect");
 
+    // Helper function to stop the video asynchronously and then resolve the promise
+    const stopVideoIfLoaded = async () => {
+      return new Promise((resolve, reject) => {
+        if (iframe && iframe.contentWindow) {
+          // Ensure the iframe is visible and the content is ready before sending postMessage
+          iframe.contentWindow.postMessage(
+            '{"event":"command","func":"stopVideo","args":""}',
+            "*"
+          );
+          console.log("Video stop command sent.");
+
+          // Simulate a small delay to ensure the message is processed
+          setTimeout(() => {
+            resolve(); // Video stop process complete
+          }, 100); // Adjust delay as necessary to fit your iframe's response time
+        } else {
+          console.error("Iframe is not ready or contentWindow is unavailable.");
+          reject("Iframe not ready");
+        }
+      });
+    };
+
+    // Check if the user position has changed
     if (old_pos != current_pos) {
+      // Handling the "home" position
       if (currentUserPositionRef.current == "home") {
-        sceneRef.current.remove(capsule_anchorRef.current);
-        sceneRef.current.remove(projection_object);
-        // capsule_anchorRef.current.visible = false;
-        // projected_screen.visible = false;
-        //ScrollTrigger.disable();
-        animateToProgress(0.0);
-        tweenCameraToNewPositionAndRotation(
-          cameraRef.current, //camera,
-          controlsRef.current, //controls,
-          { x: 0, y: 0, z: 0 }, //cameraTarget,
-          { x: 0, y: 100, z: 0 } //newPosition,
-          // { x: 0, y: 0, z: 0 } //newRotation
-        ); //0.0
-      } else if (currentUserPositionRef.current == "Menu Item 1") {
-        sceneRef.current.remove(social_media_models_scene);
-        // capsule_anchorRef.current.visible = false;
-        // projected_screen.visible = false;
-        if (capsule_anchorRef.current.visible) {
-          if (
-            animateCapsuleRotation(
-              null,
-              capsule_body,
-              projection_object,
-              projected_screen,
-              iframe
-            )
-          ) {
+        stopVideoIfLoaded()
+          .then(() => {
+            hideiFrame(); // Hide the iframe after video stops
+            animateToProgress(0.0).then(() => {
+              if (productCameraTravelScrollTriggerRef.current != null) {
+                productCameraTravelScrollTriggerRef.current.kill();
+                productCameraTravelScrollTriggerRef.current = null;
+              }
+              if (contactsSceneCameraTravelScrollTriggerRef.current != null) {
+                contactsSceneCameraTravelScrollTriggerRef.current.kill();
+                contactsSceneCameraTravelScrollTriggerRef.current = null;
+              }
+            });
+
             sceneRef.current.remove(capsule_anchorRef.current);
             sceneRef.current.remove(projection_object);
-            // capsule_anchorRef.current.visible = false;
-            // projected_screen.visible = false;
-          }
-        }
-        if (productCameraTravelScrollTriggerRef.current == null) {
-          addScrollTrigger();
-        }
-        // if (productCameraTravelScrollTriggerRef.current != null) {
-        //   productCameraTravelScrollTriggerRef.current.enable();
-        // }
-        // if (contactsSceneCameraTravelScrollTriggerRef.current != null) {
-        //   contactsSceneCameraTravelScrollTriggerRef.current.disable({
-        //     revert: true,
-        //   });
-        // }
-        tweenCameraToNewPositionAndRotation(
-          cameraRef.current, //camera,
-          controlsRef.current, //controls,
-          { x: 0, y: 0, z: 0 }, //cameraTarget,
-          {
-            x: 26.844,
-            y: 4,
-            z: -83.10922187556825,
-          }
-          // { x: 0, y: 0, z: 0 } //newRotation
-        ); //0.0
+            sceneRef.current.remove(social_media_models_scene);
+
+            tweenCameraToNewPositionAndRotation(
+              cameraRef.current,
+              controlsRef.current,
+              { x: 0, y: 0, z: 0 }, // Target position
+              { x: 0, y: 100, z: 0 } // New camera position
+            );
+          })
+          .catch((error) => {
+            console.error("Failed to stop video: ", error);
+          });
+      } else if (currentUserPositionRef.current == "Menu Item 1") {
+        stopVideoIfLoaded()
+          .then(() => {
+            hideiFrame();
+            iframe.style.display = "none";
+            sceneRef.current.remove(social_media_models_scene);
+
+            if (capsule_anchorRef.current.visible) {
+              if (
+                animateCapsuleRotation(
+                  null,
+                  capsule_body,
+                  projection_object,
+                  projected_screen,
+                  iframe
+                )
+              ) {
+                sceneRef.current.remove(capsule_anchorRef.current);
+                sceneRef.current.remove(projection_object);
+              }
+            }
+
+            if (productCameraTravelScrollTriggerRef.current == null) {
+              addScrollTrigger();
+            }
+
+            tweenCameraToNewPositionAndRotation(
+              cameraRef.current,
+              controlsRef.current,
+              { x: 53.8746, y: -0.43, z: -30.8687 }, // Target position
+              { x: 21.893, y: -0.43, z: -67.042 } // New camera position
+            );
+          })
+          .catch((error) => {
+            console.error("Failed to stop video: ", error);
+          });
       } else if (currentUserPositionRef.current == "Menu Item 2") {
         sceneRef.current.remove(social_media_models_scene);
+        showiFrame();
+
         capsule_anchorRef.current.visible = true;
         projected_screen.visible = true;
 
         animateToProgress(0.0).then(() => {
-          // if (productCameraTravelScrollTriggerRef.current != null) {
-          //   productCameraTravelScrollTriggerRef.current.disable({
-          //     revert: true,
-          //   });
-          // }
-          // if (contactsSceneCameraTravelScrollTriggerRef.current != null) {
-          //   contactsSceneCameraTravelScrollTriggerRef.current.enable();
-          // }
-        });
-        tweenCameraToNewPositionAndRotation(
-          cameraRef.current, //camera,
-          controlsRef.current, //controls,
-          { x: 53.8746, y: 0.041356, z: -30.8687 }, //cameraTarget,
-          { x: -13, y: 4, z: -95 } //newPosition,
-          // { x: 0, y: 0, z: 0 } //newRotation
-        ); //0.0
-      } else if (currentUserPositionRef.current == "Menu Item 3") {
-        capsule_anchorRef.current.visible = false;
-        // projected_screen.visible = false;
-        sceneRef.current.add(social_media_models_scene);
-        if (capsule_anchorRef.current.visible) {
-          if (
-            animateCapsuleRotation(
-              null,
-              capsule_body,
-              projection_object,
-              projected_screen,
-              iframe
-            )
-          ) {
-            sceneRef.current.remove(capsule_anchorRef.current);
-            sceneRef.current.remove(projection_object);
-            // capsule_anchorRef.current.visible = false;
-            // projected_screen.visible = false;
+          if (productCameraTravelScrollTriggerRef.current != null) {
+            productCameraTravelScrollTriggerRef.current.kill();
+            productCameraTravelScrollTriggerRef.current = null;
           }
-        }
-
-        animateToProgress(0.0).then(() => {
-          addScrollTriggerForContactsModels();
+          if (contactsSceneCameraTravelScrollTriggerRef.current != null) {
+            contactsSceneCameraTravelScrollTriggerRef.current.kill();
+            contactsSceneCameraTravelScrollTriggerRef.current = null;
+          }
         });
 
         tweenCameraToNewPositionAndRotation(
-          cameraRef.current, //camera,
-          controlsRef.current, //controls,
-          { x: 0, y: 0, z: 0 }, //cameraTarget,
-          { x: 0, y: 100, z: -250 } //newPosition,
-          // { x: 0, y: 0, z: 0 } //newRotation
-        ); //0.0
+          cameraRef.current,
+          controlsRef.current,
+          { x: 53.8746, y: 0.041, z: -30.8687 }, // Target position
+          { x: -13, y: 4, z: -95 } // New camera position
+        );
+      } else if (currentUserPositionRef.current == "Menu Item 3") {
+        stopVideoIfLoaded()
+          .then(() => {
+            capsule_anchorRef.current.visible = false;
+            hideiFrame();
+            iframe.style.display = "none";
+
+            sceneRef.current.add(social_media_models_scene);
+
+            if (capsule_anchorRef.current.visible) {
+              if (
+                animateCapsuleRotation(
+                  null,
+                  capsule_body,
+                  projection_object,
+                  projected_screen,
+                  iframe
+                )
+              ) {
+                sceneRef.current.remove(capsule_anchorRef.current);
+                sceneRef.current.remove(projection_object);
+              }
+            }
+
+            animateToProgress(0.0).then(() => {
+              addScrollTriggerForContactsModels();
+            });
+
+            tweenCameraToNewPositionAndRotation(
+              cameraRef.current,
+              controlsRef.current,
+              { x: 34.0748, y: 7.38414, z: -93.5994 }, // Target position
+              {
+                x: -192.7404,
+                y: 121.7475,
+                z: -337.4154,
+              } // New camera position
+            );
+          })
+          .catch((error) => {
+            console.error("Failed to stop video: ", error);
+          });
       }
+
+      // Update the old position
       old_pos = current_pos;
     }
   }

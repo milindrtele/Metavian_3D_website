@@ -4,17 +4,20 @@ import {
   CSS3DObject,
 } from "three/addons/renderers/CSS3DRenderer.js";
 
+let projection_element = null;
 let projected_screen = null;
 let iframe = null;
+// let hideiFrame = null;
+// let showiFrame = null;
 
 export function setUpProjectionScreen(anchor, cssScene) {
   // Set up CSS3D objects and add them to cssScene
-  const element = document.createElement("div");
-  element.style.width = "720px";
-  element.style.height = "405px";
-  element.style.pointerEvents = "none";
-  element.style.position = "fixed";
-  element.style.zIndex = 1;
+  projection_element = document.createElement("div");
+  projection_element.style.width = "720px";
+  projection_element.style.height = "405px";
+  projection_element.style.pointerEvents = "none";
+  projection_element.style.position = "fixed";
+  projection_element.style.zIndex = 1;
 
   const id = "N7FkXKMPRDY";
   iframe = document.createElement("iframe");
@@ -28,12 +31,13 @@ export function setUpProjectionScreen(anchor, cssScene) {
   //iframe.src = "https://metavian.tech/";
   iframe.style.opacity = 1;
   iframe.allowFullscreen = true;
-  element.appendChild(iframe);
+  projection_element.appendChild(iframe);
 
-  element.style.pointerEvents = "none";
+  projection_element.style.pointerEvents = "none";
+  //iframe.style.display = "none";
   //iframe.style.pointerEvents = "none";
 
-  const css3dObject = new CSS3DObject(element);
+  const css3dObject = new CSS3DObject(projection_element);
   //   css3dObject.position.set(
   //     anchor.position.x,
   //     anchor.position.y,
@@ -44,6 +48,13 @@ export function setUpProjectionScreen(anchor, cssScene) {
   cssScene.add(css3dObject);
   projected_screen = css3dObject;
   projected_screen.element.style.opacity = 0;
+}
+
+export function hideiFrame() {
+  iframe.style.display = "none";
+}
+export function showiFrame() {
+  iframe.style.display = "block";
 }
 
 export { projected_screen, iframe };

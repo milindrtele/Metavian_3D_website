@@ -306,7 +306,7 @@ export function loadAssetsWithPromise(
     //load the capsule
     loader.load(
       //"models/capsule/cosmos ship of imagination.glb",
-      "models/capsule/capsule/capsule_textured_with projection_display_legs_1.glb",
+      "models/capsule/capsule/capsule_textured_with projection_display_legs_1_1k.glb",
       (gltf) => {
         capsule_model = gltf.scene;
         //console.log(capsule_model);
