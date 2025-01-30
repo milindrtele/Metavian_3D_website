@@ -4,6 +4,7 @@ import Beepie from "../components/beepie/beepie.jsx";
 import StartingMessage from "../components/startingMessage/startingMessage.jsx";
 import GetStarted from "../components/GetStarted/GetStarted.jsx";
 import HamburgerMenu from "../components/HamburgerMenu/hamburgerMenu.jsx";
+import Model_viewer from "../components/model_viewer/model_viewer.jsx";
 
 import { useRef, useState, useEffect } from "react";
 import * as THREE from "three";
@@ -73,6 +74,8 @@ import {
   highlighter_objects_array,
   letters_anchor,
   icon_animations,
+  teamScene,
+  printerScene,
 } from "../lib/scripts/assetLoader_02.js";
 
 import animateSpotLights from "../lib/scripts/animateSpotLights.js";
@@ -94,6 +97,8 @@ import { tweenCameraToNewPositionAndRotation } from "../lib/scripts/tweenCameraT
 import { setupGrid } from "../lib/scripts/setupGrid.js";
 
 import { animateProductModels } from "../lib/scripts/animateProductModels.js";
+
+import aniSequenceAfterGetStarted from "../lib/scripts/aniSequenceAfterSetStarted.js";
 
 import { NodeToyMaterial } from "@nodetoy/three-nodetoy";
 // import { data } from "../lib/shaders/scan_lines/scan_lines_shader_data.js";
@@ -132,6 +137,8 @@ export default function Horizon() {
   const css3dRendererRef = useRef(null);
   const controlsRef = useRef(null);
   const transformControlRef = useRef(null);
+  const animationIdRef = useRef(null);
+  const [showChild, setShowChild] = useState(false);
 
   let uniformsForGrid = null;
 
@@ -193,6 +200,8 @@ export default function Horizon() {
   const startSequenceCompleteRef = useRef(false);
 
   const raycasterHandlerRef = useRef(null);
+
+  const currentCameraTargetRef = useRef(null);
 
   gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
   gsap.registerPlugin(CustomEase);
@@ -906,8 +915,8 @@ export default function Horizon() {
 
       // Animate the scene
       let time = 0;
-      function animate() {
-        requestAnimationFrame(animate);
+      const animate = () => {
+        animationIdRef.current = requestAnimationFrame(animate);
 
         positionProjectionScreen();
         //console.log(progressJSRef.current.value);
@@ -962,9 +971,16 @@ export default function Horizon() {
         //composer.render();
 
         NodeToyMaterial.tick();
-      }
+      };
       animate();
       window.addEventListener("resize", onWindowResize);
+
+      // Cleanup when component unmounts
+      return () => {
+        cancelAnimationFrame(animationIdRef.current);
+        renderer.dispose();
+        document.body.removeChild(renderer.domElement);
+      };
     }
   }
 
@@ -1238,73 +1254,85 @@ export default function Horizon() {
     }
   }, [initialSequenceCompleted, isGetStartedVisible]);
 
+  // const aniSequenceAfterGetStarted = () => {
+  //   const cameraLeftPanEndPos = { x: 0.0, y: 4, z: -105.943 };
+  //   const cameraForwardPanEndPos = {
+  //     x: 26.844, // blender_x
+  //     y: 4, // blender_z
+  //     z: -83.10922187556825, // -1 * blender_y
+  //   };
+
+  //   let cameraTimeline = gsap.timeline();
+  //   const cameraLeftPan = cameraTimeline.to(cameraRef.current.position, {
+  //     ...cameraLeftPanEndPos,
+  //     duration: 1,
+  //     ease: CustomEase.create(
+  //       "custom",
+  //       "M0,0 C0.106,0 0.195,0.008 0.288,0.063 0.513,0.198 0.589,0.618 0.714,0.829 0.797,0.97 0.893,1 1,1 "
+  //     ),
+  //   });
+  //   // const cockpit_canopyDrop = cameraTimeline.to(cockpit_canopy.scale, {
+  //   //   x: 1,
+  //   //   y: 0,
+  //   //   z: 1,
+  //   //   duration: 1,
+  //   //   ease: CustomEase.create(
+  //   //     "custom",
+  //   //     "M0,0 C0.106,0 0.195,0.008 0.288,0.063 0.513,0.198 0.589,0.618 0.714,0.829 0.797,0.97 0.893,1 1,1 "
+  //   //   ),
+  //   // });
+  //   const cameraForwardPan = cameraTimeline.to(cameraRef.current.position, {
+  //     ...cameraForwardPanEndPos,
+  //     duration: 1,
+  //     delay: 1,
+  //     ease: CustomEase.create(
+  //       "custom",
+  //       "M0,0 C0.106,0 0.195,0.008 0.288,0.063 0.513,0.198 0.589,0.618 0.714,0.829 0.797,0.97 0.893,1 1,1 "
+  //     ),
+  //     onStart: () => {
+  //       // const cameraTargetPosition = {
+  //       //   x: 53.8746,
+  //       //   y: 0.041356,
+  //       //   z: -30.8687,
+  //       // };
+  //       // let target = { x: 0, y: 0, z: 0 };
+  //       // gsap.to(target, {
+  //       //   ...cameraTargetPosition,
+  //       //   duration: 5,
+  //       //   ease: CustomEase.create(
+  //       //     "custom",
+  //       //     "M0,0 C0.106,0 0.195,0.008 0.288,0.063 0.513,0.198 0.589,0.618 0.714,0.829 0.797,0.97 0.893,1 1,1 "
+  //       //   ),
+  //       //   onUpdate: () => {
+  //       //     cameraRef.current.lookAt(target.x, target.y, target.z);
+  //       //   },
+  //       //   onComplete: () => {
+  //       //     controlsRef.current.enabled = true;
+  //       //   },
+  //       // });
+  //     },
+  //     onComplete: () => {
+  //       //controlsRef.current.enabled = true;
+  //       startSequenceCompleteRef.current = true;
+  //       setIsHamburgerMenuVisible(true);
+
+  //       currentUserPositionRef.current = "Menu Item 1";
+  //       addScrollTrigger();
+  //     },
+  //   });
+  // };
+
   useEffect(() => {
     if (getStartedCompleted) {
-      const cameraLeftPanEndPos = { x: 0.0, y: 4, z: -105.943 };
-      const cameraForwardPanEndPos = {
-        x: 26.844, // blender_x
-        y: 4, // blender_z
-        z: -83.10922187556825, // -1 * blender_y
+      const callback = () => {
+        //controlsRef.current.enabled = true;
+        startSequenceCompleteRef.current = true;
+        setIsHamburgerMenuVisible(true);
+
+        currentUserPositionRef.current = "Menu Item 1";
+        addScrollTrigger();
       };
-
-      let cameraTimeline = gsap.timeline();
-      const cameraLeftPan = cameraTimeline.to(cameraRef.current.position, {
-        ...cameraLeftPanEndPos,
-        duration: 1,
-        ease: CustomEase.create(
-          "custom",
-          "M0,0 C0.106,0 0.195,0.008 0.288,0.063 0.513,0.198 0.589,0.618 0.714,0.829 0.797,0.97 0.893,1 1,1 "
-        ),
-      });
-      // const cockpit_canopyDrop = cameraTimeline.to(cockpit_canopy.scale, {
-      //   x: 1,
-      //   y: 0,
-      //   z: 1,
-      //   duration: 1,
-      //   ease: CustomEase.create(
-      //     "custom",
-      //     "M0,0 C0.106,0 0.195,0.008 0.288,0.063 0.513,0.198 0.589,0.618 0.714,0.829 0.797,0.97 0.893,1 1,1 "
-      //   ),
-      // });
-      const cameraForwardPan = cameraTimeline.to(cameraRef.current.position, {
-        ...cameraForwardPanEndPos,
-        duration: 1,
-        delay: 1,
-        ease: CustomEase.create(
-          "custom",
-          "M0,0 C0.106,0 0.195,0.008 0.288,0.063 0.513,0.198 0.589,0.618 0.714,0.829 0.797,0.97 0.893,1 1,1 "
-        ),
-        onStart: () => {
-          // const cameraTargetPosition = {
-          //   x: 53.8746,
-          //   y: 0.041356,
-          //   z: -30.8687,
-          // };
-          // let target = { x: 0, y: 0, z: 0 };
-          // gsap.to(target, {
-          //   ...cameraTargetPosition,
-          //   duration: 5,
-          //   ease: CustomEase.create(
-          //     "custom",
-          //     "M0,0 C0.106,0 0.195,0.008 0.288,0.063 0.513,0.198 0.589,0.618 0.714,0.829 0.797,0.97 0.893,1 1,1 "
-          //   ),
-          //   onUpdate: () => {
-          //     cameraRef.current.lookAt(target.x, target.y, target.z);
-          //   },
-          //   onComplete: () => {
-          //     controlsRef.current.enabled = true;
-          //   },
-          // });
-        },
-        onComplete: () => {
-          //controlsRef.current.enabled = true;
-          startSequenceCompleteRef.current = true;
-          setIsHamburgerMenuVisible(true);
-
-          currentUserPositionRef.current = "Menu Item 1";
-          addScrollTrigger();
-        },
-      });
+      aniSequenceAfterGetStarted(cameraRef.current, callback);
     }
   }, [getStartedCompleted]);
 
@@ -1405,12 +1433,16 @@ export default function Horizon() {
             sceneRef.current.remove(projection_object);
             sceneRef.current.remove(social_media_models_scene);
 
+            teamScene.removeFromScene();
+
             tweenCameraToNewPositionAndRotation(
               cameraRef.current,
               controlsRef.current,
+              currentCameraTargetRef.current,
               { x: 0, y: 0, z: 0 }, // Target position
               { x: 0, y: 100, z: 0 } // New camera position
             );
+            currentCameraTargetRef.current = { x: 0, y: 0, z: 0 };
           })
           .catch((error) => {
             console.error("Failed to stop video: ", error);
@@ -1441,12 +1473,20 @@ export default function Horizon() {
               addScrollTrigger();
             }
 
+            teamScene.removeFromScene();
+
             tweenCameraToNewPositionAndRotation(
               cameraRef.current,
               controlsRef.current,
+              currentCameraTargetRef.current,
               { x: 53.8746, y: -0.43, z: -30.8687 }, // Target position
               { x: 21.893, y: -0.43, z: -67.042 } // New camera position
             );
+            currentCameraTargetRef.current = {
+              x: 53.8746,
+              y: -0.43,
+              z: -30.8687,
+            };
           })
           .catch((error) => {
             console.error("Failed to stop video: ", error);
@@ -1469,12 +1509,16 @@ export default function Horizon() {
           }
         });
 
+        teamScene.removeFromScene();
+
         tweenCameraToNewPositionAndRotation(
           cameraRef.current,
           controlsRef.current,
+          currentCameraTargetRef.current,
           { x: 53.8746, y: 0.041, z: -30.8687 }, // Target position
           { x: -13, y: 4, z: -95 } // New camera position
         );
+        currentCameraTargetRef.current = { x: 53.8746, y: 0.041, z: -30.8687 };
       } else if (currentUserPositionRef.current == "Menu Item 3") {
         stopVideoIfLoaded()
           .then(() => {
@@ -1503,9 +1547,12 @@ export default function Horizon() {
               addScrollTriggerForContactsModels();
             });
 
+            teamScene.removeFromScene();
+
             tweenCameraToNewPositionAndRotation(
               cameraRef.current,
               controlsRef.current,
+              currentCameraTargetRef.current,
               { x: 34.0748, y: 7.38414, z: -93.5994 }, // Target position
               {
                 x: -192.7404,
@@ -1513,6 +1560,86 @@ export default function Horizon() {
                 z: -337.4154,
               } // New camera position
             );
+            currentCameraTargetRef.current = {
+              x: 34.0748,
+              y: 7.38414,
+              z: -93.5994,
+            };
+          })
+          .catch((error) => {
+            console.error("Failed to stop video: ", error);
+          });
+      } else if (currentUserPositionRef.current == "Menu Item 4") {
+        stopVideoIfLoaded()
+          .then(() => {
+            hideiFrame(); // Hide the iframe after video stops
+            animateToProgress(0.0).then(() => {
+              if (productCameraTravelScrollTriggerRef.current != null) {
+                productCameraTravelScrollTriggerRef.current.kill();
+                productCameraTravelScrollTriggerRef.current = null;
+              }
+              if (contactsSceneCameraTravelScrollTriggerRef.current != null) {
+                contactsSceneCameraTravelScrollTriggerRef.current.kill();
+                contactsSceneCameraTravelScrollTriggerRef.current = null;
+              }
+            });
+
+            sceneRef.current.remove(capsule_anchorRef.current);
+            sceneRef.current.remove(projection_object);
+            sceneRef.current.remove(social_media_models_scene);
+
+            tweenCameraToNewPositionAndRotation(
+              cameraRef.current,
+              controlsRef.current,
+              currentCameraTargetRef.current,
+              { x: 55.0009, y: 2.47723, z: 107.594 }, // Target position
+              { x: 54.4541, y: 6.28496, z: 51.9438 } // New camera position
+            );
+            currentCameraTargetRef.current = {
+              x: 55.0009,
+              y: 2.47723,
+              z: 107.594,
+            };
+
+            teamScene.addToScene();
+          })
+          .catch((error) => {
+            console.error("Failed to stop video: ", error);
+          });
+      } else if (currentUserPositionRef.current == "Menu Item 5") {
+        stopVideoIfLoaded()
+          .then(() => {
+            hideiFrame(); // Hide the iframe after video stops
+            animateToProgress(0.0).then(() => {
+              if (productCameraTravelScrollTriggerRef.current != null) {
+                productCameraTravelScrollTriggerRef.current.kill();
+                productCameraTravelScrollTriggerRef.current = null;
+              }
+              if (contactsSceneCameraTravelScrollTriggerRef.current != null) {
+                contactsSceneCameraTravelScrollTriggerRef.current.kill();
+                contactsSceneCameraTravelScrollTriggerRef.current = null;
+              }
+            });
+
+            sceneRef.current.remove(capsule_anchorRef.current);
+            sceneRef.current.remove(projection_object);
+            sceneRef.current.remove(social_media_models_scene);
+            teamScene.removeFromScene();
+
+            tweenCameraToNewPositionAndRotation(
+              cameraRef.current,
+              controlsRef.current,
+              currentCameraTargetRef.current,
+              { x: 55.0009, y: 2.47723, z: 107.594 }, // Target position
+              { x: 54.4541, y: 6.28496, z: 51.9438 } // New camera position
+            );
+            currentCameraTargetRef.current = {
+              x: 55.0009,
+              y: 2.47723,
+              z: 107.594,
+            };
+
+            printerScene.addToScene();
           })
           .catch((error) => {
             console.error("Failed to stop video: ", error);
@@ -1922,6 +2049,14 @@ export default function Horizon() {
     }
   };
 
+  const toggleChildComponent = () => {
+    if (!showChild) {
+      // Stop the parent component's Three.js rendering
+      cancelAnimationFrame(animationIdRef.current);
+    }
+    setShowChild((prev) => !prev);
+  };
+
   return (
     <div id="container">
       <div className={styles.slidecontainer}>
@@ -1974,9 +2109,11 @@ export default function Horizon() {
           selectedItemSubMenu1={selectedItemInSubMenu1}
           selectedItemSubMenu2={selectedItemInSubMenu2}
           selectedItemSubMenu3={selectedItemInSubMenu3}
+          openModelViewer={toggleChildComponent}
         />
       )}
       {isHamburgerMenuVisible && <Beepie />}
+      {showChild && <Model_viewer />}
     </div>
   );
 }

@@ -7,6 +7,9 @@ import { NodeToyMaterial } from "@nodetoy/three-nodetoy";
 import { data } from "../shaders/scan_lines/scan_lines_shader_data.js";
 import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
 
+import { teamHandler } from "./team.js";
+import { printerHandler } from "./printer.js";
+
 import { gsap } from "gsap";
 
 let blenderCamera = null;
@@ -42,6 +45,9 @@ let email_icon_anchor = null;
 let phone_icon_anchor = null;
 
 let icon_animations = null;
+
+let teamScene = null;
+let printerScene = null;
 
 export function loadAssetsWithPromise(
   loader,
@@ -531,6 +537,10 @@ export function loadAssetsWithPromise(
         null,
         "meta_realty"
       );
+
+      teamScene = new teamHandler(scene, loader);
+      printerScene = new printerHandler(scene, loader);
+      //teamScene.addToScene();
     }
   });
 }
@@ -557,4 +567,6 @@ export {
   highlighter_objects_array,
   letters_anchor,
   icon_animations,
+  teamScene,
+  printerScene,
 };

@@ -4,6 +4,7 @@ import { gsap } from "gsap";
 const tweenCameraToNewPositionAndRotation = (
   camera,
   controls,
+  currentCameraTarget,
   cameraTarget,
   newPosition,
   newRotation
@@ -32,7 +33,7 @@ const tweenCameraToNewPositionAndRotation = (
       }
     }
 
-    let target = { x: 0, y: 0, z: 0 };
+    let target = { ...currentCameraTarget };
     gsap.to(target, {
       ...cameraTarget,
       duration: 1,

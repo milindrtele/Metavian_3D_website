@@ -49,6 +49,10 @@ function HamburgerMenu(props) {
     props.selectedItemSubMenu3(selectedMenu);
   }
 
+  function handleModelViewerClicked() {
+    props.openModelViewer();
+  }
+
   return (
     <div id="menu_parent">
       <div
@@ -261,6 +265,36 @@ function HamburgerMenu(props) {
             >
               <div className={styles.menu_text}>social media 6</div>
             </div>
+          </div>
+          <div className={styles.line_in_menu}></div>
+
+          {/* Menu Item 4 (another main menu) */}
+
+          <div
+            className={[
+              styles.menu_item,
+              styles.menu_dropdown,
+              styles.menu_item_4,
+            ].join(" ")}
+            onClick={handleClickTopLevelMenu}
+            name="Menu Item 4"
+          >
+            <div className={styles.menu_text}>Menu Item 4</div>
+          </div>
+
+          <div className={styles.line_in_menu}></div>
+
+          {/* Menu Item 4 (another main menu) */}
+          <div
+            className={[
+              styles.menu_item,
+              styles.menu_dropdown,
+              styles.menu_item_5,
+            ].join(" ")}
+            onClick={handleModelViewerClicked}
+            name="Model Viewer"
+          >
+            <div className={styles.menu_text}>Model Viewer</div>
           </div>
         </div>
       </div>
