@@ -1,7 +1,15 @@
+import * as THREE from "three";
 import { gsap } from "gsap";
 import { CustomEase } from "gsap/CustomEase";
 
-const aniSwquenceBeforeGetStarted = () => {
+const aniSwquenceBeforeGetStarted = (
+  aniTimeline,
+  progressValue,
+  camera,
+  capsule_anchor,
+  callback_1,
+  callback_2
+) => {
   const clock = new THREE.Clock();
   let previousTime = 0;
   var speed = 0.1;
@@ -31,100 +39,96 @@ const aniSwquenceBeforeGetStarted = () => {
   };
 
   const logoAnimationTimeline = gsap.timeline({});
-  animationTimelineRef.current = gsap.timeline({});
+  aniTimeline = gsap.timeline({});
   // const animateLogo = gsap.timeline({});
   // const animateCamera = gsap.timeline({});
   // const animateCapsule = gsap.timeline({});
-  const animateLogo = logoAnimationTimeline.to(progressJSRef.current, {
+  const animateLogo = logoAnimationTimeline.to(progressValue, {
     delay: 2,
     value: 0.2,
     duration: 20,
   });
-  const animateCamera = animationTimelineRef.current.to(
-    cameraRef.current.position,
-    {
-      ...cameraEndPosition,
-      // x: 21.8609, // blender_x
-      // y: 0.041356, // blender_z
-      // z: -67.348, // -1 * blender_y
-      delay: 5,
-      duration: 5,
-      ease: CustomEase.create(
-        "custom",
-        "M0,0 C0.106,0 0.195,0.008 0.288,0.063 0.513,0.198 0.589,0.618 0.714,0.829 0.797,0.97 0.893,1 1,1 "
-      ),
-      onStart: () => {
-        let target = { x: 0, y: 0, z: 0 };
-        gsap.to(target, {
-          ...cameraTargetPosition,
-          duration: 5,
-          ease: CustomEase.create(
-            "custom",
-            "M0,0 C0.106,0 0.195,0.008 0.288,0.063 0.513,0.198 0.589,0.618 0.714,0.829 0.797,0.97 0.893,1 1,1 "
-          ),
-          onUpdate: () => {
-            cameraRef.current.lookAt(target.x, target.y, target.z);
-          },
-        });
-        gsap.to(cameraRef.current, {
-          fov: 50,
-          duration: 5,
-          onUpdate: () => {
-            cameraRef.current.updateProjectionMatrix();
-          },
-        });
-      },
-      onComplete: () => {},
-    }
-  );
-  const animateCapsule = animationTimelineRef.current.to(
-    capsule_anchor.position,
-    {
-      ...capsuleEndPosition,
-      // delay: 10,
-      duration: 4,
-      ease: CustomEase.create(
-        "custom",
-        "M0,0 C0.106,0 0.195,0.008 0.288,0.063 0.513,0.198 0.589,0.618 0.714,0.829 0.797,0.97 0.893,1 1,1 "
-      ),
-      onStart: () => {
-        // let target = { x: 0, y: 0, z: 0 };
-        // gsap.to(target, {
-        //   x: cameraRef.current.position.x,
-        //   y: cameraRef.current.position.y,
-        //   z: cameraRef.current.position.z,
-        //   duration: 5,
-        //   ease: CustomEase.create(
-        //     "custom",
-        //     "M0,0 C0.106,0 0.195,0.008 0.288,0.063 0.513,0.198 0.589,0.618 0.714,0.829 0.797,0.97 0.893,1 1,1 "
-        //   ),
-        //   onUpdate: () => {
-        //     capsule_anchor.lookAt(target.x, target.y, target.z);
-        //   },
-        // });
-        let targetRotation = { x: 0, y: (180 * Math.PI) / 180, z: 0 };
-        gsap.to(targetRotation, {
-          ...capsuleEndRotation,
-          duration: 4,
-          ease: CustomEase.create(
-            "custom",
-            "M0,0 C0.106,0 0.195,0.008 0.288,0.063 0.513,0.198 0.589,0.618 0.714,0.829 0.797,0.97 0.893,1 1,1 "
-          ),
-          onUpdate: () => {
-            capsule_anchor.rotation.y = targetRotation.y;
-          },
-        });
-      },
-      onUpdate: () => {
-        positionProjectionScreen();
-      },
-      onComplete: () => {
-        setIsGetStartedVisible(true);
-        setInitialSequenceCompleted(true);
-        console.log(capsule_body.rotation.y);
-      },
-    }
-  );
+  const animateCamera = aniTimeline.to(camera.position, {
+    ...cameraEndPosition,
+    // x: 21.8609, // blender_x
+    // y: 0.041356, // blender_z
+    // z: -67.348, // -1 * blender_y
+    delay: 5,
+    duration: 5,
+    ease: CustomEase.create(
+      "custom",
+      "M0,0 C0.106,0 0.195,0.008 0.288,0.063 0.513,0.198 0.589,0.618 0.714,0.829 0.797,0.97 0.893,1 1,1 "
+    ),
+    onStart: () => {
+      let target = { x: 0, y: 0, z: 0 };
+      gsap.to(target, {
+        ...cameraTargetPosition,
+        duration: 5,
+        ease: CustomEase.create(
+          "custom",
+          "M0,0 C0.106,0 0.195,0.008 0.288,0.063 0.513,0.198 0.589,0.618 0.714,0.829 0.797,0.97 0.893,1 1,1 "
+        ),
+        onUpdate: () => {
+          camera.lookAt(target.x, target.y, target.z);
+        },
+      });
+      gsap.to(camera, {
+        fov: 50,
+        duration: 5,
+        onUpdate: () => {
+          camera.updateProjectionMatrix();
+        },
+      });
+    },
+    onComplete: () => {},
+  });
+  const animateCapsule = aniTimeline.to(capsule_anchor.position, {
+    ...capsuleEndPosition,
+    // delay: 10,
+    duration: 4,
+    ease: CustomEase.create(
+      "custom",
+      "M0,0 C0.106,0 0.195,0.008 0.288,0.063 0.513,0.198 0.589,0.618 0.714,0.829 0.797,0.97 0.893,1 1,1 "
+    ),
+    onStart: () => {
+      // let target = { x: 0, y: 0, z: 0 };
+      // gsap.to(target, {
+      //   x: camera.position.x,
+      //   y: camera.position.y,
+      //   z: camera.position.z,
+      //   duration: 5,
+      //   ease: CustomEase.create(
+      //     "custom",
+      //     "M0,0 C0.106,0 0.195,0.008 0.288,0.063 0.513,0.198 0.589,0.618 0.714,0.829 0.797,0.97 0.893,1 1,1 "
+      //   ),
+      //   onUpdate: () => {
+      //     capsule_anchor.lookAt(target.x, target.y, target.z);
+      //   },
+      // });
+      let targetRotation = { x: 0, y: (180 * Math.PI) / 180, z: 0 };
+      gsap.to(targetRotation, {
+        ...capsuleEndRotation,
+        duration: 4,
+        ease: CustomEase.create(
+          "custom",
+          "M0,0 C0.106,0 0.195,0.008 0.288,0.063 0.513,0.198 0.589,0.618 0.714,0.829 0.797,0.97 0.893,1 1,1 "
+        ),
+        onUpdate: () => {
+          capsule_anchor.rotation.y = targetRotation.y;
+        },
+      });
+    },
+    onUpdate: () => {
+      callback_1();
+      //positionProjectionScreen();
+    },
+    onComplete: () => {
+      callback_2();
+      // setIsGetStartedVisible(true);
+      // setInitialSequenceCompleted(true);
+      // console.log(capsule_body.rotation.y);
+    },
+  });
 };
 
 export default aniSwquenceBeforeGetStarted;
