@@ -485,7 +485,7 @@ export function loadAssetsWithPromise(
       // Load models
       loadModels(
         0,
-        "models/Consolidated models/saperated_animated_models/car_configurator/car_configurator.glb",
+        "models/Consolidated models/saperated_animated_models/car_configurator/car_configurator_colored.glb",
         "anchor",
         null,
         null,
@@ -530,7 +530,7 @@ export function loadAssetsWithPromise(
       );
       loadModels(
         5,
-        "models/Consolidated models/saperated_animated_models/meta_realty/meta_realty.glb", //"models/positioned assets 2/meta_realty.glb",
+        "models/Consolidated models/saperated_animated_models/meta_realty/meta_realty_colored.glb", //"models/positioned assets 2/meta_realty.glb",
         "anchor",
         null,
         null,
