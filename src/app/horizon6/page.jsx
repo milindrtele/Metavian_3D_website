@@ -1,7 +1,7 @@
 "use client";
 
 import StartingMessage from "../components/startingMessage/startingMessage";
-import GetStarted from "../components/GetStarted/GetStarted";
+import GetStarted from "../components/getStarted/getStarted";
 
 import { useRef, useState, useEffect } from "react";
 import * as THREE from "three";
