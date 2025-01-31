@@ -2,7 +2,7 @@
 
 import Beepie from "../components/beepie/beepie.jsx";
 import StartingMessage from "../components/startingMessage/startingMessage.jsx";
-import GetStarted from "../components/GetStarted/getStarted.jsx";
+import GetStarted from "../components/getStarted/getStarted.jsx";
 import HamburgerMenu from "../components/hamburgerMenu/hamburgerMenu.jsx";
 import Model_viewer from "../components/model_viewer/model_viewer.jsx";
 
