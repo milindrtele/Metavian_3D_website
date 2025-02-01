@@ -494,7 +494,7 @@ export function loadAssetsWithPromise(
       );
       loadModels(
         1,
-        "models/Consolidated models/saperated_animated_models/virtual_mart/virtual_mart1.glb", //"models/positioned assets 2/virtual_mart_2.glb",
+        "models/Consolidated models/saperated_animated_models/virtual_mart/virtual_mart_colored.glb", //"models/positioned assets 2/virtual_mart_2.glb",
         "anchor",
         null,
         null,
@@ -503,7 +503,7 @@ export function loadAssetsWithPromise(
       );
       loadModels(
         2,
-        "models/Consolidated models/saperated_animated_models/fashion_ix/fashion_ix1.glb", //"models/positioned assets 2/fashion_ix.glb",
+        "models/Consolidated models/saperated_animated_models/fashion_ix/fashion_ix_colored.glb", //"models/positioned assets 2/fashion_ix.glb",
         "anchor",
         null,
         null,
@@ -512,7 +512,7 @@ export function loadAssetsWithPromise(
       );
       loadModels(
         3,
-        "models/Consolidated models/saperated_animated_models/edulab/edulab1.glb", //"models/positioned assets 2/edulab_2.glb",
+        "models/Consolidated models/saperated_animated_models/edulab/edulab_colored.glb", //"models/positioned assets 2/edulab_2.glb",
         "anchor",
         null,
         null,
@@ -521,7 +521,7 @@ export function loadAssetsWithPromise(
       );
       loadModels(
         4,
-        "models/Consolidated models/saperated_animated_models/virtual_production/virtual_production1.glb", //"models/positioned assets 2/virtual_production.glb",
+        "models/Consolidated models/saperated_animated_models/virtual_production/virtual_production_colored.glb", //"models/positioned assets 2/virtual_production.glb",
         "anchor",
         null,
         null,
