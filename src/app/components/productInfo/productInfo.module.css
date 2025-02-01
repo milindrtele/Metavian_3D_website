@@ -1,0 +1,16 @@
+.product_info_container {
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  width: 100vw;
+  height: 100vh;
+}
+
+.product_3d_viewer {
+  width: 50%;
+  flex: 1;
+}
+
+.product_info {
+  flex: 1;
+}
