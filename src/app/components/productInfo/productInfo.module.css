@@ -4,6 +4,18 @@
   flex-direction: row;
   width: 100vw;
   height: 100vh;
+  background: radial-gradient(
+    circle,
+    rgba(53, 162, 255, 1) 0%,
+    rgba(162, 239, 255, 1) 100%
+  );
+  overflow: hidden;
+}
+
+.product_info_parent {
+  width: 100%;
+  height: 100vh;
+  overflow: scroll;
 }
 
 .product_3d_viewer {
@@ -12,5 +24,91 @@
 }
 
 .product_info {
+  position: relative;
+  top: 5%;
+  background-color: white;
+  border-radius: 25px;
   flex: 1;
+}
+
+.call_to_action_buttons {
+  width: 80%;
+  height: max-content;
+  margin: auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+.button {
+  width: 10vw;
+  height: 5vw;
+}
+
+.button_1 {
+}
+
+.button_2 {
+}
+
+.title {
+  width: 80%;
+  margin: auto;
+  height: max-content;
+}
+
+.title_a {
+  font-size: 2vw;
+  background: -webkit-linear-gradient(right, #f4faff, #3fafff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 3% 0;
+}
+
+.title_b {
+  font-size: 1.25vw;
+  color: gray;
+}
+
+.key_features {
+  width: 80%;
+  height: max-content;
+  margin: 5% auto;
+}
+
+.key_feature_title {
+  font-size: 1.25vw;
+  background: -webkit-linear-gradient(right, #f4faff, #3fafff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 2.5% 0;
+}
+
+.key_feature_text_container {
+  font-size: 1vw;
+  color: gray;
+}
+
+.key_feature_text_container p {
+  margin: 1.5% 0;
+}
+
+.media {
+  width: 80%;
+  height: max-content;
+  margin: auto;
+}
+
+.media_title {
+  font-size: 1.25vw;
+  color: gray;
+}
+
+.media_image_container {
+  width: 100%;
+  height: 50vh;
+  background-image: url("../../../../public/images/media_images/car_config.jpg");
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
 }

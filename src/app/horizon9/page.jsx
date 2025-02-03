@@ -205,6 +205,10 @@ export default function Horizon() {
 
   const currentCameraTargetRef = useRef(null);
 
+  const [selectedModelUrl, setSelectedModelUrl] = useState(
+    "models/Consolidated models/saperated_animated_models/car_configurator/car_configurator_without_animation.glb"
+  );
+
   gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
   gsap.registerPlugin(CustomEase);
 
@@ -2112,7 +2116,7 @@ export default function Horizon() {
           ></input>
         </div> */}
       </div>
-      <canvas id="canvas" className="canvas" ref={canvasRef}></canvas>
+      <canvas id="canvas" className={styles.canvas} ref={canvasRef}></canvas>
       {/* {<Beepie />} */}
       {isStartingMessageVisible && (
         <StartingMessage continue={startingMessageContinue} />
@@ -2130,7 +2134,7 @@ export default function Horizon() {
       )}
       {isHamburgerMenuVisible && <Beepie />}
       {showChild && <Model_viewer />}
-      <ProductInfo renderer={rendererRef.current} />
+      <ProductInfo renderer={rendererRef.current} modelUrl={selectedModelUrl} />
     </div>
   );
 }
