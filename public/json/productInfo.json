@@ -1,0 +1,62 @@
+[
+    {
+        "productName": "Car Configurator",
+        "modelUrl": "models/Consolidated models/saperated_animated_models/car_configurator/car_configurator_without_animation.glb",
+        "info": {
+            "title": "Car Configurator",
+            "subTitle": "Integer eget ante lacinia, dapibus mi sed, hendrerit sem.",
+            "keyFeatures": "Mediterranean style with superior performance in a tile panel that provides both high wind and hail impact resistance.\n 50 year limited fully transferable warranty (0 – 20 years material and Labor – 21 – 50 years material.\n Unlimited Transfers\n 50 year hail warranty (2.5” diameter through the steel)"
+        },
+        "mediaURL": "/images/media_images/car_config.jpg"
+    },
+    {
+        "productName": "Edulab",
+        "modelUrl": "models/Consolidated models/saperated_animated_models/edulab/edulab_without_animation.glb",
+        "info": {
+            "title": "Edulab",
+            "subTitle": "Integer eget ante lacinia, dapibus mi sed, hendrerit sem.",
+            "keyFeatures": "Mediterranean style with superior performance in a tile panel that provides both high wind and hail impact resistance.\n 50 year limited fully transferable warranty (0 – 20 years material and Labor – 21 – 50 years material.\n Unlimited Transfers\n 50 year hail warranty (2.5” diameter through the steel)"
+        },
+        "mediaURL": "/images/media_images/car_config.jpg"
+    },
+    {
+        "productName": "Fashion IX",
+        "modelUrl": "models/Consolidated models/saperated_animated_models/fashion_ix/fashion_ix_without_animation.glb",
+        "info": {
+            "title": "Fashion IX",
+            "subTitle": "Integer eget ante lacinia, dapibus mi sed, hendrerit sem.",
+            "keyFeatures": "Mediterranean style with superior performance in a tile panel that provides both high wind and hail impact resistance.\n 50 year limited fully transferable warranty (0 – 20 years material and Labor – 21 – 50 years material.\n Unlimited Transfers\n 50 year hail warranty (2.5” diameter through the steel)"
+        },
+        "mediaURL": "/images/media_images/car_config.jpg"
+    },
+    {
+        "productName": "Meta Realty",
+        "modelUrl": "models/Consolidated models/saperated_animated_models/meta_realty/meta_realty_without_animation.glb",
+        "info": {
+            "title": "Meta Realty",
+            "subTitle": "Integer eget ante lacinia, dapibus mi sed, hendrerit sem.",
+            "keyFeatures": "Mediterranean style with superior performance in a tile panel that provides both high wind and hail impact resistance.\n 50 year limited fully transferable warranty (0 – 20 years material and Labor – 21 – 50 years material.\n Unlimited Transfers\n 50 year hail warranty (2.5” diameter through the steel)"
+        },
+        "mediaURL": "/images/media_images/car_config.jpg"
+    },
+    {
+        "productName": "Virtual Mart",
+        "modelUrl": "models/Consolidated models/saperated_animated_models/virtual_mart/virtual_mart_without_animation.glb",
+        "info": {
+            "title": "Virtual Mart",
+            "subTitle": "Integer eget ante lacinia, dapibus mi sed, hendrerit sem.",
+            "keyFeatures": "Mediterranean style with superior performance in a tile panel that provides both high wind and hail impact resistance.\n 50 year limited fully transferable warranty (0 – 20 years material and Labor – 21 – 50 years material.\n Unlimited Transfers\n 50 year hail warranty (2.5” diameter through the steel)"
+        },
+        "mediaURL": "/images/media_images/car_config.jpg"
+    },
+    {
+        "productName": "Virtual Production",
+        "modelUrl": "models/Consolidated models/saperated_animated_models/virtual_production/virtual_production_without_animation.glb",
+        "info": {
+            "title": "Virtual Production",
+            "subTitle": "Integer eget ante lacinia, dapibus mi sed, hendrerit sem.",
+            "keyFeatures": "Mediterranean style with superior performance in a tile panel that provides both high wind and hail impact resistance.\n 50 year limited fully transferable warranty (0 – 20 years material and Labor – 21 – 50 years material.\n Unlimited Transfers\n 50 year hail warranty (2.5” diameter through the steel)"
+        },
+        "mediaURL": "/images/media_images/car_config.jpg"
+    }
+]

@@ -25,7 +25,7 @@ let projection_screen_anchor = null;
 let projection_object = null;
 let legs_parent = null;
 
-let cubeCamera, cubeRenderTarget;
+//let cubeCamera, cubeRenderTarget;
 
 let projectModels = [];
 let projectModelsAnchors = [];
@@ -61,10 +61,10 @@ export function loadAssetsWithPromise(
     const totalModels = 6; // Update the totalModels count to reflect all the models being loaded
     let cameraLoaded = false;
 
-    cubeRenderTarget = new THREE.WebGLCubeRenderTarget(256);
-    cubeRenderTarget.texture.type = THREE.HalfFloatType;
+    // cubeRenderTarget = new THREE.WebGLCubeRenderTarget(256);
+    // cubeRenderTarget.texture.type = THREE.HalfFloatType;
 
-    cubeCamera = new THREE.CubeCamera(1, 1000, cubeRenderTarget);
+    // cubeCamera = new THREE.CubeCamera(1, 1000, cubeRenderTarget);
 
     const checkIfAllLoaded = () => {
       loadedModels++;
@@ -127,6 +127,14 @@ export function loadAssetsWithPromise(
           if (callback) {
             callback;
           }
+
+          //enable shadows for all objects
+          // scene.traverse((child) => {
+          //   if (child instanceof THREE.Mesh) {
+          //     child.castShadow = true;
+          //     child.receiveShadow = true;
+          //   }
+          // });
         },
         undefined,
         reject
@@ -136,7 +144,7 @@ export function loadAssetsWithPromise(
     // Load the social media models
     loader.load(
       //"/models/contact models/contact_models_with_vr_headset_with_animations.glb",
-      "/models/contact models/contact_models_with_vr_headset_with_animation_and_optimisation.glb",
+      "/models/contact models/contact_models_with_vr_headset_with_animation_and_optimisation-v2.glb",
       //"/models/contact models/contacts_model_with_highliter_v01.glb",
       (gltf) => {
         social_media_models_scene = gltf.scene;
@@ -265,11 +273,11 @@ export function loadAssetsWithPromise(
           phone_icon_animation,
         ];
 
-        social_media_models_scene.traverse((object) => {
-          if (object.isMesh) {
-            object.material.envMap = cubeRenderTarget.texture;
-          }
-        });
+        // social_media_models_scene.traverse((object) => {
+        //   if (object.isMesh) {
+        //     object.material.envMap = cubeRenderTarget.texture;
+        //   }
+        // });
 
         media_model_array = [
           media_01_anchor,
@@ -358,7 +366,7 @@ export function loadAssetsWithPromise(
         // capsule_anchor.rotation.y = (Math.PI / 180) * -15;
 
         const reflectiveMaterial = new THREE.MeshStandardMaterial({
-          envMap: cubeRenderTarget.texture,
+          //envMap: cubeRenderTarget.texture,
           roughness: 0.05,
           metalness: 1,
         });
@@ -485,7 +493,7 @@ export function loadAssetsWithPromise(
       // Load models
       loadModels(
         0,
-        "models/Consolidated models/saperated_animated_models/car_configurator/car_configurator_colored.glb",
+        "models/Consolidated models/saperated_animated_models/car_configurator/car_configurator_white_withShadows.glb",
         "anchor",
         null,
         null,
@@ -494,7 +502,7 @@ export function loadAssetsWithPromise(
       );
       loadModels(
         1,
-        "models/Consolidated models/saperated_animated_models/virtual_mart/virtual_mart_colored.glb", //"models/positioned assets 2/virtual_mart_2.glb",
+        "models/Consolidated models/saperated_animated_models/virtual_mart/virtual_mart_white_withShadows.glb", //"models/positioned assets 2/virtual_mart_2.glb",
         "anchor",
         null,
         null,
@@ -503,7 +511,7 @@ export function loadAssetsWithPromise(
       );
       loadModels(
         2,
-        "models/Consolidated models/saperated_animated_models/fashion_ix/fashion_ix_colored.glb", //"models/positioned assets 2/fashion_ix.glb",
+        "models/Consolidated models/saperated_animated_models/fashion_ix/fashion_ix_white_withShadows.glb", //"models/positioned assets 2/fashion_ix.glb",
         "anchor",
         null,
         null,
@@ -512,7 +520,7 @@ export function loadAssetsWithPromise(
       );
       loadModels(
         3,
-        "models/Consolidated models/saperated_animated_models/edulab/edulab_colored.glb", //"models/positioned assets 2/edulab_2.glb",
+        "models/Consolidated models/saperated_animated_models/edulab/edulab_white_withShadows.glb", //"models/positioned assets 2/edulab_2.glb",
         "anchor",
         null,
         null,
@@ -521,7 +529,7 @@ export function loadAssetsWithPromise(
       );
       loadModels(
         4,
-        "models/Consolidated models/saperated_animated_models/virtual_production/virtual_production_colored.glb", //"models/positioned assets 2/virtual_production.glb",
+        "models/Consolidated models/saperated_animated_models/virtual_production/virtual_production_white_withShadows.glb", //"models/positioned assets 2/virtual_production.glb",
         "anchor",
         null,
         null,
@@ -530,7 +538,7 @@ export function loadAssetsWithPromise(
       );
       loadModels(
         5,
-        "models/Consolidated models/saperated_animated_models/meta_realty/meta_realty_colored.glb", //"models/positioned assets 2/meta_realty.glb",
+        "models/Consolidated models/saperated_animated_models/meta_realty/meta_realty_white_withShadows.glb", //"models/positioned assets 2/meta_realty.glb",
         "anchor",
         null,
         null,
@@ -557,7 +565,7 @@ export {
   projection_object,
   legs_parent,
   cockpit_canopy,
-  cubeCamera,
+  //cubeCamera,
   projectModels,
   projectModelsAnchors,
   animationMixers,

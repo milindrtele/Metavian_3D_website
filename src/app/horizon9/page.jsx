@@ -209,6 +209,8 @@ export default function Horizon() {
     "models/Consolidated models/saperated_animated_models/car_configurator/car_configurator_without_animation.glb"
   );
 
+  const [productPageVisible, setProductPageVisible] = useState(true);
+
   gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
   gsap.registerPlugin(CustomEase);
 
@@ -282,13 +284,15 @@ export default function Horizon() {
         antialias: true,
       });
 
+      rendererRef.current.toneMapping = THREE.ACESFilmicToneMapping;
+
       // rendererRef.current = new CSS3DRenderer({
       //   canvas: canvasRef.current,
       //   antialias: true,
       // });
 
-      //rendererRef.current.shadowMap.enabled = true;
-      //rendererRef.current.shadowMap.type = THREE.VSMShadowMap;
+      // rendererRef.current.shadowMap.enabled = true;
+      // rendererRef.current.shadowMap.type = THREE.VSMShadowMap;
 
       rendererRef.current.setSize(window.innerWidth, window.innerHeight);
 
@@ -547,19 +551,19 @@ export default function Horizon() {
       spotLightParent.position.set(0, 0, 0);
       sceneRef.current.add(spotLightParent);
       //spotlight1
-      const spotlight1 = new THREE.SpotLight(0xffffff, 100000);
+      const spotlight1 = new THREE.SpotLight(0xffffff, 75000);
       spotlight1.position.set(100, 100, 100);
       spotlight1.penumbra = 0.5;
       spotlight1.distance = 500;
       spotlight1.angle = (Math.PI / 180) * 35;
       //spotlight2
-      const spotlight2 = new THREE.SpotLight(0xffffff, 100000);
+      const spotlight2 = new THREE.SpotLight(0xffffff, 75000);
       spotlight2.position.set(-100, 100, 100);
       spotlight2.penumbra = 0.5;
       spotlight2.distance = 500;
       spotlight2.angle = (Math.PI / 180) * 35;
       //spotlight3
-      const spotlight3 = new THREE.SpotLight(0xffffff, 100000);
+      const spotlight3 = new THREE.SpotLight(0xffffff, 75000);
       spotlight3.position.set(0, 100, -100);
       spotlight3.penumbra = 0.5;
       spotlight3.distance = 500;
@@ -2077,6 +2081,10 @@ export default function Horizon() {
     setShowChild((prev) => !prev);
   };
 
+  const closeProductPage = () => {
+    setProductPageVisible(false);
+  };
+
   return (
     <div id="container">
       <div className={styles.slidecontainer}>
@@ -2134,7 +2142,13 @@ export default function Horizon() {
       )}
       {isHamburgerMenuVisible && <Beepie />}
       {showChild && <Model_viewer />}
-      <ProductInfo renderer={rendererRef.current} modelUrl={selectedModelUrl} />
+      {productPageVisible && (
+        <ProductInfo
+          renderer={rendererRef.current}
+          modelUrl={selectedModelUrl}
+          closeClicked={closeProductPage}
+        />
+      )}
     </div>
   );
 }

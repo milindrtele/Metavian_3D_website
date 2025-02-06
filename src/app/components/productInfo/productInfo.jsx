@@ -12,6 +12,30 @@ export default function ProductInfo(props) {
   const productSceneRef = useRef(null);
   const productCamRef = useRef(null);
   const productOrbitControlsRef = useRef(null);
+  const productsDataRef = useRef(null);
+
+  // Fetch product data from JSON file
+  async function findProductData(url) {
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error("Failed to fetch texture data:", error);
+      return null;
+    }
+  }
+
+  // Find texture data for a specific roof texture name
+  async function find_From_Data(name) {
+    if (!productsDataRef.current) {
+      productsDataRef.current = await findProductData("/json/productInfo.json");
+    }
+    return productsDataRef.current?.find((item) => item.productName === name);
+  }
 
   function loadHDRI() {
     return new Promise((resolve, reject) => {
@@ -31,11 +55,16 @@ export default function ProductInfo(props) {
     loader.load(
       url,
       (gltf) => {
+        console.log(gltf.scene);
         productSceneRef.current.add(gltf.scene);
         console.log(productSceneRef.current);
       },
-      undefined,
-      undefined
+      function (xhr) {
+        console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
+      },
+      (error) => {
+        console.log("An error happened " + error);
+      }
     );
   };
 
@@ -67,8 +96,10 @@ export default function ProductInfo(props) {
     );
 
     loadHDRI();
-
-    loadTheProductModel(props.modelUrl); //load the model
+    find_From_Data("Virtual Mart").then((productData) => {
+      console.log(productData.modelUrl);
+      loadTheProductModel(productData.modelUrl); //load the model
+    });
 
     function animate() {
       productOrbitControlsRef.current.update();
@@ -90,11 +121,23 @@ export default function ProductInfo(props) {
         className={[styles.product_3d_viewer]}
         ref={productCanvasRef}
       ></canvas>
+      <div
+        className={[styles.close_button_container]}
+        onClick={() => {
+          props.closeClicked();
+        }}
+      >
+        <div className={[styles.close_button]}></div>
+      </div>
       <div className={[styles.product_info]}>
         <div className={[styles.product_info_parent]}>
           <div className={[styles.call_to_action_buttons]}>
-            <div className={[styles.button, styles.button_1].join(" ")}></div>
-            <div className={[styles.button, styles.button_2].join(" ")}></div>
+            <div className={[styles.button, styles.button_1].join(" ")}>
+              <p>Request Demo</p>
+            </div>
+            <div className={[styles.button, styles.button_2].join(" ")}>
+              <p>Contact</p>
+            </div>
           </div>
           <div className={[styles.title]}>
             <div className={[styles.title_a]}>
