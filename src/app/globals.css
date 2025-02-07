@@ -40,6 +40,101 @@
   --card-border-rgb: 131, 134, 135;
 }
 
+.flag_container {
+  position: relative;
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+#hotspot_container {
+  position: relative;
+  top: -200px;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  pointer-events: none;
+}
+
+#circle {
+  position: absolute;
+  bottom: -7.5px;
+  left: calc(2.5px - 7.5px);
+  width: 15px;
+  height: 15px;
+  /* background-image: url("../public/icons/Animation_orange.gif"); */
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.point {
+  padding: 0;
+  width: 2px;
+  height: 0px;
+  background: #ffffff;
+  /* border-style: solid;
+  border-color: black;
+  border-width: 1px;
+  border-radius: 3px 3px 3px 3px; */
+  transition: height 1s ease;
+  /* transform: rotate(-60deg); */
+  transform: translate(25%, 0);
+  transform-origin: 50% 100%;
+}
+
+/* .point:hover {
+  height: 200px;
+} */
+
+#button_bar {
+  position: relative;
+  z-index: 1000;
+  display: flex;
+  flex-direction: row-reverse;
+  /* transform: translate(calc((200px + 100%)*-1), 0); */
+}
+
+.button_stick {
+  height: 25px;
+  width: 4px;
+  position: relative;
+  transform: translate(0, 0);
+  background: #ffffff;
+  border-style: solid;
+  border-color: black;
+  border-width: 1px;
+  border-radius: 0 0 3px 3px;
+  transition: height 1s ease;
+}
+
+#button_closed {
+  padding: 0;
+  position: relative;
+  z-index: 1001;
+  height: 0px;
+  width: 0px;
+  background: #ab41e1;
+  border: none;
+  /* border: solid;
+  border-width: 1px;
+  border-color:#ffffff; */
+  color: #ffffff;
+  font: normal bold 22px "Open Sans", sans-serif;
+  text-align: center;
+  overflow: hidden;
+  transition: width 1.5s ease;
+  transition-delay: 1s;
+  font-size: 0.8vw;
+  font-weight: 500;
+  /* pointer-events: auto; */
+  cursor: pointer;
+}
+
+#button_closed span {
+  text-wrap: nowrap;
+  text-overflow: clip;
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
     --foreground-rgb: 255, 255, 255;

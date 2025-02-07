@@ -10,6 +10,8 @@ import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
 import { teamHandler } from "./team.js";
 import { printerHandler } from "./printer.js";
 
+import Hotspot from "./hotspot";
+
 import { gsap } from "gsap";
 
 let blenderCamera = null;
@@ -54,7 +56,8 @@ export function loadAssetsWithPromise(
   clip,
   productAssets,
   productAssetAnchor,
-  scene
+  scene,
+  css2DScene
 ) {
   return new Promise((resolve, reject) => {
     let loadedModels = 0;
@@ -86,7 +89,8 @@ export function loadAssetsWithPromise(
       rotation,
       scale,
       name,
-      callback
+      callback,
+      hotSpotConfig
     ) => {
       loader.load(
         url,
@@ -135,6 +139,39 @@ export function loadAssetsWithPromise(
           //     child.receiveShadow = true;
           //   }
           // });
+
+          if (hotSpotConfig != null) {
+            //css2DHotspot
+            const hotspotInstance = new Hotspot(
+              css2DScene,
+              // ...hotSpotConfig
+              // hotSpotPos,
+              // childHtmlUrl,
+              // buttonTextContent,
+              // stemHeight,
+              // buttonWidth,
+              // angle,
+              // flagPosition,
+              // callbackFunction ? window[callbackFunction] : undefined,
+              // this.videoEmbedFunction,
+              // videoID,
+              // webURL
+              hotSpotConfig.hotSpotPos,
+              hotSpotConfig.childHtmlUrl,
+              hotSpotConfig.buttonTextContent,
+              hotSpotConfig.stemHeight,
+              hotSpotConfig.buttonWidth,
+              hotSpotConfig.angle,
+              hotSpotConfig.flagPosition,
+              hotSpotConfig.callbackFunction
+                ? window[hotSpotConfig.callbackFunction]
+                : undefined,
+              hotSpotConfig.videoEmbedFunction,
+              hotSpotConfig.videoID,
+              hotSpotConfig.webURL
+            );
+            hotspotInstance.addToScene();
+          }
         },
         undefined,
         reject
@@ -144,7 +181,7 @@ export function loadAssetsWithPromise(
     // Load the social media models
     loader.load(
       //"/models/contact models/contact_models_with_vr_headset_with_animations.glb",
-      "/models/contact models/contact_models_with_vr_headset_with_animation_and_optimisation-v2.glb",
+      "/models/contact models/contact_models_with_vr_headset_with_animation_and_optimisation.glb",
       //"/models/contact models/contacts_model_with_highliter_v01.glb",
       (gltf) => {
         social_media_models_scene = gltf.scene;
@@ -498,7 +535,21 @@ export function loadAssetsWithPromise(
         null,
         null,
         null,
-        "car_configurator"
+        "car_configurator",
+        null,
+        {
+          hotSpotPos: new THREE.Vector3(43.4799, 0, -25.2621),
+          childHtmlUrl: "/innerHtml/child_new.html",
+          buttonTextContent: "ABC",
+          stemHeight: 125,
+          buttonWidth: 10,
+          angle: 50,
+          flagPosition: "start",
+          // callbackFunction? window[callbackFunction]: undefined,
+          // videoEmbedFunction: ,
+          //videoID,
+          webURL: "https://www.surajwaterpark.com/",
+        }
       );
       loadModels(
         1,
@@ -507,7 +558,9 @@ export function loadAssetsWithPromise(
         null,
         null,
         null,
-        "virtual_mart"
+        "virtual_mart",
+        null,
+        null
       );
       loadModels(
         2,
@@ -516,7 +569,9 @@ export function loadAssetsWithPromise(
         null,
         null,
         null,
-        "fashion_ix"
+        "fashion_ix",
+        null,
+        null
       );
       loadModels(
         3,
@@ -525,7 +580,9 @@ export function loadAssetsWithPromise(
         null,
         null,
         null,
-        "edulab_v1"
+        "edulab_v1",
+        null,
+        null
       );
       loadModels(
         4,
@@ -534,7 +591,9 @@ export function loadAssetsWithPromise(
         null,
         null,
         null,
-        "virtual_production"
+        "virtual_production",
+        null,
+        null
       );
       loadModels(
         5,
@@ -543,7 +602,9 @@ export function loadAssetsWithPromise(
         null,
         null,
         null,
-        "meta_realty"
+        "meta_realty",
+        null,
+        null
       );
 
       teamScene = new teamHandler(scene, loader);

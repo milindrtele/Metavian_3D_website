@@ -13,6 +13,10 @@ import {
   CSS3DRenderer,
   CSS3DObject,
 } from "three/addons/renderers/CSS3DRenderer.js";
+import {
+  CSS2DRenderer,
+  CSS2DObject,
+} from "three/examples/jsm/renderers/CSS2DRenderer.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { TransformControls } from "three/addons/controls/TransformControls.js";
@@ -133,10 +137,12 @@ export default function Horizon() {
   let stats = null;
   const canvasRef = useRef(null);
   const sceneRef = useRef(null);
-  const cssSceneRef = useRef(null);
+  const css3DSceneRef = useRef(null);
+  const css2DSceneRef = useRef(null);
   const cameraRef = useRef(null);
   const rendererRef = useRef(null);
   const css3dRendererRef = useRef(null);
+  const css2dRendererRef = useRef(null);
   const controlsRef = useRef(null);
   const transformControlRef = useRef(null);
   const animationIdRef = useRef(null);
@@ -277,7 +283,8 @@ export default function Horizon() {
       //Scene is container for objects, cameras, and lights
       sceneRef.current = new THREE.Scene();
 
-      cssSceneRef.current = new THREE.Scene();
+      css3DSceneRef.current = new THREE.Scene();
+      css2DSceneRef.current = new THREE.Scene();
 
       rendererRef.current = new THREE.WebGLRenderer({
         canvas: canvasRef.current,
@@ -304,6 +311,15 @@ export default function Horizon() {
       css3dRendererRef.current.domElement.style.pointerEvents = "none";
       css3dRendererRef.current.domElement.style.position = "fixed";
       document.body.appendChild(css3dRendererRef.current.domElement);
+
+      //css2D Renderer
+      css2dRendererRef.current = new CSS2DRenderer();
+      css2dRendererRef.current.setSize(window.innerWidth, window.innerHeight);
+      css2dRendererRef.current.domElement.style.position = "absolute";
+      css2dRendererRef.current.domElement.style.top = 0;
+      css2dRendererRef.current.domElement.style.pointerEvents = "none";
+      css2dRendererRef.current.domElement.style.position = "fixed";
+      document.body.appendChild(css2dRendererRef.current.domElement);
 
       // Create a camera and set its position and orientation
       cameraRef.current = new THREE.PerspectiveCamera(
@@ -374,9 +390,9 @@ export default function Horizon() {
         if (intersects.length > 0) {
           if (intersects[0].object.name == "highlighter_address") {
             let position = letters_anchor.children[0].position;
-            console.log(icon_animations);
+            //console.log(icon_animations);
             icon_animations[0].vars.stagger.repeat = 0;
-            icon_animations[0].pause();
+            //icon_animations[0].pause();
             gsap.to(position, {
               duration: 2.5,
               ease: "elastic.out(1, 0.3)",
@@ -388,7 +404,7 @@ export default function Horizon() {
             });
           } else if (intersects[0].object.name == "highlighter_email") {
             let position = letters_anchor.children[1].position;
-            icon_animations[1].pause();
+            //icon_animations[1].pause();
             //icon_animations[1].stagger.repeat = 0;
             gsap.to(position, {
               duration: 2.5,
@@ -402,7 +418,7 @@ export default function Horizon() {
           } else if (intersects[0].object.name == "highlighter_phone") {
             let position = letters_anchor.children[2].position;
             //icon_animations[2].stagger.repeat = 0;
-            icon_animations[2].pause();
+            //icon_animations[2].pause();
 
             gsap.to(position, {
               duration: 2.5,
@@ -763,7 +779,8 @@ export default function Horizon() {
         clipRef.current,
         productAssetsRef.current,
         productAssetAnchorRef.current,
-        sceneRef.current
+        sceneRef.current,
+        css2DSceneRef.current
       )
         .then(() => {
           // console.log("All assets loaded successfully!");
@@ -785,7 +802,10 @@ export default function Horizon() {
 
           //projection_object.material.uniforms.offset.value.y = 1;
 
-          setUpProjectionScreen(projection_screen_anchor, cssSceneRef.current);
+          setUpProjectionScreen(
+            projection_screen_anchor,
+            css3DSceneRef.current
+          );
           setAssetsLoadedSuccessfully(true);
         })
         .catch((error) => {
@@ -919,6 +939,10 @@ export default function Horizon() {
           canvasRef.current.width,
           canvasRef.current.height
         );
+        css2dRendererRef.current.setSize(
+          canvasRef.current.width,
+          canvasRef.current.height
+        );
 
         cameraRef.current.updateProjectionMatrix();
       }
@@ -977,7 +1001,19 @@ export default function Horizon() {
         rendererRef.current.render(sceneRef.current, cameraRef.current);
 
         // Render CSS3D scene
-        css3dRendererRef.current.render(cssSceneRef.current, cameraRef.current);
+        if (css3dRendererRef.currentt != null) {
+          css3dRendererRef.current.render(
+            css3DSceneRef.current,
+            cameraRef.current
+          );
+        }
+        // Render CSS2D scene
+        if (css2dRendererRef.current != null) {
+          css2dRendererRef.current.render(
+            css2DSceneRef.current,
+            cameraRef.current
+          );
+        }
         //composer.render();
 
         NodeToyMaterial.tick();
