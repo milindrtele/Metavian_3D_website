@@ -215,7 +215,9 @@ export default function Horizon() {
     "models/Consolidated models/saperated_animated_models/car_configurator/car_configurator_without_animation.glb"
   );
 
-  const [productPageVisible, setProductPageVisible] = useState(true);
+  const [productToViewInViewer, setProductToViewInViewer] = useState(null);
+
+  const [productPageVisible, setProductPageVisible] = useState(false);
 
   gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
   gsap.registerPlugin(CustomEase);
@@ -780,7 +782,9 @@ export default function Horizon() {
         productAssetsRef.current,
         productAssetAnchorRef.current,
         sceneRef.current,
-        css2DSceneRef.current
+        css2DSceneRef.current,
+        cameraRef.current,
+        setProductToViewInViewer
       )
         .then(() => {
           // console.log("All assets loaded successfully!");
@@ -1001,14 +1005,17 @@ export default function Horizon() {
         rendererRef.current.render(sceneRef.current, cameraRef.current);
 
         // Render CSS3D scene
-        if (css3dRendererRef.currentt != null) {
+        if (css3dRendererRef.current != null) {
           css3dRendererRef.current.render(
             css3DSceneRef.current,
             cameraRef.current
           );
         }
         // Render CSS2D scene
-        if (css2dRendererRef.current != null) {
+        if (
+          css2dRendererRef.current != null &&
+          currentUserPositionRef.current == "Menu Item 1"
+        ) {
           css2dRendererRef.current.render(
             css2DSceneRef.current,
             cameraRef.current
@@ -1397,9 +1404,14 @@ export default function Horizon() {
   }, [getStartedCompleted]);
 
   useEffect(() => {
-    if (startSequenceCompleteRef.current) {
-    }
-  }, [startSequenceCompleteRef.current]);
+    setProductPageVisible(true);
+    console.log(productToViewInViewer);
+  }, [productToViewInViewer]);
+
+  // useEffect(() => {
+  //   if (startSequenceCompleteRef.current) {
+  //   }
+  // }, [startSequenceCompleteRef.current]);
 
   // useEffect(() => {
   //   console.log(currentUserPositionRef.current + " => useEffect");
@@ -2183,6 +2195,7 @@ export default function Horizon() {
           renderer={rendererRef.current}
           modelUrl={selectedModelUrl}
           closeClicked={closeProductPage}
+          product={productToViewInViewer}
         />
       )}
     </div>

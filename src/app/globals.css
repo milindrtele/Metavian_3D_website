@@ -135,6 +135,169 @@
   text-overflow: clip;
 }
 
+/******************************************** new hostspot *******************************************/
+#hotspot_container_parent {
+  position: relative;
+  width: 3vw;
+  height: 3vw;
+  /* transform: rotate(45deg); */
+  background-color: #ac41e19a;
+  border-radius: 10px;
+  pointer-events: all;
+}
+
+#hotspot_container_parent:hover {
+  animation: rotate 0.5s ease forwards, scale 0.5s ease forwards 0.5s;
+}
+
+#hotspot_container_parent:not(:hover) {
+  animation: reverseRotate 0.5s ease forwards 0.5s,
+    reverseScale 0.5s ease forwards;
+}
+
+@keyframes scale {
+  from {
+    width: 3vw;
+    height: 3vw;
+    left: 0;
+    top: 0;
+  }
+  to {
+    width: 13vw;
+    height: 6vw;
+    left: -40%;
+    top: -40%;
+  }
+}
+
+@keyframes reverseScale {
+  from {
+    width: 13vw;
+    height: 6vw;
+    left: -40%;
+    top: -40%;
+  }
+  to {
+    width: 3vw;
+    height: 3vw;
+    left: 0;
+    top: 0;
+  }
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(45deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes reverseRotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(45deg);
+  }
+}
+
+.hotspot_icon {
+  width: 100%;
+  height: 100%;
+  transform: rotate(45deg);
+  background-image: url("../../public/icons/plus-solid.svg");
+  background-size: 30%;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: opacity 0.5s ease-in-out;
+}
+
+#hotspot_container_parent:hover .hotspot_icon {
+  opacity: 0;
+}
+
+.details_container {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transform: translate(0%, -50%);
+  opacity: 0;
+  transition: opacity 0.25s ease-in-out 0.25s;
+  display: flex;
+  flex-direction: row;
+}
+
+#hotspot_container_parent:hover .details_container {
+  animation: opacityUp 0.5s ease forwards 0.8s;
+}
+#hotspot_container_parent:not(:hover) .details_container {
+  animation: opacityDown 0.5s ease forwards;
+}
+@keyframes opacityUp {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes opacityDown {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+#title {
+  font-size: 1vw;
+}
+
+#sub_title {
+  font-size: 0.8vw;
+}
+
+#text_container {
+  /* position: absolute; */
+  width: 60%;
+  height: 100%;
+  text-align: left;
+  margin: 5% 5%;
+}
+
+#title {
+  width: 100%;
+  margin: auto;
+}
+#sub_title {
+  width: 100%;
+  margin: auto;
+}
+
+.verticle_bar {
+  width: 2px;
+  height: 80%;
+  margin: auto;
+  background-color: #d49cf1;
+}
+
+#action_button {
+  flex: 1;
+  height: 100%;
+  background-image: url("../../public/icons/arrow-right-long-solid.svg");
+  background-size: 50%;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+#action_button:hover {
+  background-size: 60%;
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
     --foreground-rgb: 255, 255, 255;

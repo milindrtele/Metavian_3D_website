@@ -1,5 +1,6 @@
 .product_info_container {
   position: absolute;
+  z-index: 1000;
   display: flex;
   flex-direction: row;
   width: 100vw;

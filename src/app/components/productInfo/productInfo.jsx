@@ -96,7 +96,7 @@ export default function ProductInfo(props) {
     );
 
     loadHDRI();
-    find_From_Data("Virtual Mart").then((productData) => {
+    find_From_Data(props.product).then((productData) => {
       console.log(productData.modelUrl);
       loadTheProductModel(productData.modelUrl); //load the model
     });

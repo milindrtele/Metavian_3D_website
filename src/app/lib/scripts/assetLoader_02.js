@@ -57,7 +57,9 @@ export function loadAssetsWithPromise(
   productAssets,
   productAssetAnchor,
   scene,
-  css2DScene
+  css2DScene,
+  mainCamera,
+  setProductToviewFunction
 ) {
   return new Promise((resolve, reject) => {
     let loadedModels = 0;
@@ -90,7 +92,9 @@ export function loadAssetsWithPromise(
       scale,
       name,
       callback,
-      hotSpotConfig
+      hotSpotConfig,
+      mainCamera,
+      productViewerCallback
     ) => {
       loader.load(
         url,
@@ -144,21 +148,11 @@ export function loadAssetsWithPromise(
             //css2DHotspot
             const hotspotInstance = new Hotspot(
               css2DScene,
-              // ...hotSpotConfig
-              // hotSpotPos,
-              // childHtmlUrl,
-              // buttonTextContent,
-              // stemHeight,
-              // buttonWidth,
-              // angle,
-              // flagPosition,
-              // callbackFunction ? window[callbackFunction] : undefined,
-              // this.videoEmbedFunction,
-              // videoID,
-              // webURL
               hotSpotConfig.hotSpotPos,
+              hotSpotConfig.distanceFormCam,
               hotSpotConfig.childHtmlUrl,
-              hotSpotConfig.buttonTextContent,
+              hotSpotConfig.title,
+              hotSpotConfig.subTitle,
               hotSpotConfig.stemHeight,
               hotSpotConfig.buttonWidth,
               hotSpotConfig.angle,
@@ -168,7 +162,9 @@ export function loadAssetsWithPromise(
                 : undefined,
               hotSpotConfig.videoEmbedFunction,
               hotSpotConfig.videoID,
-              hotSpotConfig.webURL
+              hotSpotConfig.webURL,
+              mainCamera,
+              productViewerCallback
             );
             hotspotInstance.addToScene();
           }
@@ -526,6 +522,8 @@ export function loadAssetsWithPromise(
       reject
     );
 
+    function modelSelectionCallback(productName) {}
+
     function loadProjectModels() {
       // Load models
       loadModels(
@@ -539,8 +537,10 @@ export function loadAssetsWithPromise(
         null,
         {
           hotSpotPos: new THREE.Vector3(43.4799, 0, -25.2621),
-          childHtmlUrl: "/innerHtml/child_new.html",
-          buttonTextContent: "ABC",
+          distanceFormCam: 30,
+          childHtmlUrl: "/innerHtml/hotspot.html",
+          title: "Car Configurator",
+          subTitle: "Visualize your next car",
           stemHeight: 125,
           buttonWidth: 10,
           angle: 50,
@@ -549,7 +549,9 @@ export function loadAssetsWithPromise(
           // videoEmbedFunction: ,
           //videoID,
           webURL: "https://www.surajwaterpark.com/",
-        }
+        },
+        mainCamera,
+        setProductToviewFunction
       );
       loadModels(
         1,
@@ -560,7 +562,23 @@ export function loadAssetsWithPromise(
         null,
         "virtual_mart",
         null,
-        null
+        {
+          hotSpotPos: new THREE.Vector3(6.84667, 1.88283, -58.2661),
+          distanceFormCam: 50,
+          childHtmlUrl: "/innerHtml/hotspot.html",
+          title: "Virtual Mart",
+          subTitle: "Virtual shopping experience",
+          stemHeight: 125,
+          buttonWidth: 10,
+          angle: 50,
+          flagPosition: "start",
+          // callbackFunction? window[callbackFunction]: undefined,
+          // videoEmbedFunction: ,
+          //videoID,
+          webURL: "https://www.surajwaterpark.com/",
+        },
+        mainCamera,
+        setProductToviewFunction
       );
       loadModels(
         2,
@@ -571,7 +589,23 @@ export function loadAssetsWithPromise(
         null,
         "fashion_ix",
         null,
-        null
+        {
+          hotSpotPos: new THREE.Vector3(-48.2198, 3.26697, -39.6031),
+          distanceFormCam: 30,
+          childHtmlUrl: "/innerHtml/hotspot.html",
+          title: "Fashion IX",
+          subTitle: "Virtual fashion experience",
+          stemHeight: 125,
+          buttonWidth: 10,
+          angle: 50,
+          flagPosition: "start",
+          // callbackFunction? window[callbackFunction]: undefined,
+          // videoEmbedFunction: ,
+          //videoID,
+          webURL: "https://www.surajwaterpark.com/",
+        },
+        mainCamera,
+        setProductToviewFunction
       );
       loadModels(
         3,
@@ -582,7 +616,23 @@ export function loadAssetsWithPromise(
         null,
         "edulab_v1",
         null,
-        null
+        {
+          hotSpotPos: new THREE.Vector3(-50.4376, 0, 13.7845),
+          distanceFormCam: 30,
+          childHtmlUrl: "/innerHtml/hotspot.html",
+          title: "Edulab",
+          subTitle: "Education in VR",
+          stemHeight: 125,
+          buttonWidth: 10,
+          angle: 50,
+          flagPosition: "start",
+          // callbackFunction? window[callbackFunction]: undefined,
+          // videoEmbedFunction: ,
+          //videoID,
+          webURL: "https://www.surajwaterpark.com/",
+        },
+        mainCamera,
+        setProductToviewFunction
       );
       loadModels(
         4,
@@ -593,7 +643,23 @@ export function loadAssetsWithPromise(
         null,
         "virtual_production",
         null,
-        null
+        {
+          hotSpotPos: new THREE.Vector3(-4.10703, 5.07101, 54.2712),
+          distanceFormCam: 30,
+          childHtmlUrl: "/innerHtml/hotspot.html",
+          title: "Virtual Production",
+          subTitle: "Virtual media production",
+          stemHeight: 125,
+          buttonWidth: 10,
+          angle: 50,
+          flagPosition: "start",
+          // callbackFunction? window[callbackFunction]: undefined,
+          // videoEmbedFunction: ,
+          //videoID,
+          webURL: "https://www.surajwaterpark.com/",
+        },
+        mainCamera,
+        setProductToviewFunction
       );
       loadModels(
         5,
@@ -604,7 +670,23 @@ export function loadAssetsWithPromise(
         null,
         "meta_realty",
         null,
-        null
+        {
+          hotSpotPos: new THREE.Vector3(45.575, 6.24498, 36.8055),
+          distanceFormCam: 30,
+          childHtmlUrl: "/innerHtml/hotspot.html",
+          title: "Meta Realty",
+          subTitle: "Visualise Realty in 3D",
+          stemHeight: 125,
+          buttonWidth: 10,
+          angle: 50,
+          flagPosition: "start",
+          // callbackFunction? window[callbackFunction]: undefined,
+          // videoEmbedFunction: ,
+          //videoID,
+          webURL: "https://www.surajwaterpark.com/",
+        },
+        mainCamera,
+        setProductToviewFunction
       );
 
       teamScene = new teamHandler(scene, loader);
