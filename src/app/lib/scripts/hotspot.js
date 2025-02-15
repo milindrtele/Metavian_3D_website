@@ -16,16 +16,17 @@ class Hotspot {
     childHtmlUrl,
     title,
     subTitle,
-    stemHeight,
-    buttonWidth,
-    angle,
-    flagPosition,
-    callbackFunction,
-    videoEmbedFunction,
+    // stemHeight,
+    // buttonWidth,
+    // angle,
+    // flagPosition,
+    //callbackFunction,
+    //videoEmbedFunction,
     videoID,
     webURL,
     mainCamera,
-    productViewerCallback
+    productViewerCallback,
+    productPageVisible
   ) {
     this.cssScene = cssScene;
     this.container_div = null;
@@ -38,19 +39,21 @@ class Hotspot {
     this.child = null;
     this.title = title;
     this.subTitle = subTitle;
-    this.stemHeight = stemHeight;
-    this.buttonWidth = buttonWidth;
-    this.angle = angle;
-    this.flagPosition = flagPosition;
+    // this.stemHeight = stemHeight;
+    // this.buttonWidth = buttonWidth;
+    // this.angle = angle;
+    // this.flagPosition = flagPosition;
 
-    this.callbackFunction = callbackFunction;
+    //this.callbackFunction = callbackFunction;
 
-    this.videoEmbedFunction = videoEmbedFunction;
-    this.videoID = videoID || null;
+    //this.videoEmbedFunction = videoEmbedFunction;
+    //this.videoID = videoID || null;
     this.webURL = webURL || null;
 
     this.mainCamera = mainCamera;
     this.productViewerCallback = productViewerCallback;
+
+    this.productPageVisible = productPageVisible;
 
     this.init();
   }
@@ -62,7 +65,7 @@ class Hotspot {
       this.container_div.style.height = "max-content";
       this.container_div.style.pointerEvents = "none";
       this.container_div.style.position = "fixed";
-      this.container_div.style.zIndex = 1;
+      this.container_div.style.zIndex = 0;
 
       // Fetch HTML content from a separate file and add it to the child element
       fetch(this.childHtmlUrl)
@@ -79,9 +82,9 @@ class Hotspot {
 
           this.css2dObject = new CSS2DObject(this.container_div);
           this.css2dObject.position.set(
-            this.position.x,
-            this.position.y,
-            this.position.z
+            this.position[0],
+            this.position[1],
+            this.position[2]
           );
           this.css2dObject.center.set(0, 0);
           this.css2dObject.rotation.set(0, (Math.PI / 180) * 214.48, 0);
@@ -116,6 +119,29 @@ class Hotspot {
     if (subTitle) {
       subTitle.textContent = this.subTitle; // Change this to the desired text
     }
+
+    const hotspot = this.child.querySelector("#hotspot_container_parent");
+    const hotspot_icon = this.child.querySelector("#hotspot_icon");
+    const details_container = this.child.querySelector("#details_container");
+
+    let mouseIn = false;
+    hotspot.addEventListener("mouseenter", () => {
+      mouseIn = true;
+      hotspot.classList.add("active");
+      hotspot_icon.classList.add("active3");
+      details_container.classList.add("active2");
+    });
+
+    hotspot.addEventListener("mouseleave", () => {
+      setTimeout(() => {
+        if (mouseIn) {
+          hotspot.classList.remove("active");
+          hotspot_icon.classList.remove("active3");
+          details_container.classList.remove("active2");
+          mouseIn = false;
+        }
+      }, 100); // Wait for the longest animation duration
+    });
   }
 
   addEventListnerToChild(child) {
@@ -232,13 +258,18 @@ class Hotspot {
 
   calculateDistance(camera, cssObject) {
     const checkDistance = () => {
-      let distance = camera.position.distanceTo(cssObject.position);
-      if (distance <= this.distanceFormCam) {
-        this.css2dObject.visible = true;
-        //this.cssScene.add(this.css2dObject);
+      //console.log(this.productPageVisible + "  " + this.title);
+      if (!this.productPageVisible) {
+        let distance = camera.position.distanceTo(cssObject.position);
+        if (distance <= this.distanceFormCam) {
+          this.css2dObject.visible = true;
+          //this.cssScene.add(this.css2dObject);
+        } else {
+          this.css2dObject.visible = false;
+          //this.cssScene.remove(this.css2dObject);
+        }
       } else {
         this.css2dObject.visible = false;
-        //this.cssScene.remove(this.css2dObject);
       }
       requestAnimationFrame(checkDistance);
     };
@@ -257,6 +288,14 @@ class Hotspot {
 
   async removeFromScene() {
     await this.cssScene.remove(this.css2dObject);
+  }
+
+  async hideObject() {
+    this.css2dObject.visible = false;
+  }
+
+  async showObject() {
+    this.css2dObject.visible = true;
   }
 
   hideiFrame() {

@@ -1,0 +1,344 @@
+[
+    {
+        "productName": "Car Configurator",
+        "mainHotspot": {
+            "id": 0,
+            "hotSpotPos": [
+                43.4799,
+                0,
+                -25.2621
+            ],
+            "distanceFormCam": 30,
+            "childHtmlUrl": "/innerHtml/hotspot.html",
+            "title": "Car Configurator",
+            "subTitle": "Visualize your next car",
+            "webURL": "https://www.surajwaterpark.com/"
+        },
+        "hotspotArray": [
+            {
+                "id": 0,
+                "hotSpotPos": [
+                    43.4799,
+                    0,
+                    -25.2621
+                ],
+                "distanceFormCam": 30,
+                "childHtmlUrl": "/innerHtml/hotspot.html",
+                "title": "Car Configurator",
+                "subTitle": "Visualize your next car",
+                "webURL": "https://www.surajwaterpark.com/"
+            },
+            {
+                "id": 1,
+                "hotSpotPos": [
+                    43.4799,
+                    0,
+                    -25.2621
+                ],
+                "distanceFormCam": 30,
+                "childHtmlUrl": "/innerHtml/hotspot.html",
+                "title": "Car Configurator",
+                "subTitle": "Visualize your next car",
+                "webURL": "https://www.surajwaterpark.com/"
+            },
+            {
+                "id": 2,
+                "hotSpotPos": [
+                    43.4799,
+                    0,
+                    -25.2621
+                ],
+                "distanceFormCam": 30,
+                "childHtmlUrl": "/innerHtml/hotspot.html",
+                "title": "Car Configurator",
+                "subTitle": "Visualize your next car",
+                "webURL": "https://www.surajwaterpark.com/"
+            }
+        ]
+    },
+    {
+        "productName": "Virtual Mart",
+        "mainHotspot": {
+            "id": 0,
+            "hotSpotPos": [
+                6.84667,
+                1.88283,
+                -58.2661
+            ],
+            "distanceFormCam": 50,
+            "childHtmlUrl": "/innerHtml/hotspot.html",
+            "title": "Virtual Mart",
+            "subTitle": "Virtual shopping experience",
+            "webURL": "https://www.surajwaterpark.com/"
+        },
+        "hotspotArray": [
+            {
+                "id": 0,
+                "hotSpotPos": [
+                    43.4799,
+                    0,
+                    -25.2621
+                ],
+                "distanceFormCam": 30,
+                "childHtmlUrl": "/innerHtml/hotspot.html",
+                "title": "Car Configurator",
+                "subTitle": "Visualize your next car",
+                "webURL": "https://www.surajwaterpark.com/"
+            },
+            {
+                "id": 1,
+                "hotSpotPos": [
+                    43.4799,
+                    0,
+                    -25.2621
+                ],
+                "distanceFormCam": 30,
+                "childHtmlUrl": "/innerHtml/hotspot.html",
+                "title": "Car Configurator",
+                "subTitle": "Visualize your next car",
+                "webURL": "https://www.surajwaterpark.com/"
+            },
+            {
+                "id": 2,
+                "hotSpotPos": [
+                    43.4799,
+                    0,
+                    -25.2621
+                ],
+                "distanceFormCam": 30,
+                "childHtmlUrl": "/innerHtml/hotspot.html",
+                "title": "Car Configurator",
+                "subTitle": "Visualize your next car",
+                "webURL": "https://www.surajwaterpark.com/"
+            }
+        ]
+    },
+    {
+        "productName": "Fashion IX",
+        "mainHotspot": {
+            "id": 0,
+            "hotSpotPos": [
+                -48.2198,
+                3.26697,
+                -39.6031
+            ],
+            "distanceFormCam": 50,
+            "childHtmlUrl": "/innerHtml/hotspot.html",
+            "title": "Fashion IX",
+            "subTitle": "Virtual fashion experience",
+            "webURL": "https://www.surajwaterpark.com/"
+        },
+        "hotspotArray": [
+            {
+                "id": 0,
+                "hotSpotPos": [
+                    43.4799,
+                    0,
+                    -25.2621
+                ],
+                "distanceFormCam": 30,
+                "childHtmlUrl": "/innerHtml/hotspot.html",
+                "title": "Car Configurator",
+                "subTitle": "Visualize your next car",
+                "webURL": "https://www.surajwaterpark.com/"
+            },
+            {
+                "id": 1,
+                "hotSpotPos": [
+                    43.4799,
+                    0,
+                    -25.2621
+                ],
+                "distanceFormCam": 30,
+                "childHtmlUrl": "/innerHtml/hotspot.html",
+                "title": "Car Configurator",
+                "subTitle": "Visualize your next car",
+                "webURL": "https://www.surajwaterpark.com/"
+            },
+            {
+                "id": 2,
+                "hotSpotPos": [
+                    43.4799,
+                    0,
+                    -25.2621
+                ],
+                "distanceFormCam": 30,
+                "childHtmlUrl": "/innerHtml/hotspot.html",
+                "title": "Car Configurator",
+                "subTitle": "Visualize your next car",
+                "webURL": "https://www.surajwaterpark.com/"
+            }
+        ]
+    },
+    {
+        "productName": "Edulab",
+        "mainHotspot": {
+            "id": 0,
+            "hotSpotPos": [
+                -50.4376,
+                0,
+                13.7845
+            ],
+            "distanceFormCam": 30,
+            "childHtmlUrl": "/innerHtml/hotspot.html",
+            "title": "Edulab",
+            "subTitle": "Education in VR",
+            "webURL": "https://www.surajwaterpark.com/"
+        },
+        "hotspotArray": [
+            {
+                "id": 0,
+                "hotSpotPos": [
+                    43.4799,
+                    0,
+                    -25.2621
+                ],
+                "distanceFormCam": 30,
+                "childHtmlUrl": "/innerHtml/hotspot.html",
+                "title": "Car Configurator",
+                "subTitle": "Visualize your next car",
+                "webURL": "https://www.surajwaterpark.com/"
+            },
+            {
+                "id": 1,
+                "hotSpotPos": [
+                    43.4799,
+                    0,
+                    -25.2621
+                ],
+                "distanceFormCam": 30,
+                "childHtmlUrl": "/innerHtml/hotspot.html",
+                "title": "Car Configurator",
+                "subTitle": "Visualize your next car",
+                "webURL": "https://www.surajwaterpark.com/"
+            },
+            {
+                "id": 2,
+                "hotSpotPos": [
+                    43.4799,
+                    0,
+                    -25.2621
+                ],
+                "distanceFormCam": 30,
+                "childHtmlUrl": "/innerHtml/hotspot.html",
+                "title": "Car Configurator",
+                "subTitle": "Visualize your next car",
+                "webURL": "https://www.surajwaterpark.com/"
+            }
+        ]
+    },
+    {
+        "productName": "Virtual Production",
+        "mainHotspot": {
+            "id": 0,
+            "hotSpotPos": [
+                -4.10703,
+                5.07101,
+                54.2712
+            ],
+            "distanceFormCam": 30,
+            "childHtmlUrl": "/innerHtml/hotspot.html",
+            "title": "Virtual Production",
+            "subTitle": "Virtual media production",
+            "webURL": "https://www.surajwaterpark.com/"
+        },
+        "hotspotArray": [
+            {
+                "id": 0,
+                "hotSpotPos": [
+                    43.4799,
+                    0,
+                    -25.2621
+                ],
+                "distanceFormCam": 30,
+                "childHtmlUrl": "/innerHtml/hotspot.html",
+                "title": "Car Configurator",
+                "subTitle": "Visualize your next car",
+                "webURL": "https://www.surajwaterpark.com/"
+            },
+            {
+                "id": 1,
+                "hotSpotPos": [
+                    43.4799,
+                    0,
+                    -25.2621
+                ],
+                "distanceFormCam": 30,
+                "childHtmlUrl": "/innerHtml/hotspot.html",
+                "title": "Car Configurator",
+                "subTitle": "Visualize your next car",
+                "webURL": "https://www.surajwaterpark.com/"
+            },
+            {
+                "id": 2,
+                "hotSpotPos": [
+                    43.4799,
+                    0,
+                    -25.2621
+                ],
+                "distanceFormCam": 30,
+                "childHtmlUrl": "/innerHtml/hotspot.html",
+                "title": "Car Configurator",
+                "subTitle": "Visualize your next car",
+                "webURL": "https://www.surajwaterpark.com/"
+            }
+        ]
+    },
+    {
+        "productName": "Meta Realty",
+        "mainHotspot": {
+            "id": 0,
+            "hotSpotPos": [
+                45.575,
+                6.24498,
+                36.8055
+            ],
+            "distanceFormCam": 30,
+            "childHtmlUrl": "/innerHtml/hotspot.html",
+            "title": "Meta Realty",
+            "subTitle": "Visualise Realty in 3D",
+            "webURL": "https://www.surajwaterpark.com/"
+        },
+        "hotspotArray": [
+            {
+                "id": 0,
+                "hotSpotPos": [
+                    43.4799,
+                    0,
+                    -25.2621
+                ],
+                "distanceFormCam": 30,
+                "childHtmlUrl": "/innerHtml/hotspot.html",
+                "title": "Car Configurator",
+                "subTitle": "Visualize your next car",
+                "webURL": "https://www.surajwaterpark.com/"
+            },
+            {
+                "id": 1,
+                "hotSpotPos": [
+                    43.4799,
+                    0,
+                    -25.2621
+                ],
+                "distanceFormCam": 30,
+                "childHtmlUrl": "/innerHtml/hotspot.html",
+                "title": "Car Configurator",
+                "subTitle": "Visualize your next car",
+                "webURL": "https://www.surajwaterpark.com/"
+            },
+            {
+                "id": 2,
+                "hotSpotPos": [
+                    43.4799,
+                    0,
+                    -25.2621
+                ],
+                "distanceFormCam": 30,
+                "childHtmlUrl": "/innerHtml/hotspot.html",
+                "title": "Car Configurator",
+                "subTitle": "Visualize your next car",
+                "webURL": "https://www.surajwaterpark.com/"
+            }
+        ]
+    }
+]

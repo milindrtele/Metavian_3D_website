@@ -1,15 +1,16 @@
 .product_info_container {
   position: absolute;
-  z-index: 1000;
+  z-index: 10;
   display: flex;
   flex-direction: row;
   width: 100vw;
   height: 100vh;
-  background: radial-gradient(
+  background-color: black;
+  /* background: radial-gradient(
     circle,
     rgba(53, 162, 255, 1) 0%,
     rgba(162, 239, 255, 1) 100%
-  );
+  ); */
   overflow: hidden;
 }
 
@@ -26,9 +27,9 @@
 
 .close_button_container {
   position: absolute;
-  top: 15%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  top: 1vw;
+  right: 1vw;
+  /* transform: translate(-50%, -50%); */
   width: 3vw;
   height: 3vw;
   z-index: 10;

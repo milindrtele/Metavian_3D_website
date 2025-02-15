@@ -51,6 +51,10 @@ let icon_animations = null;
 let teamScene = null;
 let printerScene = null;
 
+let hotspotData = null;
+
+let hotspotsArray = [];
+
 export function loadAssetsWithPromise(
   loader,
   clip,
@@ -59,7 +63,8 @@ export function loadAssetsWithPromise(
   scene,
   css2DScene,
   mainCamera,
-  setProductToviewFunction
+  setProductToviewFunction,
+  productPageVisible
 ) {
   return new Promise((resolve, reject) => {
     let loadedModels = 0;
@@ -70,6 +75,15 @@ export function loadAssetsWithPromise(
     // cubeRenderTarget.texture.type = THREE.HalfFloatType;
 
     // cubeCamera = new THREE.CubeCamera(1, 1000, cubeRenderTarget);
+
+    const check = () => {
+      const checkValue = () => {
+        console.log(productPageVisible);
+        requestAnimationFrame(checkValue);
+      };
+      requestAnimationFrame(checkValue);
+    };
+    check();
 
     const checkIfAllLoaded = () => {
       loadedModels++;
@@ -83,6 +97,29 @@ export function loadAssetsWithPromise(
       }
     };
 
+    // Fetch product data from JSON file
+    async function findProductData(url) {
+      try {
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const data = await response.json();
+        return data;
+      } catch (error) {
+        console.error("Failed to fetch texture data:", error);
+        return null;
+      }
+    }
+
+    // Find texture data for a specific roof texture name
+    async function find_From_Data(name) {
+      if (!hotspotData) {
+        hotspotData = await findProductData("/json/hotspotData.json");
+      }
+      return hotspotData?.find((item) => item.productName === name);
+    }
+
     const loadModels = (
       index,
       url,
@@ -94,7 +131,8 @@ export function loadAssetsWithPromise(
       callback,
       hotSpotConfig,
       mainCamera,
-      productViewerCallback
+      productViewerCallback,
+      productPageVisible
     ) => {
       loader.load(
         url,
@@ -144,30 +182,52 @@ export function loadAssetsWithPromise(
           //   }
           // });
 
+          console.log(hotSpotConfig);
           if (hotSpotConfig != null) {
             //css2DHotspot
+            const mainHotspotData = hotSpotConfig.mainHotspot;
+            console.log(hotSpotConfig);
             const hotspotInstance = new Hotspot(
               css2DScene,
-              hotSpotConfig.hotSpotPos,
-              hotSpotConfig.distanceFormCam,
-              hotSpotConfig.childHtmlUrl,
-              hotSpotConfig.title,
-              hotSpotConfig.subTitle,
-              hotSpotConfig.stemHeight,
-              hotSpotConfig.buttonWidth,
-              hotSpotConfig.angle,
-              hotSpotConfig.flagPosition,
-              hotSpotConfig.callbackFunction
-                ? window[hotSpotConfig.callbackFunction]
-                : undefined,
-              hotSpotConfig.videoEmbedFunction,
-              hotSpotConfig.videoID,
-              hotSpotConfig.webURL,
+              mainHotspotData.hotSpotPos,
+              mainHotspotData.distanceFormCam,
+              mainHotspotData.childHtmlUrl,
+              mainHotspotData.title,
+              mainHotspotData.subTitle,
+              mainHotspotData.videoID,
+              mainHotspotData.webURL,
               mainCamera,
-              productViewerCallback
+              productViewerCallback,
+              productPageVisible
             );
             hotspotInstance.addToScene();
+            hotspotsArray.push(hotspotInstance);
+            console.log(hotspotsArray);
           }
+          // if (hotSpotConfig != null) {
+          //   //css2DHotspot
+          //   const hotspotInstance = new Hotspot(
+          //     css2DScene,
+          //     hotSpotConfig.hotSpotPos,
+          //     hotSpotConfig.distanceFormCam,
+          //     hotSpotConfig.childHtmlUrl,
+          //     hotSpotConfig.title,
+          //     hotSpotConfig.subTitle,
+          //     hotSpotConfig.stemHeight,
+          //     hotSpotConfig.buttonWidth,
+          //     hotSpotConfig.angle,
+          //     hotSpotConfig.flagPosition,
+          //     // hotSpotConfig.callbackFunction
+          //     //   ? window[hotSpotConfig.callbackFunction]
+          //     //   : undefined,
+          //     // hotSpotConfig.videoEmbedFunction,
+          //     //hotSpotConfig.videoID,
+          //     hotSpotConfig.webURL,
+          //     mainCamera,
+          //     productViewerCallback
+          //   );
+          //   hotspotInstance.addToScene();
+          // }
         },
         undefined,
         reject
@@ -522,172 +582,264 @@ export function loadAssetsWithPromise(
       reject
     );
 
-    function modelSelectionCallback(productName) {}
+    //function modelSelectionCallback(productName) {}
 
     function loadProjectModels() {
-      // Load models
-      loadModels(
-        0,
-        "models/Consolidated models/saperated_animated_models/car_configurator/car_configurator_white_withShadows.glb",
-        "anchor",
-        null,
-        null,
-        null,
-        "car_configurator",
-        null,
-        {
-          hotSpotPos: new THREE.Vector3(43.4799, 0, -25.2621),
-          distanceFormCam: 30,
-          childHtmlUrl: "/innerHtml/hotspot.html",
-          title: "Car Configurator",
-          subTitle: "Visualize your next car",
-          stemHeight: 125,
-          buttonWidth: 10,
-          angle: 50,
-          flagPosition: "start",
-          // callbackFunction? window[callbackFunction]: undefined,
-          // videoEmbedFunction: ,
-          //videoID,
-          webURL: "https://www.surajwaterpark.com/",
-        },
-        mainCamera,
-        setProductToviewFunction
-      );
-      loadModels(
-        1,
-        "models/Consolidated models/saperated_animated_models/virtual_mart/virtual_mart_white_withShadows.glb", //"models/positioned assets 2/virtual_mart_2.glb",
-        "anchor",
-        null,
-        null,
-        null,
-        "virtual_mart",
-        null,
-        {
-          hotSpotPos: new THREE.Vector3(6.84667, 1.88283, -58.2661),
-          distanceFormCam: 50,
-          childHtmlUrl: "/innerHtml/hotspot.html",
-          title: "Virtual Mart",
-          subTitle: "Virtual shopping experience",
-          stemHeight: 125,
-          buttonWidth: 10,
-          angle: 50,
-          flagPosition: "start",
-          // callbackFunction? window[callbackFunction]: undefined,
-          // videoEmbedFunction: ,
-          //videoID,
-          webURL: "https://www.surajwaterpark.com/",
-        },
-        mainCamera,
-        setProductToviewFunction
-      );
-      loadModels(
-        2,
-        "models/Consolidated models/saperated_animated_models/fashion_ix/fashion_ix_white_withShadows.glb", //"models/positioned assets 2/fashion_ix.glb",
-        "anchor",
-        null,
-        null,
-        null,
-        "fashion_ix",
-        null,
-        {
-          hotSpotPos: new THREE.Vector3(-48.2198, 3.26697, -39.6031),
-          distanceFormCam: 30,
-          childHtmlUrl: "/innerHtml/hotspot.html",
-          title: "Fashion IX",
-          subTitle: "Virtual fashion experience",
-          stemHeight: 125,
-          buttonWidth: 10,
-          angle: 50,
-          flagPosition: "start",
-          // callbackFunction? window[callbackFunction]: undefined,
-          // videoEmbedFunction: ,
-          //videoID,
-          webURL: "https://www.surajwaterpark.com/",
-        },
-        mainCamera,
-        setProductToviewFunction
-      );
-      loadModels(
-        3,
-        "models/Consolidated models/saperated_animated_models/edulab/edulab_white_withShadows.glb", //"models/positioned assets 2/edulab_2.glb",
-        "anchor",
-        null,
-        null,
-        null,
-        "edulab_v1",
-        null,
-        {
-          hotSpotPos: new THREE.Vector3(-50.4376, 0, 13.7845),
-          distanceFormCam: 30,
-          childHtmlUrl: "/innerHtml/hotspot.html",
-          title: "Edulab",
-          subTitle: "Education in VR",
-          stemHeight: 125,
-          buttonWidth: 10,
-          angle: 50,
-          flagPosition: "start",
-          // callbackFunction? window[callbackFunction]: undefined,
-          // videoEmbedFunction: ,
-          //videoID,
-          webURL: "https://www.surajwaterpark.com/",
-        },
-        mainCamera,
-        setProductToviewFunction
-      );
-      loadModels(
-        4,
-        "models/Consolidated models/saperated_animated_models/virtual_production/virtual_production_white_withShadows.glb", //"models/positioned assets 2/virtual_production.glb",
-        "anchor",
-        null,
-        null,
-        null,
-        "virtual_production",
-        null,
-        {
-          hotSpotPos: new THREE.Vector3(-4.10703, 5.07101, 54.2712),
-          distanceFormCam: 30,
-          childHtmlUrl: "/innerHtml/hotspot.html",
-          title: "Virtual Production",
-          subTitle: "Virtual media production",
-          stemHeight: 125,
-          buttonWidth: 10,
-          angle: 50,
-          flagPosition: "start",
-          // callbackFunction? window[callbackFunction]: undefined,
-          // videoEmbedFunction: ,
-          //videoID,
-          webURL: "https://www.surajwaterpark.com/",
-        },
-        mainCamera,
-        setProductToviewFunction
-      );
-      loadModels(
-        5,
-        "models/Consolidated models/saperated_animated_models/meta_realty/meta_realty_white_withShadows.glb", //"models/positioned assets 2/meta_realty.glb",
-        "anchor",
-        null,
-        null,
-        null,
-        "meta_realty",
-        null,
-        {
-          hotSpotPos: new THREE.Vector3(45.575, 6.24498, 36.8055),
-          distanceFormCam: 30,
-          childHtmlUrl: "/innerHtml/hotspot.html",
-          title: "Meta Realty",
-          subTitle: "Visualise Realty in 3D",
-          stemHeight: 125,
-          buttonWidth: 10,
-          angle: 50,
-          flagPosition: "start",
-          // callbackFunction? window[callbackFunction]: undefined,
-          // videoEmbedFunction: ,
-          //videoID,
-          webURL: "https://www.surajwaterpark.com/",
-        },
-        mainCamera,
-        setProductToviewFunction
-      );
+      //Load models
+
+      //Car Configurator
+      find_From_Data("Car Configurator").then((hotspotData) => {
+        console.log(hotspotData);
+        loadModels(
+          0,
+          "models/Consolidated models/saperated_animated_models/car_configurator/car_configurator_white_withShadows.glb",
+          "anchor",
+          null,
+          null,
+          null,
+          "car_configurator",
+          null,
+          hotspotData,
+          // {
+          //   hotSpotPos: new THREE.Vector3(43.4799, 0, -25.2621),
+          //   distanceFormCam: 30,
+          //   childHtmlUrl: "/innerHtml/hotspot.html",
+          //   title: "Car Configurator",
+          //   subTitle: "Visualize your next car",
+          //   stemHeight: 125,
+          //   buttonWidth: 10,
+          //   angle: 50,
+          //   flagPosition: "start",
+          //   // callbackFunction? window[callbackFunction]: undefined,
+          //   // videoEmbedFunction: ,
+          //   // videoID,
+          //   webURL: "https://www.surajwaterpark.com/",
+          // },
+          mainCamera,
+          setProductToviewFunction,
+          productPageVisible
+        );
+      });
+      // loadModels(
+      //   0,
+      //   "models/Consolidated models/saperated_animated_models/car_configurator/car_configurator_white_withShadows.glb",
+      //   "anchor",
+      //   null,
+      //   null,
+      //   null,
+      //   "car_configurator",
+      //   null,
+      //   //hotspotData,
+      //   {
+      //     hotSpotPos: new THREE.Vector3(43.4799, 0, -25.2621),
+      //     distanceFormCam: 30,
+      //     childHtmlUrl: "/innerHtml/hotspot.html",
+      //     title: "Car Configurator",
+      //     subTitle: "Visualize your next car",
+      //     stemHeight: 125,
+      //     buttonWidth: 10,
+      //     angle: 50,
+      //     flagPosition: "start",
+      //     // callbackFunction? window[callbackFunction]: undefined,
+      //     // videoEmbedFunction: ,
+      //     // videoID,
+      //     webURL: "https://www.surajwaterpark.com/",
+      //   },
+      //   mainCamera,
+      //   setProductToviewFunction,
+      //   productPageVisible
+      // );
+
+      //////////Virtual Mart
+      find_From_Data("Virtual Mart").then((hotspotData) => {
+        loadModels(
+          1,
+          "models/Consolidated models/saperated_animated_models/virtual_mart/virtual_mart_white_withShadows.glb", //"models/positioned assets 2/virtual_mart_2.glb",
+          "anchor",
+          null,
+          null,
+          null,
+          "virtual_mart",
+          null,
+          hotspotData,
+          // {
+          //   hotSpotPos: new THREE.Vector3(6.84667, 1.88283, -58.2661),
+          //   distanceFormCam: 50,
+          //   childHtmlUrl: "/innerHtml/hotspot.html",
+          //   title: "Virtual Mart",
+          //   subTitle: "Virtual shopping experience",
+          //   stemHeight: 125,
+          //   buttonWidth: 10,
+          //   angle: 50,
+          //   flagPosition: "start",
+          //   // callbackFunction? window[callbackFunction]: undefined,
+          //   // videoEmbedFunction: ,
+          //   //videoID,
+          //   webURL: "https://www.surajwaterpark.com/",
+          // },
+          mainCamera,
+          setProductToviewFunction,
+          productPageVisible
+        );
+      });
+
+      // loadModels(
+      //   1,
+      //   "models/Consolidated models/saperated_animated_models/virtual_mart/virtual_mart_white_withShadows.glb", //"models/positioned assets 2/virtual_mart_2.glb",
+      //   "anchor",
+      //   null,
+      //   null,
+      //   null,
+      //   "virtual_mart",
+      //   null,
+      //   {
+      //     hotSpotPos: new THREE.Vector3(6.84667, 1.88283, -58.2661),
+      //     distanceFormCam: 50,
+      //     childHtmlUrl: "/innerHtml/hotspot.html",
+      //     title: "Virtual Mart",
+      //     subTitle: "Virtual shopping experience",
+      //     stemHeight: 125,
+      //     buttonWidth: 10,
+      //     angle: 50,
+      //     flagPosition: "start",
+      //     // callbackFunction? window[callbackFunction]: undefined,
+      //     // videoEmbedFunction: ,
+      //     //videoID,
+      //     webURL: "https://www.surajwaterpark.com/",
+      //   },
+      //   mainCamera,
+      //   setProductToviewFunction,
+      //   productPageVisible
+      // );
+
+      //Fashion IX
+      find_From_Data("Fashion IX").then((hotspotData) => {
+        loadModels(
+          2,
+          "models/Consolidated models/saperated_animated_models/fashion_ix/fashion_ix_white_withShadows.glb", //"models/positioned assets 2/fashion_ix.glb",
+          "anchor",
+          null,
+          null,
+          null,
+          "fashion_ix",
+          null,
+          hotspotData,
+          // {
+          //   hotSpotPos: new THREE.Vector3(-48.2198, 3.26697, -39.6031),
+          //   distanceFormCam: 30,
+          //   childHtmlUrl: "/innerHtml/hotspot.html",
+          //   title: "Fashion IX",
+          //   subTitle: "Virtual fashion experience",
+          //   stemHeight: 125,
+          //   buttonWidth: 10,
+          //   angle: 50,
+          //   flagPosition: "start",
+          //   // callbackFunction? window[callbackFunction]: undefined,
+          //   // videoEmbedFunction: ,
+          //   //videoID,
+          //   webURL: "https://www.surajwaterpark.com/",
+          // },
+          mainCamera,
+          setProductToviewFunction,
+          productPageVisible
+        );
+      });
+
+      find_From_Data("Edulab").then((hotspotData) => {
+        loadModels(
+          3,
+          "models/Consolidated models/saperated_animated_models/edulab/edulab_white_withShadows.glb", //"models/positioned assets 2/edulab_2.glb",
+          "anchor",
+          null,
+          null,
+          null,
+          "edulab_v1",
+          null,
+          hotspotData,
+          // {
+          //   hotSpotPos: new THREE.Vector3(-50.4376, 0, 13.7845),
+          //   distanceFormCam: 30,
+          //   childHtmlUrl: "/innerHtml/hotspot.html",
+          //   title: "Edulab",
+          //   subTitle: "Education in VR",
+          //   stemHeight: 125,
+          //   buttonWidth: 10,
+          //   angle: 50,
+          //   flagPosition: "start",
+          //   // callbackFunction? window[callbackFunction]: undefined,
+          //   // videoEmbedFunction: ,
+          //   //videoID,
+          //   webURL: "https://www.surajwaterpark.com/",
+          // },
+          mainCamera,
+          setProductToviewFunction,
+          productPageVisible
+        );
+      });
+
+      find_From_Data("Virtual Production").then((hotspotData) => {
+        loadModels(
+          4,
+          "models/Consolidated models/saperated_animated_models/virtual_production/virtual_production_white_withShadows.glb", //"models/positioned assets 2/virtual_production.glb",
+          "anchor",
+          null,
+          null,
+          null,
+          "virtual_production",
+          null,
+          hotspotData,
+          // {
+          //   hotSpotPos: new THREE.Vector3(-4.10703, 5.07101, 54.2712),
+          //   distanceFormCam: 30,
+          //   childHtmlUrl: "/innerHtml/hotspot.html",
+          //   title: "Virtual Production",
+          //   subTitle: "Virtual media production",
+          //   stemHeight: 125,
+          //   buttonWidth: 10,
+          //   angle: 50,
+          //   flagPosition: "start",
+          //   // callbackFunction? window[callbackFunction]: undefined,
+          //   // videoEmbedFunction: ,
+          //   //videoID,
+          //   webURL: "https://www.surajwaterpark.com/",
+          // },
+          mainCamera,
+          setProductToviewFunction,
+          productPageVisible
+        );
+      });
+
+      find_From_Data("Meta Realty").then((hotspotData) => {
+        loadModels(
+          5,
+          "models/Consolidated models/saperated_animated_models/meta_realty/meta_realty_white_withShadows.glb", //"models/positioned assets 2/meta_realty.glb",
+          "anchor",
+          null,
+          null,
+          null,
+          "meta_realty",
+          null,
+          hotspotData,
+          // {
+          //   hotSpotPos: new THREE.Vector3(45.575, 6.24498, 36.8055),
+          //   distanceFormCam: 30,
+          //   childHtmlUrl: "/innerHtml/hotspot.html",
+          //   title: "Meta Realty",
+          //   subTitle: "Visualise Realty in 3D",
+          //   stemHeight: 125,
+          //   buttonWidth: 10,
+          //   angle: 50,
+          //   flagPosition: "start",
+          //   // callbackFunction? window[callbackFunction]: undefined,
+          //   // videoEmbedFunction: ,
+          //   //videoID,
+          //   webURL: "https://www.surajwaterpark.com/",
+          // },
+          mainCamera,
+          setProductToviewFunction,
+          productPageVisible
+        );
+      });
 
       teamScene = new teamHandler(scene, loader);
       printerScene = new printerHandler(scene, loader);
@@ -720,4 +872,5 @@ export {
   icon_animations,
   teamScene,
   printerScene,
+  hotspotsArray,
 };

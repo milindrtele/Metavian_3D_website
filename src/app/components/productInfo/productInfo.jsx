@@ -5,6 +5,8 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
+import Hotspot from "../../lib/scripts/hotspot.js";
+
 export default function ProductInfo(props) {
   const loader = new GLTFLoader();
   const productCanvasRef = useRef(null);
@@ -13,6 +15,7 @@ export default function ProductInfo(props) {
   const productCamRef = useRef(null);
   const productOrbitControlsRef = useRef(null);
   const productsDataRef = useRef(null);
+  const hotspotDataRef = useRef(null);
 
   // Fetch product data from JSON file
   async function findProductData(url) {
@@ -37,6 +40,14 @@ export default function ProductInfo(props) {
     return productsDataRef.current?.find((item) => item.productName === name);
   }
 
+  // Find texture data for a specific roof texture name
+  async function find_Hotspot_From_Data(name) {
+    if (!hotspotDataRef.current) {
+      hotspotDataRef.current = await findProductData("/json/hotspotData.json");
+    }
+    return hotspotDataRef.current?.find((item) => item.productName === name);
+  }
+
   function loadHDRI() {
     return new Promise((resolve, reject) => {
       new RGBELoader()
@@ -50,6 +61,10 @@ export default function ProductInfo(props) {
         });
     });
   }
+
+  const placeHotspots = () => {
+    return new Promise((resolve, reject) => {});
+  };
 
   const loadTheProductModel = (url) => {
     loader.load(
@@ -129,7 +144,7 @@ export default function ProductInfo(props) {
       >
         <div className={[styles.close_button]}></div>
       </div>
-      <div className={[styles.product_info]}>
+      {/* <div className={[styles.product_info]}>
         <div className={[styles.product_info_parent]}>
           <div className={[styles.call_to_action_buttons]}>
             <div className={[styles.button, styles.button_1].join(" ")}>
@@ -168,7 +183,7 @@ export default function ProductInfo(props) {
           </div>
           <div className={[styles.footer]}></div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

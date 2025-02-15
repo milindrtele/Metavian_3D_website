@@ -81,6 +81,7 @@ import {
   icon_animations,
   teamScene,
   printerScene,
+  hotspotsArray,
 } from "../lib/scripts/assetLoader_02.js";
 
 import animateSpotLights from "../lib/scripts/animateSpotLights.js";
@@ -217,6 +218,7 @@ export default function Horizon() {
 
   const [productToViewInViewer, setProductToViewInViewer] = useState(null);
 
+  const productPageVisibleRef = useRef(false);
   const [productPageVisible, setProductPageVisible] = useState(false);
 
   gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
@@ -784,7 +786,8 @@ export default function Horizon() {
         sceneRef.current,
         css2DSceneRef.current,
         cameraRef.current,
-        setProductToViewInViewer
+        showProductViewer,
+        productPageVisibleRef.current
       )
         .then(() => {
           // console.log("All assets loaded successfully!");
@@ -1002,19 +1005,27 @@ export default function Horizon() {
         // } else {
         //   rendererRef.current.render(sceneRef.current, cameraRef.current);
         // }
-        rendererRef.current.render(sceneRef.current, cameraRef.current);
+        //rendererRef.current.render(sceneRef.current, cameraRef.current);
+        if (productPageVisibleRef.current == false) {
+          rendererRef.current.render(sceneRef.current, cameraRef.current);
+        }
 
         // Render CSS3D scene
-        if (css3dRendererRef.current != null) {
+        if (
+          css3dRendererRef.current != null &&
+          currentUserPositionRef.current == "Menu Item 2"
+        ) {
           css3dRendererRef.current.render(
             css3DSceneRef.current,
             cameraRef.current
           );
         }
-        // Render CSS2D scene
+
+        //console.log(productPageVisibleRef.current);
         if (
           css2dRendererRef.current != null &&
-          currentUserPositionRef.current == "Menu Item 1"
+          currentUserPositionRef.current == "Menu Item 1" &&
+          productPageVisibleRef.current == false
         ) {
           css2dRendererRef.current.render(
             css2DSceneRef.current,
@@ -1403,10 +1414,28 @@ export default function Horizon() {
     }
   }, [getStartedCompleted]);
 
+  // useEffect(() => {
+  //   productPageVisibleRef.current = true;
+  //   console.log(productToViewInViewer);
+  // }, [productToViewInViewer]);
+
   useEffect(() => {
+    console.log(productPageVisibleRef.current);
+  }, [productPageVisibleRef.current]);
+
+  const showProductViewer = (productName) => {
+    productPageVisibleRef.current = true;
     setProductPageVisible(true);
-    console.log(productToViewInViewer);
-  }, [productToViewInViewer]);
+    setProductToViewInViewer(productName);
+
+    console.log(hotspotsArray);
+    if (hotspotsArray) {
+      hotspotsArray.forEach((hotspot) => {
+        //hotspot.hideObject();
+        hotspot.removeFromScene();
+      });
+    }
+  };
 
   // useEffect(() => {
   //   if (startSequenceCompleteRef.current) {
@@ -1483,10 +1512,27 @@ export default function Horizon() {
       });
     };
 
+    function removeAllHotspotsFromArray() {
+      if (hotspotsArray) {
+        hotspotsArray.forEach((hotspot) => {
+          hotspot.removeFromScene();
+        });
+      }
+    }
+
+    function addAllHotspotsFromArray() {
+      if (hotspotsArray) {
+        hotspotsArray.forEach((hotspot) => {
+          hotspot.addToScene();
+        });
+      }
+    }
+
     // Check if the user position has changed
     if (old_pos != current_pos) {
       // Handling the "home" position
       if (currentUserPositionRef.current == "home") {
+        removeAllHotspotsFromArray();
         stopVideoIfLoaded()
           .then(() => {
             hideiFrame(); // Hide the iframe after video stops
@@ -1520,6 +1566,7 @@ export default function Horizon() {
             console.error("Failed to stop video: ", error);
           });
       } else if (currentUserPositionRef.current == "Menu Item 1") {
+        addAllHotspotsFromArray();
         stopVideoIfLoaded()
           .then(() => {
             hideiFrame();
@@ -1564,6 +1611,7 @@ export default function Horizon() {
             console.error("Failed to stop video: ", error);
           });
       } else if (currentUserPositionRef.current == "Menu Item 2") {
+        removeAllHotspotsFromArray();
         sceneRef.current.remove(social_media_models_scene);
         showiFrame();
 
@@ -1592,6 +1640,7 @@ export default function Horizon() {
         );
         currentCameraTargetRef.current = { x: 53.8746, y: 0.041, z: -30.8687 };
       } else if (currentUserPositionRef.current == "Menu Item 3") {
+        removeAllHotspotsFromArray();
         stopVideoIfLoaded()
           .then(() => {
             capsule_anchorRef.current.visible = false;
@@ -1642,6 +1691,7 @@ export default function Horizon() {
             console.error("Failed to stop video: ", error);
           });
       } else if (currentUserPositionRef.current == "Menu Item 4") {
+        removeAllHotspotsFromArray();
         stopVideoIfLoaded()
           .then(() => {
             hideiFrame(); // Hide the iframe after video stops
@@ -1679,6 +1729,7 @@ export default function Horizon() {
             console.error("Failed to stop video: ", error);
           });
       } else if (currentUserPositionRef.current == "Menu Item 5") {
+        removeAllHotspotsFromArray();
         stopVideoIfLoaded()
           .then(() => {
             hideiFrame(); // Hide the iframe after video stops
@@ -2130,7 +2181,17 @@ export default function Horizon() {
   };
 
   const closeProductPage = () => {
+    productPageVisibleRef.current = false;
     setProductPageVisible(false);
+
+    console.log(hotspotsArray);
+    if (hotspotsArray) {
+      hotspotsArray.forEach((hotspot) => {
+        console.log(hotspot);
+        //hotspot.showObject();
+        hotspot.addToScene();
+      });
+    }
   };
 
   return (
