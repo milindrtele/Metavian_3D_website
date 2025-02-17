@@ -188,6 +188,7 @@ export function loadAssetsWithPromise(
             const mainHotspotData = hotSpotConfig.mainHotspot;
             console.log(hotSpotConfig);
             const hotspotInstance = new Hotspot(
+              "primary",
               css2DScene,
               mainHotspotData.hotSpotPos,
               mainHotspotData.distanceFormCam,

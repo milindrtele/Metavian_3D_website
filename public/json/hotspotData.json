@@ -18,9 +18,9 @@
             {
                 "id": 0,
                 "hotSpotPos": [
-                    43.4799,
+                    5,
                     0,
-                    -25.2621
+                    0
                 ],
                 "distanceFormCam": 30,
                 "childHtmlUrl": "/innerHtml/hotspot.html",
@@ -31,9 +31,9 @@
             {
                 "id": 1,
                 "hotSpotPos": [
-                    43.4799,
                     0,
-                    -25.2621
+                    10,
+                    0
                 ],
                 "distanceFormCam": 30,
                 "childHtmlUrl": "/innerHtml/hotspot.html",
@@ -44,9 +44,9 @@
             {
                 "id": 2,
                 "hotSpotPos": [
-                    43.4799,
+                    -5,
                     0,
-                    -25.2621
+                    0
                 ],
                 "distanceFormCam": 30,
                 "childHtmlUrl": "/innerHtml/hotspot.html",
@@ -75,9 +75,9 @@
             {
                 "id": 0,
                 "hotSpotPos": [
-                    43.4799,
-                    0,
-                    -25.2621
+                    -6.88312,
+                    4.10252,
+                    4.74069
                 ],
                 "distanceFormCam": 30,
                 "childHtmlUrl": "/innerHtml/hotspot.html",
@@ -88,9 +88,9 @@
             {
                 "id": 1,
                 "hotSpotPos": [
-                    43.4799,
-                    0,
-                    -25.2621
+                    5.60678,
+                    -1.77776,
+                    6.70078 
                 ],
                 "distanceFormCam": 30,
                 "childHtmlUrl": "/innerHtml/hotspot.html",
@@ -101,9 +101,9 @@
             {
                 "id": 2,
                 "hotSpotPos": [
-                    43.4799,
-                    0,
-                    -25.2621
+                    7.33895,
+                    4.10252,
+                    -4.60394 
                 ],
                 "distanceFormCam": 30,
                 "childHtmlUrl": "/innerHtml/hotspot.html",
@@ -132,9 +132,9 @@
             {
                 "id": 0,
                 "hotSpotPos": [
-                    43.4799,
-                    0,
-                    -25.2621
+                    -7.72469,
+                    5.63703,
+                    5.73289
                 ],
                 "distanceFormCam": 30,
                 "childHtmlUrl": "/innerHtml/hotspot.html",
@@ -145,9 +145,9 @@
             {
                 "id": 1,
                 "hotSpotPos": [
-                    43.4799,
-                    0,
-                    -25.2621
+                    4.98392,
+                    -1.81657,
+                    9.68837 
                 ],
                 "distanceFormCam": 30,
                 "childHtmlUrl": "/innerHtml/hotspot.html",
@@ -158,9 +158,9 @@
             {
                 "id": 2,
                 "hotSpotPos": [
-                    43.4799,
-                    0,
-                    -25.2621
+                    9.06669,
+                    5.70875 ,
+                    -3.47836
                 ],
                 "distanceFormCam": 30,
                 "childHtmlUrl": "/innerHtml/hotspot.html",
@@ -189,9 +189,9 @@
             {
                 "id": 0,
                 "hotSpotPos": [
-                    43.4799,
-                    0,
-                    -25.2621
+                    -5.73743,
+                    6.19643,
+                    5.32434
                 ],
                 "distanceFormCam": 30,
                 "childHtmlUrl": "/innerHtml/hotspot.html",
@@ -202,9 +202,9 @@
             {
                 "id": 1,
                 "hotSpotPos": [
-                    43.4799,
-                    0,
-                    -25.2621
+                    7.38981,
+                    -3.35066,
+                    5.32434
                 ],
                 "distanceFormCam": 30,
                 "childHtmlUrl": "/innerHtml/hotspot.html",
@@ -215,9 +215,9 @@
             {
                 "id": 2,
                 "hotSpotPos": [
-                    43.4799,
-                    0,
-                    -25.2621
+                    7.43571,
+                    6.28823,
+                    -4.81944
                 ],
                 "distanceFormCam": 30,
                 "childHtmlUrl": "/innerHtml/hotspot.html",
@@ -246,9 +246,9 @@
             {
                 "id": 0,
                 "hotSpotPos": [
-                    43.4799,
-                    0,
-                    -25.2621
+                    -8.49589,
+                    7.05086,
+                    2.65858
                 ],
                 "distanceFormCam": 30,
                 "childHtmlUrl": "/innerHtml/hotspot.html",
@@ -259,9 +259,9 @@
             {
                 "id": 1,
                 "hotSpotPos": [
-                    43.4799,
                     0,
-                    -25.2621
+                    -3.43839 ,
+                    9.07384
                 ],
                 "distanceFormCam": 30,
                 "childHtmlUrl": "/innerHtml/hotspot.html",
@@ -272,9 +272,9 @@
             {
                 "id": 2,
                 "hotSpotPos": [
-                    43.4799,
-                    0,
-                    -25.2621
+                    8.61148,
+                    7.05086,
+                    2.88976
                 ],
                 "distanceFormCam": 30,
                 "childHtmlUrl": "/innerHtml/hotspot.html",
@@ -303,9 +303,9 @@
             {
                 "id": 0,
                 "hotSpotPos": [
-                    43.4799,
-                    0,
-                    -25.2621
+                    -7.04078,
+                    8.21473,
+                    4.96714 
                 ],
                 "distanceFormCam": 30,
                 "childHtmlUrl": "/innerHtml/hotspot.html",
@@ -316,9 +316,9 @@
             {
                 "id": 1,
                 "hotSpotPos": [
-                    43.4799,
-                    0,
-                    -25.2621
+                    6.92199,
+                    -2.22493,
+                    4.66616
                 ],
                 "distanceFormCam": 30,
                 "childHtmlUrl": "/innerHtml/hotspot.html",
@@ -329,9 +329,9 @@
             {
                 "id": 2,
                 "hotSpotPos": [
-                    43.4799,
-                    0,
-                    -25.2621
+                    7.26191,
+                    7.91085,
+                    -6.33486 
                 ],
                 "distanceFormCam": 30,
                 "childHtmlUrl": "/innerHtml/hotspot.html",

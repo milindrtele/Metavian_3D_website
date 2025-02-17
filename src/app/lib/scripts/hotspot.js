@@ -1,4 +1,4 @@
-// import * as THREE from "three";
+import * as THREE from "three";
 // import {
 //   CSS3DRenderer,
 //   CSS3DObject,
@@ -10,6 +10,7 @@ import {
 
 class Hotspot {
   constructor(
+    hotspotType,
     cssScene,
     position,
     distanceFormCam,
@@ -28,6 +29,7 @@ class Hotspot {
     productViewerCallback,
     productPageVisible
   ) {
+    this.hotspotType = hotspotType;
     this.cssScene = cssScene;
     this.container_div = null;
     this.iframe = null;
@@ -160,7 +162,7 @@ class Hotspot {
     const action_button = child.querySelector("#action_button");
     action_button.addEventListener("click", () => {
       console.log("button clicked " + this.title);
-      this.productViewerCallback(this.title);
+      if (this.productViewerCallback) this.productViewerCallback(this.title);
     });
   }
 
@@ -259,17 +261,31 @@ class Hotspot {
   calculateDistance(camera, cssObject) {
     const checkDistance = () => {
       //console.log(this.productPageVisible + "  " + this.title);
-      if (!this.productPageVisible) {
-        let distance = camera.position.distanceTo(cssObject.position);
-        if (distance <= this.distanceFormCam) {
+      if (this.hotspotType == "primary") {
+        if (!this.productPageVisible) {
+          let distance = camera.position.distanceTo(cssObject.position);
+          if (distance <= this.distanceFormCam) {
+            this.css2dObject.visible = true;
+            //this.cssScene.add(this.css2dObject);
+          } else {
+            this.css2dObject.visible = false;
+            //this.cssScene.remove(this.css2dObject);
+          }
+        } else {
+          this.css2dObject.visible = false;
+        }
+      } else if (this.hotspotType == "secondary") {
+        let distanceToObject = camera.position.distanceTo(cssObject.position);
+        let distanceToOrigin = camera.position.distanceTo(
+          new THREE.Vector3(0, 0, 0)
+        );
+        if (distanceToObject <= distanceToOrigin) {
           this.css2dObject.visible = true;
           //this.cssScene.add(this.css2dObject);
         } else {
           this.css2dObject.visible = false;
           //this.cssScene.remove(this.css2dObject);
         }
-      } else {
-        this.css2dObject.visible = false;
       }
       requestAnimationFrame(checkDistance);
     };
