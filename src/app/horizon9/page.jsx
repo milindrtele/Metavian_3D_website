@@ -1485,32 +1485,31 @@ export default function Horizon() {
   //   }
   // }, [currentUserPositionRef.current]);
 
+  // Helper function to stop the video asynchronously and then resolve the promise
+  const stopVideoIfLoaded = async () => {
+    return new Promise((resolve, reject) => {
+      if (iframe && iframe.contentWindow) {
+        // Ensure the iframe is visible and the content is ready before sending postMessage
+        iframe.contentWindow.postMessage(
+          '{"event":"command","func":"stopVideo","args":""}',
+          "*"
+        );
+        console.log("Video stop command sent.");
+
+        // Simulate a small delay to ensure the message is processed
+        setTimeout(() => {
+          resolve(); // Video stop process complete
+        }, 100); // Adjust delay as necessary to fit your iframe's response time
+      } else {
+        console.error("Iframe is not ready or contentWindow is unavailable.");
+        reject("Iframe not ready");
+      }
+    });
+  };
   let old_pos = null;
   function actOnUserPositionChange() {
     const current_pos = currentUserPositionRef.current;
     console.log(currentUserPositionRef.current + " => useEffect");
-
-    // Helper function to stop the video asynchronously and then resolve the promise
-    const stopVideoIfLoaded = async () => {
-      return new Promise((resolve, reject) => {
-        if (iframe && iframe.contentWindow) {
-          // Ensure the iframe is visible and the content is ready before sending postMessage
-          iframe.contentWindow.postMessage(
-            '{"event":"command","func":"stopVideo","args":""}',
-            "*"
-          );
-          console.log("Video stop command sent.");
-
-          // Simulate a small delay to ensure the message is processed
-          setTimeout(() => {
-            resolve(); // Video stop process complete
-          }, 100); // Adjust delay as necessary to fit your iframe's response time
-        } else {
-          console.error("Iframe is not ready or contentWindow is unavailable.");
-          reject("Iframe not ready");
-        }
-      });
-    };
 
     function removeAllHotspotsFromArray() {
       if (hotspotsArray) {

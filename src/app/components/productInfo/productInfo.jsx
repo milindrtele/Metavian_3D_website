@@ -72,6 +72,7 @@ export default function ProductInfo({ product, closeClicked, css2DScene }) {
     });
     renderer.setSize(canvas.clientWidth, canvas.clientHeight);
     rendererRef.current = renderer;
+    rendererRef.current.toneMapping = THREE.ACESFilmicToneMapping;
     rendererRef.current.shadowMap.enabled = true;
     rendererRef.current.shadowMap.type = THREE.PCFSoftShadowMap; // default THREE.PCFShadowMap
 
@@ -125,22 +126,23 @@ export default function ProductInfo({ product, closeClicked, css2DScene }) {
     // light.shadow.camera.near = 0.5; // default
     // light.shadow.camera.far = 500; // default
 
-    spotLightRef.current = new THREE.SpotLight(0xffffff, 1500);
-    spotLightRef.current.position.set(-20, 30, 5);
+    spotLightRef.current = new THREE.SpotLight(0xffffff, 3000);
+    spotLightRef.current.position.set(10, 20, 10);
     spotLightRef.current.angle = Math.PI / 4;
     spotLightRef.current.penumbra = 1;
     spotLightRef.current.decay = 2;
-    spotLightRef.current.distance = 0;
+    spotLightRef.current.distance = 40;
 
-    spotLightRef.current.shadow.mapSize.width = 2048;
-    spotLightRef.current.shadow.mapSize.height = 2048;
-    spotLightRef.current.shadow.camera.near = 1;
-    spotLightRef.current.shadow.camera.far = 100;
-    spotLightRef.current.shadow.focus = 1;
+    spotLightRef.current.castShadow = true;
+    spotLightRef.current.shadow.mapSize.width = 512;
+    spotLightRef.current.shadow.mapSize.height = 512;
+    spotLightRef.current.shadow.camera.near = 0.1;
+    spotLightRef.current.shadow.camera.far = 50;
     spotLightRef.current.shadow.bias = -0.0001;
-    spotLightRef.current.shadow.blurSamples = 25;
 
     scene.add(spotLightRef.current);
+    // const spotLightHelper = new THREE.SpotLightHelper(spotLightRef.current);
+    // scene.add(spotLightHelper);
 
     // Load HDRI Environment
     rgbeLoader
@@ -148,6 +150,7 @@ export default function ProductInfo({ product, closeClicked, css2DScene }) {
       .load("brown_photostudio_01_1k.hdr", (texture) => {
         texture.mapping = THREE.EquirectangularReflectionMapping;
         scene.environment = texture;
+        scene.environmentIntensity = 0.25;
       });
 
     // Load Product Model
