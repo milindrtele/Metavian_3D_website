@@ -1,5 +1,10 @@
 "use client";
 
+import { useRef, useState, useEffect } from "react";
+import * as THREE from "three";
+import { loadingContext } from "../components/contexts/loadingContext.jsx";
+import Loading from "../components/loading/loading.jsx";
+
 import Beepie from "../components/beepie/beepie.jsx";
 import StartingMessage from "../components/startingMessage/startingMessage.jsx";
 import GetStarted from "../components/getStarted/getStarted.jsx";
@@ -7,8 +12,6 @@ import HamburgerMenu from "../components/hamburgerMenu/hamburgerMenu.jsx";
 import Model_viewer from "../components/model_viewer/model_viewer.jsx";
 import ProductInfo from "../components/productInfo/productInfo.jsx";
 
-import { useRef, useState, useEffect } from "react";
-import * as THREE from "three";
 import {
   CSS3DRenderer,
   CSS3DObject,
@@ -116,6 +119,9 @@ import { NodeToyMaterial } from "@nodetoy/three-nodetoy";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 export default function Horizon() {
+  //loading state
+  const [loadedPercentage, setLoadedPercentage] = useState(null);
+
   const currentUserPositionRef = useRef(null);
   const productCameraTravelScrollTriggerRef = useRef(null);
   const contactsSceneCameraTravelScrollTriggerRef = useRef(null);
@@ -133,7 +139,6 @@ export default function Horizon() {
   let modelLoaded = false;
   let circlepath = null;
   let targetPath = null;
-  const loader = new GLTFLoader();
 
   let stats = null;
   const canvasRef = useRef(null);
@@ -223,6 +228,17 @@ export default function Horizon() {
 
   gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
   gsap.registerPlugin(CustomEase);
+
+  const manager = new THREE.LoadingManager();
+  manager.onProgress = function (url, itemsLoaded, itemsTotal) {
+    setLoadedPercentage((itemsLoaded / itemsTotal) * 100);
+    console.log((itemsLoaded / itemsTotal) * 100);
+  };
+  manager.onLoad = function () {
+    console.log("Loading complete!");
+    setLoadedPercentage(100);
+  };
+  const loader = new GLTFLoader(manager);
 
   function setupFBO() {
     fboRef.current = new THREE.WebGLRenderTarget(1000, 866);
@@ -2194,9 +2210,10 @@ export default function Horizon() {
   };
 
   return (
-    <div id="container">
-      <div className={styles.slidecontainer}>
-        {/* <div id="rotation_slider" className={styles.rotation_slider}>
+    <loadingContext.Provider value={{ loadedPercentage, setLoadedPercentage }}>
+      <div id="container">
+        <div className={styles.slidecontainer}>
+          {/* <div id="rotation_slider" className={styles.rotation_slider}>
           <p>rotation</p>
           <input
             type="range"
@@ -2220,7 +2237,7 @@ export default function Horizon() {
           ></input>
         </div> */}
 
-        {/* <div id="prgress_slider" className={styles.prgress_slider}>
+          {/* <div id="prgress_slider" className={styles.prgress_slider}>
           <p>progress</p>
           <input
             type="range"
@@ -2231,33 +2248,35 @@ export default function Horizon() {
             onChange={(e) => onProgressChange(e.target.value)}
           ></input>
         </div> */}
+        </div>
+        <canvas id="canvas" className={styles.canvas} ref={canvasRef}></canvas>
+        {/* {<Beepie />} */}
+        {isStartingMessageVisible && (
+          <StartingMessage continue={startingMessageContinue} />
+        )}
+        {isGetStartedVisible && <GetStarted continue={GetStartedContinue} />}
+        {/* {isStartingMessageVisible && <GetStarted />} */}
+        {isHamburgerMenuVisible && (
+          <HamburgerMenu
+            handleClickTopLevelMenuProp={selectedItemInMainMenu}
+            selectedItemSubMenu1={selectedItemInSubMenu1}
+            selectedItemSubMenu2={selectedItemInSubMenu2}
+            selectedItemSubMenu3={selectedItemInSubMenu3}
+            openModelViewer={toggleChildComponent}
+          />
+        )}
+        {isHamburgerMenuVisible && <Beepie />}
+        {showChild && <Model_viewer />}
+        {productPageVisible && (
+          <ProductInfo
+            renderer={rendererRef.current}
+            modelUrl={selectedModelUrl}
+            closeClicked={closeProductPage}
+            product={productToViewInViewer}
+          />
+        )}
       </div>
-      <canvas id="canvas" className={styles.canvas} ref={canvasRef}></canvas>
-      {/* {<Beepie />} */}
-      {isStartingMessageVisible && (
-        <StartingMessage continue={startingMessageContinue} />
-      )}
-      {isGetStartedVisible && <GetStarted continue={GetStartedContinue} />}
-      {/* {isStartingMessageVisible && <GetStarted />} */}
-      {isHamburgerMenuVisible && (
-        <HamburgerMenu
-          handleClickTopLevelMenuProp={selectedItemInMainMenu}
-          selectedItemSubMenu1={selectedItemInSubMenu1}
-          selectedItemSubMenu2={selectedItemInSubMenu2}
-          selectedItemSubMenu3={selectedItemInSubMenu3}
-          openModelViewer={toggleChildComponent}
-        />
-      )}
-      {isHamburgerMenuVisible && <Beepie />}
-      {showChild && <Model_viewer />}
-      {productPageVisible && (
-        <ProductInfo
-          renderer={rendererRef.current}
-          modelUrl={selectedModelUrl}
-          closeClicked={closeProductPage}
-          product={productToViewInViewer}
-        />
-      )}
-    </div>
+      {loadedPercentage < 100 ? <Loading /> : null}
+    </loadingContext.Provider>
   );
 }

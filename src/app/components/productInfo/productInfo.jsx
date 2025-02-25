@@ -1,5 +1,6 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useContext } from "react";
 import * as THREE from "three";
+import { loadingContext } from "../contexts/loadingContext.jsx";
 import styles from "./productInfo.module.css";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
@@ -10,10 +11,7 @@ import {
 } from "three/examples/jsm/renderers/CSS2DRenderer.js";
 
 import Hotspot from "../../lib/scripts/hotspot.js";
-
-// Shared loaders to prevent re-creation on every mount
-const gltfLoader = new GLTFLoader();
-const rgbeLoader = new RGBELoader();
+import Loading from "../loading/loading.jsx";
 
 // Caching product and hotspot data to avoid redundant fetches
 let productsDataCache = null;
@@ -50,6 +48,7 @@ async function fetchHotspotData(url) {
 }
 
 export default function ProductInfo({ product, closeClicked, css2DScene }) {
+  const { loadedPercentage, setLoadedPercentage } = useContext(loadingContext);
   const productCanvasRef = useRef(null);
   const rendererRef = useRef(null);
   const sceneRef = useRef(null);
@@ -61,6 +60,19 @@ export default function ProductInfo({ product, closeClicked, css2DScene }) {
   const spotLightRef = useRef(null);
 
   useEffect(() => {
+    const manager = new THREE.LoadingManager();
+    manager.onProgress = function (url, itemsLoaded, itemsTotal) {
+      setLoadedPercentage((itemsLoaded / itemsTotal) * 100);
+      console.log((itemsLoaded / itemsTotal) * 100);
+    };
+    manager.onLoad = function () {
+      console.log("Loading complete!");
+      setLoadedPercentage(100);
+    };
+
+    const gltfLoader = new GLTFLoader(manager);
+    const rgbeLoader = new RGBELoader();
+
     const canvas = productCanvasRef.current;
     if (!canvas) return;
 
@@ -167,41 +179,46 @@ export default function ProductInfo({ product, closeClicked, css2DScene }) {
                 child.receiveShadow = true;
               }
             });
+            fetchHotspotData("/json/hotspotData.json").then((data) => {
+              const productData = data?.find(
+                (item) => item.productName === product
+              );
+              console.log(productData);
+              if (productData != null) {
+                //css2DHotspot
+                const hotspotArray = productData.hotspotArray;
+                console.log(hotspotArray);
+                if (hotspotArray) {
+                  hotspotArray.forEach((hotspot) => {
+                    const hotspotInstance = new Hotspot(
+                      "secondary",
+                      css2DSceneRef.current,
+                      hotspot.hotSpotPos,
+                      hotspot.distanceFormCam,
+                      hotspot.childHtmlUrl,
+                      hotspot.title,
+                      hotspot.subTitle,
+                      hotspot.videoID,
+                      hotspot.webURL,
+                      camera,
+                      null, //productViewerCallback,
+                      false //productPageVisible
+                    );
+                    hotspotInstance.addToScene();
+                    hotspotsArray.push(hotspotInstance);
+                    console.log(hotspotsArray);
+                  });
+                }
+              }
+            });
           },
-          undefined,
+          (xhr) => {
+            //console.log(xhr);
+            //setLoadedPercentage((xhr.loaded / xhr.total) * 100);
+            //console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
+          },
           (error) => console.error("Error loading model:", error)
         );
-      }
-    });
-
-    fetchHotspotData("/json/hotspotData.json").then((data) => {
-      const productData = data?.find((item) => item.productName === product);
-      console.log(productData);
-      if (productData != null) {
-        //css2DHotspot
-        const hotspotArray = productData.hotspotArray;
-        console.log(hotspotArray);
-        if (hotspotArray) {
-          hotspotArray.forEach((hotspot) => {
-            const hotspotInstance = new Hotspot(
-              "secondary",
-              css2DSceneRef.current,
-              hotspot.hotSpotPos,
-              hotspot.distanceFormCam,
-              hotspot.childHtmlUrl,
-              hotspot.title,
-              hotspot.subTitle,
-              hotspot.videoID,
-              hotspot.webURL,
-              camera,
-              null, //productViewerCallback,
-              false //productPageVisible
-            );
-            hotspotInstance.addToScene();
-            hotspotsArray.push(hotspotInstance);
-            console.log(hotspotsArray);
-          });
-        }
       }
     });
 
@@ -240,6 +257,10 @@ export default function ProductInfo({ product, closeClicked, css2DScene }) {
     };
   }, [product]); // Reinitialize when `product` changes
 
+  useEffect(() => {
+    console.log(loadedPercentage);
+  }, [loadedPercentage]);
+
   return (
     <div className={styles.product_info_container}>
       <canvas
@@ -249,6 +270,8 @@ export default function ProductInfo({ product, closeClicked, css2DScene }) {
       <div className={styles.close_button_container} onClick={closeClicked}>
         <div className={styles.close_button}></div>
       </div>
+      {/* <Loading /> */}
+      {loadedPercentage < 100 ? <Loading /> : null}
     </div>
   );
 }

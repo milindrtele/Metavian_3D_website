@@ -1,0 +1,102 @@
+.loading_screen {
+  position: absolute;
+  z-index: 1000;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+}
+
+.loading_screen_background {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  /* background-image: url("../../public/images/Screenshot 2024-12-18 151914.jpg"); */
+  background-image: url("https://fashionix.sirv.com/roof_configurator/images/Screenshot%202024-12-18%20151914.jpg");
+  filter: blur(8px);
+  -webkit-filter: blur(8px);
+  height: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.loading_screen_content {
+  position: absolute;
+  width: 95vw;
+  height: max-content;
+  display: flex;
+  flex-direction: row;
+  bottom: 3vh;
+  left: 50%;
+  transform: translate(-50%, 0);
+}
+
+.loader_box {
+  width: 65px !important;
+  height: 65px !important;
+}
+
+/* HTML: <div class="loader"></div> */
+.loader {
+  width: 65px !important;
+  aspect-ratio: 1;
+  position: absolute;
+  z-index: 1001;
+  /* bottom: 1vw;
+  left: 1vw; */
+  /* transform: translate(-50%, -50%); */
+}
+.loader:before,
+.loader:after {
+  content: "";
+  position: absolute;
+  border-radius: 50px;
+  box-shadow: 0 0 0 3px inset #fff;
+  animation: l5 2.5s infinite;
+}
+.loader:after {
+  animation-delay: -1.25s;
+  border-radius: 0;
+}
+@keyframes l5 {
+  0% {
+    inset: 0 35px 35px 0;
+  }
+  12.5% {
+    inset: 0 35px 0 0;
+  }
+  25% {
+    inset: 35px 35px 0 0;
+  }
+  37.5% {
+    inset: 35px 0 0 0;
+  }
+  50% {
+    inset: 35px 0 0 35px;
+  }
+  62.5% {
+    inset: 0 0 0 35px;
+  }
+  75% {
+    inset: 0 0 35px 35px;
+  }
+  87.5% {
+    inset: 0 0 35px 0;
+  }
+  100% {
+    inset: 0 35px 35px 0;
+  }
+}
+
+.loading_bar_container {
+  flex: 1;
+  margin: auto 0 auto 2.5%;
+  height: 5px;
+  background-color: rgb(86, 86, 86);
+}
+.loading_bar {
+  width: 0%;
+  height: 100%;
+  background-color: rgb(118, 155, 242);
+}
