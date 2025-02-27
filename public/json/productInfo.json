@@ -1,7 +1,7 @@
 [
     {
         "productName": "Car Configurator",
-        "modelUrl": "models/Consolidated models/saperated_animated_models/car_configurator/car_configurator_without_animation.glb",
+        "modelUrl": "models/Consolidated models/saperated_animated_models/car_configurator/car3000.glb",
         "info": {
             "title": "Car Configurator",
             "subTitle": "Integer eget ante lacinia, dapibus mi sed, hendrerit sem.",
@@ -21,7 +21,7 @@
     },
     {
         "productName": "Fashion IX",
-        "modelUrl": "models/Consolidated models/saperated_animated_models/fashion_ix/fashion_ix_without_animation.glb",
+        "modelUrl": "models/Consolidated models/saperated_animated_models/fashion_ix/updated_fashion_ix.glb",
         "info": {
             "title": "Fashion IX",
             "subTitle": "Integer eget ante lacinia, dapibus mi sed, hendrerit sem.",
@@ -41,7 +41,7 @@
     },
     {
         "productName": "Virtual Mart",
-        "modelUrl": "models/Consolidated models/saperated_animated_models/virtual_mart/virtual_mart_without_animation.glb",
+        "modelUrl": "models/Consolidated models/saperated_animated_models/virtual_mart/virtual_mart_without_animation_2.glb",
         "info": {
             "title": "Virtual Mart",
             "subTitle": "Integer eget ante lacinia, dapibus mi sed, hendrerit sem.",

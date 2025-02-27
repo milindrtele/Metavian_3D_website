@@ -2276,7 +2276,7 @@ export default function Horizon() {
           />
         )}
       </div>
-      {loadedPercentage < 100 ? <Loading /> : null}
+      {loadedPercentage < 100 && !productPageVisible && <Loading />}
     </loadingContext.Provider>
   );
 }

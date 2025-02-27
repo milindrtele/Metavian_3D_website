@@ -22,7 +22,7 @@ function HamburgerMenu(props) {
       menuRef.current.style.transform = "translateX(0%)";
       buttonRef.current.style.backgroundImage =
         "url(icons/chevron-left-solid.svg)"; //topIcon02Src;
-      buttonRef.current.style.transform = "translateX(600%)";
+      buttonRef.current.style.transform = "translateX(650%)";
     }
   }, [menuIsVisible]);
 

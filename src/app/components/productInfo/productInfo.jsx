@@ -9,6 +9,7 @@ import {
   CSS2DRenderer,
   CSS2DObject,
 } from "three/examples/jsm/renderers/CSS2DRenderer.js";
+import { gsap } from "gsap";
 
 import Hotspot from "../../lib/scripts/hotspot.js";
 import Loading from "../loading/loading.jsx";
@@ -63,7 +64,6 @@ export default function ProductInfo({ product, closeClicked, css2DScene }) {
     const manager = new THREE.LoadingManager();
     manager.onProgress = function (url, itemsLoaded, itemsTotal) {
       setLoadedPercentage((itemsLoaded / itemsTotal) * 100);
-      console.log((itemsLoaded / itemsTotal) * 100);
     };
     manager.onLoad = function () {
       console.log("Loading complete!");
@@ -77,13 +77,12 @@ export default function ProductInfo({ product, closeClicked, css2DScene }) {
     if (!canvas) return;
 
     // Renderer setup
-    const renderer = new THREE.WebGLRenderer({
+    rendererRef.current = new THREE.WebGLRenderer({
       canvas,
       antialias: true,
       alpha: true,
     });
-    renderer.setSize(canvas.clientWidth, canvas.clientHeight);
-    rendererRef.current = renderer;
+    rendererRef.current.setSize(canvas.clientWidth, canvas.clientHeight);
     rendererRef.current.toneMapping = THREE.ACESFilmicToneMapping;
     rendererRef.current.shadowMap.enabled = true;
     rendererRef.current.shadowMap.type = THREE.PCFSoftShadowMap; // default THREE.PCFShadowMap
@@ -104,27 +103,20 @@ export default function ProductInfo({ product, closeClicked, css2DScene }) {
     //css2Dscene
     css2DSceneRef.current = new THREE.Scene();
 
-    const camera = new THREE.PerspectiveCamera(
+    cameraRef.current = new THREE.PerspectiveCamera(
       75,
       canvas.clientWidth / canvas.clientHeight,
       0.1,
       1000
     );
-    camera.position.set(15.0329, 12.5874, 16.7306);
-    cameraRef.current = camera;
+    cameraRef.current.position.set(100, 100, 100);
 
     // OrbitControls
-    const controls = new OrbitControls(camera, renderer.domElement);
-    controlsRef.current = controls;
-    controlsRef.current.enableDamping = true;
-    controlsRef.current.dampingFactor = 0.2;
-    controlsRef.current.enablePan = false;
-    controlsRef.current.minPolarAngle = (Math.PI / 180) * 45;
-    controlsRef.current.maxPolarAngle = (Math.PI / 180) * 84;
-    // controlsRef.current.minAzimuthAngle = Math.PI * 0.25 * -1;
-    // controlsRef.current.maxAzimuthAngle = Math.PI * 0.25;
-    controlsRef.current.minDistance = 10;
-    controlsRef.current.maxDistance = 20;
+    controlsRef.current = new OrbitControls(
+      cameraRef.current,
+      rendererRef.current.domElement
+    );
+    controlsRef.current.enabled = false;
 
     //Directional light
     // const light = new THREE.DirectionalLight(0xffffff, 1);
@@ -183,11 +175,9 @@ export default function ProductInfo({ product, closeClicked, css2DScene }) {
               const productData = data?.find(
                 (item) => item.productName === product
               );
-              console.log(productData);
               if (productData != null) {
                 //css2DHotspot
                 const hotspotArray = productData.hotspotArray;
-                console.log(hotspotArray);
                 if (hotspotArray) {
                   hotspotArray.forEach((hotspot) => {
                     const hotspotInstance = new Hotspot(
@@ -200,13 +190,12 @@ export default function ProductInfo({ product, closeClicked, css2DScene }) {
                       hotspot.subTitle,
                       hotspot.videoID,
                       hotspot.webURL,
-                      camera,
+                      cameraRef.current,
                       null, //productViewerCallback,
                       false //productPageVisible
                     );
                     hotspotInstance.addToScene();
                     hotspotsArray.push(hotspotInstance);
-                    console.log(hotspotsArray);
                   });
                 }
               }
@@ -224,9 +213,9 @@ export default function ProductInfo({ product, closeClicked, css2DScene }) {
 
     // Animation loop
     const animate = () => {
-      controls.update();
-      renderer.render(scene, camera);
-      css2dRendererRef.current.render(css2DSceneRef.current, camera);
+      controlsRef.current.update();
+      rendererRef.current.render(scene, cameraRef.current);
+      css2dRendererRef.current.render(css2DSceneRef.current, cameraRef.current);
       animationFrameId.current = requestAnimationFrame(animate);
     };
     animate();
@@ -234,8 +223,8 @@ export default function ProductInfo({ product, closeClicked, css2DScene }) {
     // Cleanup on unmount
     return () => {
       cancelAnimationFrame(animationFrameId.current);
-      controls.dispose();
-      renderer.dispose();
+      controlsRef.current.dispose();
+      rendererRef.current.dispose();
 
       scene.traverse((object) => {
         if (object.isMesh) {
@@ -258,7 +247,38 @@ export default function ProductInfo({ product, closeClicked, css2DScene }) {
   }, [product]); // Reinitialize when `product` changes
 
   useEffect(() => {
-    console.log(loadedPercentage);
+    if (loadedPercentage === 100 && cameraRef.current) {
+      let camStartPos = new THREE.Vector3(-50, 50, 50);
+      let camEndPos = new THREE.Vector3(10, 5, 10);
+
+      gsap.to(camStartPos, {
+        x: camEndPos.x,
+        y: camEndPos.y,
+        z: camEndPos.z,
+        duration: 1.5, // Reduced for quick testing
+        ease: "power1.out", //"circ.out", //"elastic.out(2,1)", //, //"elastic.out(1, 0.3)", // //
+        onStart: () => {
+          controlsRef.current.enabled = false;
+        },
+        onUpdate: () => {
+          if (cameraRef.current) {
+            cameraRef.current.position.copy(camStartPos);
+          }
+        },
+        onComplete: () => {
+          controlsRef.current.enabled = true;
+          controlsRef.current.enableDamping = true;
+          controlsRef.current.dampingFactor = 0.2;
+          controlsRef.current.enablePan = false;
+          controlsRef.current.minPolarAngle = (Math.PI / 180) * 45;
+          controlsRef.current.maxPolarAngle = (Math.PI / 180) * 84;
+          // controlsRef.current.minAzimuthAngle = Math.PI * 0.25 * -1;
+          // controlsRef.current.maxAzimuthAngle = Math.PI * 0.25;
+          controlsRef.current.minDistance = 10;
+          controlsRef.current.maxDistance = 20;
+        },
+      });
+    }
   }, [loadedPercentage]);
 
   return (
