@@ -1,12 +1,16 @@
 .beepi_container {
   position: absolute;
   right: 0;
-  top: 70vh;
-  width: 30vh;
-  height: 30vh;
+  top: calc(100vh - 20vw);
+  width: 20vw;
+  height: 20vw;
+  display: flex;
 }
 
 .beepie_canvas {
-  width: 100%;
-  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100% !important;
+  height: 100% !important;
 }

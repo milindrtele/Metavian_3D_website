@@ -22,7 +22,7 @@ function HamburgerMenu(props) {
       menuRef.current.style.transform = "translateX(0%)";
       buttonRef.current.style.backgroundImage =
         "url(icons/chevron-left-solid.svg)"; //topIcon02Src;
-      buttonRef.current.style.transform = "translateX(650%)";
+      buttonRef.current.style.transform = "translateX(485%)";
     }
   }, [menuIsVisible]);
 
@@ -85,7 +85,7 @@ function HamburgerMenu(props) {
             onClick={handleClickTopLevelMenu}
             name="Menu Item 1"
           >
-            <div className={styles.menu_text}>Menu Item 1</div>
+            <div className={styles.menu_text}>Products</div>
           </div>
           <div className={[styles.submenu, styles.submenu_1].join(" ")}>
             <div
@@ -149,7 +149,7 @@ function HamburgerMenu(props) {
             onClick={handleClickTopLevelMenu}
             name="Menu Item 2"
           >
-            <div className={styles.menu_text}>Menu Item 2</div>
+            <div className={styles.menu_text}>Use Cases</div>
             {/* You can add submenu here if needed */}
           </div>
           <div className={[styles.submenu, styles.submenu_2].join(" ")}>
@@ -214,10 +214,10 @@ function HamburgerMenu(props) {
             onClick={handleClickTopLevelMenu}
             name="Menu Item 3"
           >
-            <div className={styles.menu_text}>Menu Item 3</div>
+            <div className={styles.menu_text}>Connect with us</div>
             {/* You can add submenu here if needed */}
           </div>
-          <div className={[styles.submenu, styles.submenu_3].join(" ")}>
+          {/* <div className={[styles.submenu, styles.submenu_3].join(" ")}>
             <div
               className={[styles.menu_item, styles.menu_1].join(" ")}
               onClick={handleClickSubMenu3}
@@ -265,7 +265,7 @@ function HamburgerMenu(props) {
             >
               <div className={styles.menu_text}>social media 6</div>
             </div>
-          </div>
+          </div> */}
           <div className={styles.line_in_menu}></div>
 
           {/* Menu Item 4 (another main menu) */}
@@ -279,13 +279,13 @@ function HamburgerMenu(props) {
             onClick={handleClickTopLevelMenu}
             name="Menu Item 4"
           >
-            <div className={styles.menu_text}>Menu Item 4</div>
+            <div className={styles.menu_text}>Our Team</div>
           </div>
 
-          <div className={styles.line_in_menu}></div>
+          {/* <div className={styles.line_in_menu}></div> */}
 
           {/* Menu Item 4 (another main menu) */}
-          <div
+          {/* <div
             className={[
               styles.menu_item,
               styles.menu_dropdown,
@@ -295,7 +295,7 @@ function HamburgerMenu(props) {
             name="Model Viewer"
           >
             <div className={styles.menu_text}>Model Viewer</div>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

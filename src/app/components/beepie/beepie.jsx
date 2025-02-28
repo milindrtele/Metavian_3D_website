@@ -15,20 +15,25 @@ import { Text } from "troika-three-text";
 export default function Beepie(props) {
   const [displayText, setDisplayText] = useState("Hi I'm BeePie!");
   const [fullText, setFullText] = useState(
-    "Hi I'm BeePie! This is a scrolling text example! 😀"
+    "Hi I'm BeePie! Welcome to Metavian! 😀"
   ); // Long text for scrolling
   const indexRef = useRef(0); // To track the current index for the letters
   const myTextRef = useRef(null); // Ref for the troika Text instance
+  const beepie_canvasRef = useRef(null);
+
   useEffect(() => {
-    const beepie_canvas = document.getElementById("beepie_canvas");
+    //const beepie_canvas = document.getElementById("beepie_canvas");
     let camera, scene, renderer, controls;
 
     const gltfloader = new GLTFLoader();
+
+    let mixer;
 
     var tween;
     var deviceType;
     var maniquine;
     var parent;
+    var display_screen;
     var mouseIn;
 
     var phone = null;
@@ -52,26 +57,32 @@ export default function Beepie(props) {
       scene = new THREE.Scene();
       camera = new THREE.PerspectiveCamera(
         50,
-        beepie_canvas.clientWidth / beepie_canvas.clientHeight,
+        beepie_canvasRef.current.clientWidth /
+          beepie_canvasRef.current.clientHeight,
         0.1,
         1000
       );
-      camera.position.set(2.102529764175415, 4, 6.35); // x: 2.102529764175415; y: 4.887204170227051; z : 8.62222
+
+      const { width, height } =
+        beepie_canvasRef.current.getBoundingClientRect();
+      camera.aspect = width / height;
+
+      camera.position.set(0, 1.55774, 6.35); // x: 2.102529764175415; y: 4.887204170227051; z : 8.62222
 
       renderer = new THREE.WebGLRenderer({
-        canvas: beepie_canvas,
+        canvas: beepie_canvasRef.current,
         antialias: true,
         alpha: true,
       });
       renderer.setClearColor(0x000000, 0);
       renderer.toneMapping = THREE.ACESFilmicToneMapping;
-      renderer.setSize(beepie_canvas.clientWidth, beepie_canvas.clientHeight);
+      renderer.setSize(width, height);
 
       if (deviceType == "touch") {
-        camera.position.set(2.102529764175415, 3.5, 8.62222);
+        camera.position.set(0, 1.55774, 6.35);
 
         controls = new OrbitControls(camera, renderer.domElement);
-        controls.target = new THREE.Vector3(2.103, 3.2, 0.396); // 2.103, 4.887, 0.396
+        controls.target = new THREE.Vector3(0, 1.55774, 0); // 2.103, 4.887, 0.396
         controls.enablePan = false;
         // controls.maxDistance = 7;
         // controls.minDistance = 5;
@@ -95,13 +106,26 @@ export default function Beepie(props) {
         }
       );
 
-      gltfloader.load("models/chat_bot/cleaned_beepie.glb", (gltf) => {
+      gltfloader.load("models/chat_bot/cleaned_beepie_animated.glb", (gltf) => {
+        // models/chat_bot/cleaned_beepie.glb
+        console.log(gltf);
         scene.add(gltf.scene);
         parent = gltf.scene.getObjectByName("parent");
+        display_screen = gltf.scene.getObjectByName("display_glass");
+
+        const model = gltf.scene;
+        // model.position.set(1, 1, 0);
+        // model.scale.set(0.01, 0.01, 0.01);
+        // scene.add(model);
+
+        mixer = new THREE.AnimationMixer(model);
+        gltf.animations.forEach((animation) => {
+          mixer.clipAction(animation).play();
+        });
 
         // Create the Text instance
         const myText = new Text();
-        parent.add(myText);
+        display_screen.add(myText);
         myTextRef.current = myText;
 
         // Set properties to configure:
@@ -158,11 +182,11 @@ export default function Beepie(props) {
       scene.add(rectLight1);
 
       window.addEventListener("resize", () => {
-        beepie_canvas.width = window.innerWidth * 0.6;
-        beepie_canvas.height = window.innerHeight * 1;
-        camera.aspect = beepie_canvas.width / beepie_canvas.height;
-        renderer.setSize(beepie_canvas.width, beepie_canvas.height);
+        const { width, height } =
+          beepie_canvasRef.current.getBoundingClientRect();
+        camera.aspect = width / height;
         camera.updateProjectionMatrix();
+        renderer.setSize(width, height);
       });
 
       //plane.position.set(2.0238, 4.5, 7);
@@ -173,14 +197,16 @@ export default function Beepie(props) {
       );
 
       if (deviceType == "non-touch") {
-        beepie_canvas.addEventListener("mousemove", (e) => {
+        beepie_canvasRef.current.addEventListener("mousemove", (e) => {
           mouseIn = true;
 
-          var offsets = beepie_canvas.getBoundingClientRect();
+          var offsets = beepie_canvasRef.current.getBoundingClientRect();
           mousePosition.x =
-            ((e.clientX - offsets.left) / beepie_canvas.width) * 2 - 1;
+            ((e.clientX - offsets.left) / beepie_canvasRef.current.width) * 2 -
+            1;
           mousePosition.y =
-            -((e.clientY - offsets.top) / beepie_canvas.height) * 2 + 1;
+            -((e.clientY - offsets.top) / beepie_canvasRef.current.height) * 2 +
+            1;
 
           raycaster.setFromCamera(mousePosition, camera);
           raycaster.ray.intersectPlane(plane, intersectionPoint);
@@ -190,7 +216,7 @@ export default function Beepie(props) {
             intersectionPoint.z
           );
         });
-        beepie_canvas.addEventListener("mouseleave", () => {
+        beepie_canvasRef.current.addEventListener("mouseleave", () => {
           const cameraPos = camera.position;
 
           gsap.to(target.position, {
@@ -217,6 +243,9 @@ export default function Beepie(props) {
         controls.update(clock.getDelta());
       }
       if (tween != null) tween.update(time);
+
+      if (mixer) mixer.update(clock.getDelta());
+
       renderer.render(scene, camera);
     }
 
@@ -259,6 +288,7 @@ export default function Beepie(props) {
   return (
     <div className={[styles.beepi_container].join(" ")}>
       <canvas
+        ref={beepie_canvasRef}
         id="beepie_canvas"
         className={[styles.beepie_canvas].join(" ")}
       ></canvas>
