@@ -1,0 +1,38 @@
+.sceneInfo_container {
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+
+.info_container {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 50vw;
+  height: max-content;
+  text-align: end;
+}
+
+.help_container {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 50vw;
+  height: auto;
+}
+
+.icon {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 10vw;
+  height: 10vw;
+  background: url("/icons/Mouse_02.gif");
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  /* transform: translate(); */
+}

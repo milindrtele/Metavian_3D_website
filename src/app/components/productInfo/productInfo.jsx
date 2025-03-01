@@ -104,7 +104,7 @@ export default function ProductInfo({ product, closeClicked, css2DScene }) {
     css2DSceneRef.current = new THREE.Scene();
 
     cameraRef.current = new THREE.PerspectiveCamera(
-      75,
+      50,
       canvas.clientWidth / canvas.clientHeight,
       0.1,
       1000

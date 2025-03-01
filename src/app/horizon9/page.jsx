@@ -3,6 +3,7 @@
 import { useRef, useState, useEffect } from "react";
 import * as THREE from "three";
 import { loadingContext } from "../components/contexts/loadingContext.jsx";
+import { currentSceneContext } from "../components/contexts/currentSceneContext.jsx";
 import Loading from "../components/loading/loading.jsx";
 
 import Beepie from "../components/beepie/beepie.jsx";
@@ -11,6 +12,7 @@ import GetStarted from "../components/getStarted/getStarted.jsx";
 import HamburgerMenu from "../components/hamburgerMenu/hamburgerMenu.jsx";
 import Model_viewer from "../components/model_viewer/model_viewer.jsx";
 import ProductInfo from "../components/productInfo/productInfo.jsx";
+import SceneInfo from "../components/sceneInfo/sceneInfo.jsx";
 
 import {
   CSS3DRenderer,
@@ -121,6 +123,7 @@ import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 export default function Horizon() {
   //loading state
   const [loadedPercentage, setLoadedPercentage] = useState(null);
+  const [currentSceneInfo, setCurrentSceneInfo] = useState({});
 
   const currentUserPositionRef = useRef(null);
   const productCameraTravelScrollTriggerRef = useRef(null);
@@ -1903,32 +1906,19 @@ export default function Horizon() {
       start: "top",
       end: "25000",
       pin: true,
+      markers: true,
       onUpdate: (self) => {
         const min = 0.15;
         const max = 1.0;
 
-        progressJSRef.current.value = self.progress * (max - min) + min;
+        progressJSRef.current.value = self.progress * (max - min) + min; // for shader
 
         let progressForProductAnimation = Math.max(
           0.0,
           Math.min(1.0, (self.progress - 0.15) / (1 - 0.15))
         );
 
-        onMouseScroll(progressForProductAnimation);
-
-        if (
-          blenderCameraRef.current != null &&
-          currentUserPositionRef.current == "Menu Item 1"
-        ) {
-          cameraRef.current.position.copy(blenderCameraRef.current.position);
-          cameraRef.current.position.y =
-            blenderCameraRef.current.position.y - 3;
-          cameraRef.current.rotation.copy(blenderCameraRef.current.rotation);
-          cameraRef.current.quaternion.copy(
-            blenderCameraRef.current.quaternion
-          );
-          cameraRef.current.updateMatrix();
-        }
+        onMouseScroll(progressForProductAnimation); // for blender animation
       },
     });
 
@@ -2004,6 +1994,17 @@ export default function Horizon() {
         mixer.setTime(elapsedTime);
         mixer._root.updateMatrix();
       });
+
+      if (
+        blenderCameraRef.current != null &&
+        currentUserPositionRef.current == "Menu Item 1"
+      ) {
+        cameraRef.current.position.copy(blenderCameraRef.current.position);
+        cameraRef.current.position.y = blenderCameraRef.current.position.y - 3;
+        cameraRef.current.rotation.copy(blenderCameraRef.current.rotation);
+        cameraRef.current.quaternion.copy(blenderCameraRef.current.quaternion);
+        cameraRef.current.updateMatrix();
+      }
     }
   }
 
@@ -2211,9 +2212,12 @@ export default function Horizon() {
 
   return (
     <loadingContext.Provider value={{ loadedPercentage, setLoadedPercentage }}>
-      <div id="container">
-        <div className={styles.slidecontainer}>
-          {/* <div id="rotation_slider" className={styles.rotation_slider}>
+      <currentSceneContext.Provider
+        value={{ currentSceneInfo, setCurrentSceneInfo }}
+      >
+        <div id="container">
+          <div className={styles.slidecontainer}>
+            {/* <div id="rotation_slider" className={styles.rotation_slider}>
           <p>rotation</p>
           <input
             type="range"
@@ -2237,7 +2241,7 @@ export default function Horizon() {
           ></input>
         </div> */}
 
-          {/* <div id="prgress_slider" className={styles.prgress_slider}>
+            {/* <div id="prgress_slider" className={styles.prgress_slider}>
           <p>progress</p>
           <input
             type="range"
@@ -2248,35 +2252,41 @@ export default function Horizon() {
             onChange={(e) => onProgressChange(e.target.value)}
           ></input>
         </div> */}
+          </div>
+          <canvas
+            id="canvas"
+            className={styles.canvas}
+            ref={canvasRef}
+          ></canvas>
+          {/* {<Beepie />} */}
+          {isStartingMessageVisible && (
+            <StartingMessage continue={startingMessageContinue} />
+          )}
+          {isGetStartedVisible && <GetStarted continue={GetStartedContinue} />}
+          {/* {isStartingMessageVisible && <GetStarted />} */}
+          {isHamburgerMenuVisible && (
+            <HamburgerMenu
+              handleClickTopLevelMenuProp={selectedItemInMainMenu}
+              selectedItemSubMenu1={selectedItemInSubMenu1}
+              selectedItemSubMenu2={selectedItemInSubMenu2}
+              selectedItemSubMenu3={selectedItemInSubMenu3}
+              openModelViewer={toggleChildComponent}
+            />
+          )}
+          {isHamburgerMenuVisible && <Beepie />}
+          {showChild && <Model_viewer />}
+          {productPageVisible && (
+            <ProductInfo
+              renderer={rendererRef.current}
+              modelUrl={selectedModelUrl}
+              closeClicked={closeProductPage}
+              product={productToViewInViewer}
+            />
+          )}
+          {isHamburgerMenuVisible && <SceneInfo />}
         </div>
-        <canvas id="canvas" className={styles.canvas} ref={canvasRef}></canvas>
-        {/* {<Beepie />} */}
-        {isStartingMessageVisible && (
-          <StartingMessage continue={startingMessageContinue} />
-        )}
-        {isGetStartedVisible && <GetStarted continue={GetStartedContinue} />}
-        {/* {isStartingMessageVisible && <GetStarted />} */}
-        {isHamburgerMenuVisible && (
-          <HamburgerMenu
-            handleClickTopLevelMenuProp={selectedItemInMainMenu}
-            selectedItemSubMenu1={selectedItemInSubMenu1}
-            selectedItemSubMenu2={selectedItemInSubMenu2}
-            selectedItemSubMenu3={selectedItemInSubMenu3}
-            openModelViewer={toggleChildComponent}
-          />
-        )}
-        {isHamburgerMenuVisible && <Beepie />}
-        {showChild && <Model_viewer />}
-        {productPageVisible && (
-          <ProductInfo
-            renderer={rendererRef.current}
-            modelUrl={selectedModelUrl}
-            closeClicked={closeProductPage}
-            product={productToViewInViewer}
-          />
-        )}
-      </div>
-      {loadedPercentage < 100 && !productPageVisible && <Loading />}
+        {loadedPercentage < 100 && !productPageVisible && <Loading />}
+      </currentSceneContext.Provider>
     </loadingContext.Provider>
   );
 }

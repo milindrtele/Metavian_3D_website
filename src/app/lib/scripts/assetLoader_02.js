@@ -813,7 +813,7 @@ export function loadAssetsWithPromise(
       find_From_Data("Meta Realty").then((hotspotData) => {
         loadModels(
           5,
-          "models/Consolidated models/saperated_animated_models/meta_realty/meta_realty_white_withShadows.glb", //"models/positioned assets 2/meta_realty.glb",
+          "models/Consolidated models/saperated_animated_models/meta_realty/meta_realty_white_withShadows_2.glb", //"models/positioned assets 2/meta_realty.glb",
           "anchor",
           null,
           null,

@@ -5,12 +5,12 @@ let current_leg = null;
 let selected_leg = null;
 let isAnimationCompleted = false;
 
-const id1 = "N7FkXKMPRDY"; //meta realty
+const id1 = "N7FkXKMPRDY"; //"N7FkXKMPRDY"; //meta realty
 const id2 = "G0txUiqltrA"; //car configurator
 const id3 = "qDvG6torRtQ"; //fashion ix
 const id4 = "Y3GO4qQ-A9w"; //edulab
 const id5 = "_-fzzRIuS0o"; //virtual mart
-const id6 = ":OteEL5SwXgM"; //virtual museum
+const id6 = "OteEL5SwXgM"; //virtual museum
 
 const animateCapsuleRotation = (
   leg,
@@ -206,7 +206,7 @@ const animateCapsuleRotation = (
             iframe.src = [
               // "https://cloud.protopie.io/p/604e1b159ff813ff97faa66a?ui=true&scaleToFit=true&enableHotspotHints=false&cursorType=arrow&mockup=true&bgColor=%23000000&bgImage=undefined&playSpeed=1",
               "https://www.youtube.com/embed/",
-              //id1,
+              id1,
               //"?rel=0&autoplay=1",
             ].join("");
             animate_capsule(0 + 30, false);
