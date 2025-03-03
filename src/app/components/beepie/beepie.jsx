@@ -20,6 +20,8 @@ export default function Beepie(props) {
   const indexRef = useRef(0); // To track the current index for the letters
   const myTextRef = useRef(null); // Ref for the troika Text instance
   const beepie_canvasRef = useRef(null);
+  const [comingSoonMessageVisible, setComingSoonMessageVisible] =
+    useState(false); // Flag to show/hide the coming soon message
 
   useEffect(() => {
     //const beepie_canvas = document.getElementById("beepie_canvas");
@@ -235,6 +237,21 @@ export default function Beepie(props) {
       renderer.setAnimationLoop(animate);
     }
 
+    let visibilityInterval; // Declare globally in the component scope
+
+    function setComingSoonVisibility() {
+      clearInterval(visibilityInterval); // Clear any existing interval
+      setComingSoonMessageVisible(true);
+
+      // Start a new interval to hide the message
+      visibilityInterval = setInterval(() => {
+        setComingSoonMessageVisible(false);
+      }, 4000);
+    }
+
+    // Attach the event listener
+    beepie_canvasRef.current.addEventListener("click", setComingSoonVisibility);
+
     var clock = new THREE.Clock();
     function animate(time) {
       if (deviceType == "non-touch" && parent != null && mouseIn)
@@ -250,6 +267,13 @@ export default function Beepie(props) {
     }
 
     init();
+
+    return () => {
+      beepie_canvasRef.current.removeEventListener(
+        "click",
+        setComingSoonVisibility
+      );
+    };
   }, []);
 
   useEffect(() => {
@@ -281,7 +305,9 @@ export default function Beepie(props) {
       }
     }, 100); // 0.1 second interval
 
-    return () => clearInterval(interval); // Clear interval on unmount
+    return () => {
+      clearInterval(interval); // Clear interval on unmount
+    };
   }, [fullText]);
 
   useEffect(() => {}, []);
@@ -292,6 +318,13 @@ export default function Beepie(props) {
         id="beepie_canvas"
         className={[styles.beepie_canvas].join(" ")}
       ></canvas>
+      {comingSoonMessageVisible ? (
+        <div className={[styles.coming_soon_message_container].join(" ")}>
+          <p className={[styles.bubble, styles.thought].join(" ")}>
+            Coming Soon...!!!
+          </p>
+        </div>
+      ) : null}
     </div>
   );
 }

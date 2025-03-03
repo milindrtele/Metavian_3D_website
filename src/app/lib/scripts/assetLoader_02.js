@@ -174,6 +174,20 @@ export function loadAssetsWithPromise(
             callback;
           }
 
+          console.log(model);
+          const modelGeommetry = model.geometry;
+          const modelBaseMaterial = model.material;
+          modelGeommetry.addGroup(0, Infinity, 0);
+          modelGeommetry.addGroup(0, Infinity, 1);
+
+          const wipeEffect = new NodeToyMaterial({
+            url: "https://draft.nodetoy.co/TWWhNsEJ2rqiLtpU", //https://draft.nodetoy.co/bzBoaIaQXpLm3UTR, //"https://draft.nodetoy.co/w7BhuuAcZ2ESIjU5", //https://draft.nodetoy.co/ECrNY8O4MMUUagsb,
+          });
+          wipeEffect.side = THREE.FrontSide;
+
+          const materialArray = [modelBaseMaterial, wipeEffect];
+          model.material = materialArray;
+
           //enable shadows for all objects
           // scene.traverse((child) => {
           //   if (child instanceof THREE.Mesh) {

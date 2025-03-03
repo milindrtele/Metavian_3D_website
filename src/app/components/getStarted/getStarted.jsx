@@ -198,6 +198,18 @@ export default function GetStarted(props) {
             type="text"
             placeholder="Email"
           />
+          <input
+            id="input_3"
+            className={[
+              styles.password,
+              styles.inputs,
+              styles.input_3,
+              styles.position_right,
+              styles.animate,
+            ].join(" ")}
+            type="password"
+            placeholder="Password"
+          />
           <button
             id="button"
             className={[

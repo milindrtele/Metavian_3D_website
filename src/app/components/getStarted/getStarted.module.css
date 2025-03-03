@@ -29,7 +29,7 @@
 .title {
   position: absolute;
   width: 100%;
-  bottom: 70vh;
+  bottom: 77vh;
   font-size: 2vw;
   /* margin-bottom: 5%; */
 }
@@ -37,7 +37,7 @@
 .text {
   position: absolute;
   width: 100%;
-  bottom: 55vh;
+  bottom: 60vh;
   font-size: 1.5vw;
   /* margin-bottom: 5%; */
 }
@@ -52,13 +52,19 @@
 }
 
 .input_1 {
-  bottom: 45vh;
+  bottom: 50vh;
   width: 100%;
   height: 5%;
 }
 
 .input_2 {
-  bottom: 35vh;
+  bottom: 40vh;
+  width: 100%;
+  height: 5%;
+}
+
+.input_3 {
+  bottom: 30vh;
   width: 100%;
   height: 5%;
 }
@@ -74,7 +80,7 @@
 .get_started_button {
   position: absolute;
   width: 100%;
-  bottom: 25vh;
+  bottom: 20vh;
   width: 100%;
   height: 5%;
   /* margin-bottom: 5%; */
