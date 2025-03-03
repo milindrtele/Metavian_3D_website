@@ -2,7 +2,7 @@ import { gsap } from "gsap";
 import { CustomEase } from "gsap/CustomEase";
 
 const aniSequenceAfterGetStarted = (camera, callback) => {
-  const cameraLeftPanEndPos = { x: 0.0, y: 4, z: -105.943 };
+  const cameraLeftPanEndPos = { x: 0.0, y: 4, z: -115.943 }; //z: -105.943
   const cameraForwardPanEndPos = {
     x: 26.844, // blender_x
     y: 4, // blender_z

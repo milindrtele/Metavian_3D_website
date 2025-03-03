@@ -1605,6 +1605,8 @@ export default function Horizon() {
                 sceneRef.current.remove(projection_object);
               }
             }
+            sceneRef.current.remove(capsule_anchorRef.current);
+            sceneRef.current.remove(projection_object);
 
             if (productCameraTravelScrollTriggerRef.current == null) {
               addScrollTrigger();

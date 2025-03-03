@@ -4,6 +4,7 @@ import { gsap } from "gsap";
 let current_leg = null;
 let selected_leg = null;
 let isAnimationCompleted = false;
+let isAnimationRunning = false;
 
 const id1 = "N7FkXKMPRDY"; //"N7FkXKMPRDY"; //meta realty
 const id2 = "G0txUiqltrA"; //car configurator
@@ -48,6 +49,9 @@ const animateCapsuleRotation = (
           opacity: 0,
           duration: 0.5,
           ease: "bounce.out",
+          onStart: () => {
+            isAnimationRunning = true;
+          },
         })
         .to(projection_object_offset_value, {
           x: 0,
@@ -61,6 +65,7 @@ const animateCapsuleRotation = (
           onUpdate: () => {},
           onComplete: () => {
             isAnimationCompleted = true;
+            isAnimationRunning = false;
           },
         });
     } else {
@@ -91,6 +96,9 @@ const animateCapsuleRotation = (
           opacity: 0,
           duration: 0.5,
           ease: "bounce.out",
+          onStart: () => {
+            isAnimationRunning = true;
+          },
         })
         .to(projection_object_offset_value, {
           x: 0,
@@ -115,6 +123,7 @@ const animateCapsuleRotation = (
           ease: "bounce.out",
           onComplete: () => {
             isAnimationCompleted = true;
+            isAnimationRunning = false;
           },
         });
     }
@@ -262,7 +271,7 @@ const animateCapsuleRotation = (
     }
   }
 
-  checkLeg();
+  if (!isAnimationRunning) checkLeg();
 
   return isAnimationCompleted;
 };

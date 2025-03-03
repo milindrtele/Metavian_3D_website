@@ -18,9 +18,9 @@ const aniSwquenceBeforeGetStarted = (
   let Currentprogress = 0.0;
 
   const cameraEndPosition = {
-    x: -13,
+    x: -5, //-13
     y: 4,
-    z: -95,
+    z: -105, //-95
   };
   const cameraTargetPosition = {
     x: 53.8746,

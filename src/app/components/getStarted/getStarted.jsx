@@ -184,7 +184,7 @@ export default function GetStarted(props) {
               styles.animate,
             ].join(" ")}
             type="text"
-            placeholder="Your Name"
+            placeholder="Your Name / Username"
           />
           <input
             id="input_2"
