@@ -59,8 +59,42 @@ export default function ProductInfo({ product, closeClicked, css2DScene }) {
   const css2DSceneRef = useRef(null);
   const css2dRendererRef = useRef(null);
   const spotLightRef = useRef(null);
+  const product_info_containerRef = useRef(null);
+  const main_rotorRef = useRef(null);
+  const tail_rotorRef = useRef(null);
+
+  function forVirtualProduction(scene) {
+    // Create a video element
+    const video = document.createElement("video");
+
+    // Set attributes for the video
+    video.setAttribute("controls", ""); // Adds play/pause, volume, etc.
+    video.setAttribute("width", "640"); // Set the width of the video
+    video.setAttribute("height", "360"); // Set the height of the video
+    video.setAttribute("autoplay", "");
+    video.setAttribute("loop", "");
+
+    // Create a source element for the video file
+    const source = document.createElement("source");
+    source.setAttribute("src", "/videos/VirtualProduction_FinalVideo.mp4"); // Path to your video
+    source.setAttribute("type", "video/mp4"); // Video format (could be 'video/webm' or 'video/ogg' depending on your video type)
+
+    // Append the source to the video element
+    video.appendChild(source);
+    product_info_containerRef.current.appendChild(video);
+
+    const video_screen = scene.getObjectByName("video_screen");
+    main_rotorRef.current = scene.getObjectByName("main_rotor");
+    tail_rotorRef.current = scene.getObjectByName("tail_rotor");
+
+    const video_texture = new THREE.VideoTexture(video);
+    video_texture.flipY = false;
+
+    video_screen.material.map = video_texture;
+  }
 
   useEffect(() => {
+    console.log(product);
     const manager = new THREE.LoadingManager();
     manager.onProgress = function (url, itemsLoaded, itemsTotal) {
       setLoadedPercentage((itemsLoaded / itemsTotal) * 100);
@@ -109,7 +143,7 @@ export default function ProductInfo({ product, closeClicked, css2DScene }) {
       0.1,
       1000
     );
-    cameraRef.current.position.set(100, 100, 100);
+    cameraRef.current.position.set(130, 130, 130);
 
     // OrbitControls
     controlsRef.current = new OrbitControls(
@@ -159,7 +193,9 @@ export default function ProductInfo({ product, closeClicked, css2DScene }) {
 
     // Load Product Model
     fetchProductData("/json/productInfo.json").then((data) => {
-      const productData = data?.find((item) => item.productName === product);
+      const productData = data?.find(
+        (item) => item.productModelName === product
+      );
       if (productData) {
         gltfLoader.load(
           productData.modelUrl,
@@ -171,9 +207,12 @@ export default function ProductInfo({ product, closeClicked, css2DScene }) {
                 child.receiveShadow = true;
               }
             });
+            if (product == "virtual_production")
+              forVirtualProduction(gltf.scene);
+
             fetchHotspotData("/json/hotspotData.json").then((data) => {
               const productData = data?.find(
-                (item) => item.productName === product
+                (item) => item.productModelName === product
               );
               if (productData != null) {
                 //css2DHotspot
@@ -211,8 +250,16 @@ export default function ProductInfo({ product, closeClicked, css2DScene }) {
       }
     });
 
+    const animateRotors = () => {
+      if (main_rotorRef.current != null && tail_rotorRef.current != null) {
+        main_rotorRef.current.rotation.z -= 0.3;
+        tail_rotorRef.current.rotation.y -= 0.3;
+      }
+    };
+
     // Animation loop
     const animate = () => {
+      animateRotors();
       controlsRef.current.update();
       rendererRef.current.render(scene, cameraRef.current);
       css2dRendererRef.current.render(css2DSceneRef.current, cameraRef.current);
@@ -249,7 +296,7 @@ export default function ProductInfo({ product, closeClicked, css2DScene }) {
   useEffect(() => {
     if (loadedPercentage === 100 && cameraRef.current) {
       let camStartPos = new THREE.Vector3(-50, 50, 50);
-      let camEndPos = new THREE.Vector3(10, 5, 10);
+      let camEndPos = new THREE.Vector3(15, 10, 15);
 
       gsap.to(camStartPos, {
         x: camEndPos.x,
@@ -275,14 +322,17 @@ export default function ProductInfo({ product, closeClicked, css2DScene }) {
           // controlsRef.current.minAzimuthAngle = Math.PI * 0.25 * -1;
           // controlsRef.current.maxAzimuthAngle = Math.PI * 0.25;
           controlsRef.current.minDistance = 10;
-          controlsRef.current.maxDistance = 20;
+          controlsRef.current.maxDistance = 30;
         },
       });
     }
   }, [loadedPercentage]);
 
   return (
-    <div className={styles.product_info_container}>
+    <div
+      ref={product_info_containerRef}
+      className={styles.product_info_container}
+    >
       <canvas
         className={styles.product_3d_viewer}
         ref={productCanvasRef}

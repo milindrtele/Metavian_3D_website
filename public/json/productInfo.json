@@ -1,6 +1,7 @@
 [
     {
         "productName": "Car Configurator",
+        "productModelName": "car_configurator",
         "modelUrl": "models/Consolidated models/saperated_animated_models/car_configurator/car-v1.glb",
         "info": {
             "title": "Car Configurator",
@@ -11,6 +12,7 @@
     },
     {
         "productName": "Edulab",
+        "productModelName": "edulab_v1",
         "modelUrl": "models/Consolidated models/saperated_animated_models/edulab/edulab_without_animation.glb",
         "info": {
             "title": "Edulab",
@@ -21,6 +23,7 @@
     },
     {
         "productName": "Fashion IX",
+        "productModelName": "fashion_ix",
         "modelUrl": "models/Consolidated models/saperated_animated_models/fashion_ix/updated_fashion_ix.glb",
         "info": {
             "title": "Fashion IX",
@@ -31,6 +34,7 @@
     },
     {
         "productName": "Meta Realty",
+        "productModelName": "meta_realty",
         "modelUrl": "models/Consolidated models/saperated_animated_models/meta_realty/meta_realty_without_animation_2.glb",
         "info": {
             "title": "Meta Realty",
@@ -41,6 +45,7 @@
     },
     {
         "productName": "Virtual Mart",
+        "productModelName": "virtual_mart",
         "modelUrl": "models/Consolidated models/saperated_animated_models/virtual_mart/virtual_mart_without_animation_2.glb",
         "info": {
             "title": "Virtual Mart",
@@ -51,7 +56,8 @@
     },
     {
         "productName": "Virtual Production",
-        "modelUrl": "models/Consolidated models/saperated_animated_models/virtual_production/virtual_production_without_animation_2.glb",
+        "productModelName": "virtual_production",
+        "modelUrl": "models/Consolidated models/saperated_animated_models/virtual_production/virtual_production_without_animation_3.glb",
         "info": {
             "title": "Virtual Production",
             "subTitle": "Integer eget ante lacinia, dapibus mi sed, hendrerit sem.",

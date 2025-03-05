@@ -531,15 +531,53 @@ export default function Horizon() {
         }
       }
 
+      function modelClickEffect(intersectedObject) {
+        if (
+          intersectedObject &&
+          intersectedObject[0] &&
+          intersectedObject[0].object &&
+          intersectedObject[0].object.parent.userData.group == "product_models"
+        ) {
+          showProductViewer(intersectedObject[0].object.parent.name);
+          //console.log(intersectedObject[0].object.parent.name);
+        }
+      }
+
+      function modelHoverEffect(intersectedObject) {
+        if (
+          intersectedObject &&
+          intersectedObject[0] &&
+          intersectedObject[0].object &&
+          intersectedObject[0].object.parent.userData.group == "product_models"
+        ) {
+          intersectedObject[0].object.material[1].uniforms.opacity_multiplier.value = 1;
+        } else {
+          projectModels.forEach((group) => {
+            group.children.forEach((child) => {
+              if (child.isMesh) {
+                child.material[1].uniforms.opacity_multiplier.value = 0;
+              }
+            });
+          });
+        }
+      }
+
       // Setup raycaster with the callback
       // Instantiate the raycaster handler
       raycasterHandlerRef.current = new RaycasterHandler(
         sceneRef.current,
         cameraRef.current
       );
-      raycasterHandlerRef.current.addClickCallback(handleIntersects);
-      raycasterHandlerRef.current.addClickCallback(highlighterClickEffect);
-      raycasterHandlerRef.current.addHoverCallback(highlighterHoverEffect);
+
+      //click effects
+      raycasterHandlerRef.current.addClickCallback(handleIntersects); //click effect for capsule legs and its rotation
+      raycasterHandlerRef.current.addClickCallback(highlighterClickEffect); //click effect for contact details
+      raycasterHandlerRef.current.addClickCallback(modelClickEffect); //click effect for product models
+
+      //hover effects
+      raycasterHandlerRef.current.addHoverCallback(highlighterHoverEffect); //hover effect for contact details
+      raycasterHandlerRef.current.addHoverCallback(modelHoverEffect); //hover effect for product models
+
       //setupRaycaster(sceneRef.current, cameraRef.current, handleIntersects);
 
       // circlepath = await loadCurveFromJSON(
@@ -1544,6 +1582,25 @@ export default function Horizon() {
           hotspot.addToScene();
         });
       }
+    }
+
+    function addScrollInteractionForCapsule() {
+      var lastScrollTop = 0;
+
+      canvasRef.current.addEventListener(
+        "scroll",
+        function () {
+          // or window.addEventListener("scroll"....
+          var st = window.pageYOffset || document.documentElement.scrollTop; // Credits: "https://github.com/qeremy/so/blob/master/so.dom.js#L426"
+          if (st > lastScrollTop) {
+            // downscroll code
+          } else if (st < lastScrollTop) {
+            // upscroll code
+          } // else was horizontal scroll
+          lastScrollTop = st <= 0 ? 0 : st; // For Mobile or negative scrolling
+        },
+        false
+      );
     }
 
     // Check if the user position has changed

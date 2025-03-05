@@ -55,6 +55,8 @@ let hotspotData = null;
 
 let hotspotsArray = [];
 
+let productModelsArray = [];
+
 export function loadAssetsWithPromise(
   loader,
   clip,
@@ -75,6 +77,14 @@ export function loadAssetsWithPromise(
     // cubeRenderTarget.texture.type = THREE.HalfFloatType;
 
     // cubeCamera = new THREE.CubeCamera(1, 1000, cubeRenderTarget);
+
+    const wipeEffect = new NodeToyMaterial({
+      url: "https://draft.nodetoy.co/0incLfxB7I6zxJwd", //https://draft.nodetoy.co/bzBoaIaQXpLm3UTR, //"https://draft.nodetoy.co/w7BhuuAcZ2ESIjU5", //https://draft.nodetoy.co/ECrNY8O4MMUUagsb,
+    });
+    console.log(wipeEffect.uniforms);
+    console.log(wipeEffect.uniforms.opacity_multiplier);
+    //wipeEffect.uniforms.opacity_multiplier.value = 0.0;
+    wipeEffect.side = THREE.FrontSide;
 
     const check = () => {
       const checkValue = () => {
@@ -141,6 +151,7 @@ export function loadAssetsWithPromise(
           //mixerRef.current = mixer;
           const assetScene = gltf.scene;
           assetScene.name = name;
+          assetScene.userData.group = "product_models";
           const assetAnchor = assetScene.getObjectByName(anchorName);
           if (position != null)
             assetAnchor.position.set(position.x, position.y, position.z);
@@ -180,12 +191,7 @@ export function loadAssetsWithPromise(
           modelGeommetry.addGroup(0, Infinity, 0);
           modelGeommetry.addGroup(0, Infinity, 1);
 
-          const wipeEffect = new NodeToyMaterial({
-            url: "https://draft.nodetoy.co/TWWhNsEJ2rqiLtpU", //https://draft.nodetoy.co/bzBoaIaQXpLm3UTR, //"https://draft.nodetoy.co/w7BhuuAcZ2ESIjU5", //https://draft.nodetoy.co/ECrNY8O4MMUUagsb,
-          });
-          wipeEffect.side = THREE.FrontSide;
-
-          const materialArray = [modelBaseMaterial, wipeEffect];
+          const materialArray = [modelBaseMaterial, wipeEffect.clone()];
           model.material = materialArray;
 
           //enable shadows for all objects
@@ -196,29 +202,32 @@ export function loadAssetsWithPromise(
           //   }
           // });
 
-          console.log(hotSpotConfig);
-          if (hotSpotConfig != null) {
-            //css2DHotspot
-            const mainHotspotData = hotSpotConfig.mainHotspot;
-            console.log(hotSpotConfig);
-            const hotspotInstance = new Hotspot(
-              "primary",
-              css2DScene,
-              mainHotspotData.hotSpotPos,
-              mainHotspotData.distanceFormCam,
-              mainHotspotData.childHtmlUrl,
-              mainHotspotData.title,
-              mainHotspotData.subTitle,
-              mainHotspotData.videoID,
-              mainHotspotData.webURL,
-              mainCamera,
-              productViewerCallback,
-              productPageVisible
-            );
-            hotspotInstance.addToScene();
-            hotspotsArray.push(hotspotInstance);
-            console.log(hotspotsArray);
-          }
+          ////////////////////////////////       hotspot        //////////////////////////
+          // console.log(hotSpotConfig);
+          // if (hotSpotConfig != null) {
+          //   //css2DHotspot
+          //   const mainHotspotData = hotSpotConfig.mainHotspot;
+          //   console.log(hotSpotConfig);
+          //   const hotspotInstance = new Hotspot(
+          //     "primary",
+          //     css2DScene,
+          //     mainHotspotData.hotSpotPos,
+          //     mainHotspotData.distanceFormCam,
+          //     mainHotspotData.childHtmlUrl,
+          //     mainHotspotData.title,
+          //     mainHotspotData.subTitle,
+          //     mainHotspotData.videoID,
+          //     mainHotspotData.webURL,
+          //     mainCamera,
+          //     productViewerCallback,
+          //     productPageVisible
+          //   );
+          //   hotspotInstance.addToScene();
+          //   hotspotsArray.push(hotspotInstance);
+          //   console.log(hotspotsArray);
+          // }
+          ////////////////////////////////       hotspot        //////////////////////////
+
           // if (hotSpotConfig != null) {
           //   //css2DHotspot
           //   const hotspotInstance = new Hotspot(
