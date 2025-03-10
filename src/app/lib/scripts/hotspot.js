@@ -162,7 +162,8 @@ class Hotspot {
     const action_button = child.querySelector("#action_button");
     action_button.addEventListener("click", () => {
       console.log("button clicked " + this.title);
-      if (this.productViewerCallback) this.productViewerCallback(this.title);
+      //if (this.productViewerCallback) this.productViewerCallback(this.title);
+      window.open(this.webURL, "_blank");
     });
   }
 

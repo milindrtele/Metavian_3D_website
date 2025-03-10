@@ -25,9 +25,9 @@
                 ],
                 "distanceFormCam": 30,
                 "childHtmlUrl": "/innerHtml/hotspot.html",
-                "title": "Car Configurator",
+                "title": "Checkout Car Configurator",
                 "subTitle": "Visualize your next car",
-                "webURL": "https://www.surajwaterpark.com/"
+                "webURL": "https://gmc.metavian.io/"
             },
             {
                 "id": 1,
@@ -38,9 +38,9 @@
                 ],
                 "distanceFormCam": 30,
                 "childHtmlUrl": "/innerHtml/hotspot.html",
-                "title": "Car Configurator",
+                "title": "Car Configurator on Youtube",
                 "subTitle": "Visualize your next car",
-                "webURL": "https://www.surajwaterpark.com/"
+                "webURL": "https://www.youtube.com/watch?v=G0txUiqltrA"
             },
             {
                 "id": 2,
@@ -51,9 +51,9 @@
                 ],
                 "distanceFormCam": 30,
                 "childHtmlUrl": "/innerHtml/hotspot.html",
-                "title": "Car Configurator",
+                "title": "More Datails",
                 "subTitle": "Visualize your next car",
-                "webURL": "https://www.surajwaterpark.com/"
+                "webURL": "https://metavian.tech/index.html#gmc_car"
             }
         ]
     },
@@ -83,9 +83,9 @@
                 ],
                 "distanceFormCam": 30,
                 "childHtmlUrl": "/innerHtml/hotspot.html",
-                "title": "Car Configurator",
-                "subTitle": "Visualize your next car",
-                "webURL": "https://www.surajwaterpark.com/"
+                "title": "Virtual Mart on Youtube",
+                "subTitle": "Virtual shopping experience",
+                "webURL": "https://www.youtube.com/watch?v=_-fzzRIuS0o"
             },
             {
                 "id": 1,
@@ -96,9 +96,9 @@
                 ],
                 "distanceFormCam": 30,
                 "childHtmlUrl": "/innerHtml/hotspot.html",
-                "title": "Car Configurator",
-                "subTitle": "Visualize your next car",
-                "webURL": "https://www.surajwaterpark.com/"
+                "title": "Checkout Virtual Mart",
+                "subTitle": "Virtual shopping experience",
+                "webURL": "https://www.youtube.com/watch?v=_-fzzRIuS0o"
             },
             {
                 "id": 2,
@@ -109,8 +109,8 @@
                 ],
                 "distanceFormCam": 30,
                 "childHtmlUrl": "/innerHtml/hotspot.html",
-                "title": "Car Configurator",
-                "subTitle": "Visualize your next car",
+                "title": "Virtual Mart",
+                "subTitle": "VR Mart",
                 "webURL": "https://www.surajwaterpark.com/"
             }
         ]
@@ -141,9 +141,9 @@
                 ],
                 "distanceFormCam": 30,
                 "childHtmlUrl": "/innerHtml/hotspot.html",
-                "title": "Car Configurator",
-                "subTitle": "Visualize your next car",
-                "webURL": "https://www.surajwaterpark.com/"
+                "title": "Fashion IX",
+                "subTitle": "Checkout FashionIX",
+                "webURL": "https://fashionix.metavian.io/"
             },
             {
                 "id": 1,
@@ -154,9 +154,9 @@
                 ],
                 "distanceFormCam": 30,
                 "childHtmlUrl": "/innerHtml/hotspot.html",
-                "title": "Car Configurator",
-                "subTitle": "Visualize your next car",
-                "webURL": "https://www.surajwaterpark.com/"
+                "title": "Fashion IX",
+                "subTitle": "FashionIX on Youtube",
+                "webURL": "https://www.youtube.com/watch?v=qDvG6torRtQ"
             },
             {
                 "id": 2,
@@ -167,9 +167,9 @@
                 ],
                 "distanceFormCam": 30,
                 "childHtmlUrl": "/innerHtml/hotspot.html",
-                "title": "Car Configurator",
-                "subTitle": "Visualize your next car",
-                "webURL": "https://www.surajwaterpark.com/"
+                "title": "More Details",
+                "subTitle": "More details on fashionIX",
+                "webURL": "https://metavian.tech/"
             }
         ]
     },
@@ -199,8 +199,8 @@
                 ],
                 "distanceFormCam": 30,
                 "childHtmlUrl": "/innerHtml/hotspot.html",
-                "title": "Car Configurator",
-                "subTitle": "Visualize your next car",
+                "title": "Edulab",
+                "subTitle": "Edulab on Youtube",
                 "webURL": "https://www.surajwaterpark.com/"
             },
             {

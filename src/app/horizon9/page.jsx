@@ -1584,23 +1584,24 @@ export default function Horizon() {
       }
     }
 
-    function addScrollInteractionForCapsule() {
-      var lastScrollTop = 0;
+    var lastScrollTop = 0;
+    function actOnScroll() {
+      const st = window.scrollY || document.documentElement.scrollTop;
+      if (st > lastScrollTop.current) {
+        callback("down");
+      } else if (st < lastScrollTop.current) {
+        callback("up");
+      }
+      lastScrollTop.current = Math.max(0, st); // Prevent negative values
+    }
 
-      canvasRef.current.addEventListener(
-        "scroll",
-        function () {
-          // or window.addEventListener("scroll"....
-          var st = window.pageYOffset || document.documentElement.scrollTop; // Credits: "https://github.com/qeremy/so/blob/master/so.dom.js#L426"
-          if (st > lastScrollTop) {
-            // downscroll code
-          } else if (st < lastScrollTop) {
-            // upscroll code
-          } // else was horizontal scroll
-          lastScrollTop = st <= 0 ? 0 : st; // For Mobile or negative scrolling
-        },
-        false
-      );
+    function addScrollInteractionForCapsule() {
+      console.log("adding scroll interaction");
+      canvasRef.current.addEventListener("scroll", actOnScroll, false);
+    }
+
+    function removeScrollInteractionFromCapsule() {
+      canvasRef.current.removeEventListener("scroll", actOnScroll, false);
     }
 
     // Check if the user position has changed
@@ -1688,6 +1689,7 @@ export default function Horizon() {
             console.error("Failed to stop video: ", error);
           });
       } else if (currentUserPositionRef.current == "Menu Item 2") {
+        addScrollInteractionForCapsule();
         removeAllHotspotsFromArray();
         sceneRef.current.remove(social_media_models_scene);
         showiFrame();

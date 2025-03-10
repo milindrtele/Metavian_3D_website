@@ -182,7 +182,7 @@
     top: 0;
   }
   to {
-    width: 13vw;
+    width: 16vw;
     height: 6vw;
     left: -40%;
     top: -40%;
@@ -191,7 +191,7 @@
 
 @keyframes reverseScale {
   from {
-    width: 13vw;
+    width: 16vw;
     height: 6vw;
     left: -40%;
     top: -40%;
