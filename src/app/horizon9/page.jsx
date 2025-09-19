@@ -100,6 +100,7 @@ import {
 } from "../lib/scripts/projection_screen.js";
 
 import { RaycasterHandler } from "../lib/scripts/raycaster.js";
+import { RaycasterForBulge } from "../lib/scripts/raycasterForBulge.js";
 
 import { animateCapsuleRotation } from "../lib/scripts/animateCapsuleRotation.js";
 
@@ -253,6 +254,7 @@ export default function Horizon() {
         time: timeUniform,
         uFBO: { value: null },
         uProgress: progressJSRef.current,
+        uPointer: { value: new THREE.Vector3(0.0, 0.0, 0.0) },
         rotationAngle: rotationAngleJS,
         vScale: scaleJS,
         mt1: { value: 8 / totalLengthOfAnimation }, //7
@@ -562,6 +564,28 @@ export default function Horizon() {
         }
       }
 
+      const invisiblePlaneGeo = new THREE.PlaneGeometry(500, 500);
+      const invisiblePlaneMat = new THREE.MeshBasicMaterial({
+        color: 0xff0000,
+        opacity: 0.5,
+        transparent: true,
+      });
+      const invisiblePlaneMesh = new THREE.Mesh(
+        invisiblePlaneGeo,
+        invisiblePlaneMat
+      );
+      invisiblePlaneMesh.rotation.x = (Math.PI / 180) * -90;
+      invisiblePlaneMesh.position.y = -5;
+      sceneRef.current.add(invisiblePlaneMesh);
+
+      const raycasterForBulge = new RaycasterForBulge(
+        invisiblePlaneMesh,
+        sceneRef.current,
+        cameraRef.current
+      );
+
+      raycasterForBulge.updateRaycaster();
+
       // Setup raycaster with the callback
       // Instantiate the raycaster handler
       raycasterHandlerRef.current = new RaycasterHandler(
@@ -606,11 +630,11 @@ export default function Horizon() {
 
       //sceneRef.current.fog = new THREE.Fog(0x99ddff, 500, 1000);
 
-      // const dlight = new THREE.DirectionalLight(0xffffff, 1);
+      const dlight = new THREE.DirectionalLight(0xffffff, 1);
 
-      // dlight.position.set(200, 1000, 50);
-      // dlight.position.set(200, 1000, 50);
-      // sceneRef.current.add(dlight);
+      dlight.position.set(200, 1000, 50);
+      dlight.position.set(200, 1000, 50);
+      sceneRef.current.add(dlight);
 
       // const helper = new THREE.DirectionalLightHelper(dlight, 5);
       // sceneRef.current.add(helper);
@@ -1014,6 +1038,11 @@ export default function Horizon() {
       // Animate the scene
       let time = 0;
       const animate = () => {
+        // if (raycasterForBulge && fboMaterial) {
+        //   fboMaterial.uniforms.uPointer.value =
+        //     raycasterForBulge.updateRaycaster();
+        // }
+
         animationIdRef.current = requestAnimationFrame(animate);
 
         positionProjectionScreen();

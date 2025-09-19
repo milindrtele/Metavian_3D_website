@@ -3,6 +3,7 @@ uniform float aRandom;
 uniform float uProgress;
 uniform float rotationAngle;
 uniform float vScale;
+uniform vec3 uPointer;
 uniform sampler2D step1;
 uniform sampler2D step2;
 uniform sampler2D step3;

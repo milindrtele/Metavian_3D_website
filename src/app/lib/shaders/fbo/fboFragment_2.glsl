@@ -6,6 +6,7 @@ float PI = 3.14159265;
 uniform float rotationAngle;
 uniform float vScale;
 uniform float uProgress;
+uniform vec3 uPointer;
 
 uniform sampler2D step1; //metavian-logo
 
@@ -112,6 +113,9 @@ void main() {
         displacement = 0.0;
         scale = mix(color9.r, color2.r, segmentProgress);
     }
+
+    // float circle = 1.0 - smoothstep( 0.2 , 1.0, 0.5 * distance(vUv, uPointer.xz) );
+    // displacement += circle * 0.5;
 
     float clampedGreen = clamp(displacement + scale, 0.0, 1.0);
     gl_FragColor = vec4(0.0, clampedGreen, 0.0, 1.0);
