@@ -114,9 +114,21 @@ void main() {
         scale = mix(color9.r, color2.r, segmentProgress);
     }
 
-    // float circle = 1.0 - smoothstep( 0.2 , 1.0, 0.5 * distance(vUv, uPointer.xz) );
-    // displacement += circle * 0.5;
+    // Compute distance from pointer position
+    float pointerCircledist = distance(vUv, uPointer.xz);
 
-    float clampedGreen = clamp(displacement + scale, 0.0, 1.0);
+    // Circle radius
+    float pointerCircleRadius = 0.025; // adjust to make bigger/smaller
+
+    // Soft edge (anti-aliased)
+    float pointerCircle = 1.0 - smoothstep(pointerCircleRadius - 0.005, pointerCircleRadius + 0.005, pointerCircledist);
+
+    displacement += pointerCircle * 0.5 * 2.0 ; // increase displacement effect within pointer circle
+    // Output solid circle (white circle on black background)
+    //gl_FragColor = vec4(0.0, pointerCircle, 0.0, 1.0);
+
+    float clampedGreen = clamp(displacement + scale, -1.0, 1.0);
     gl_FragColor = vec4(0.0, clampedGreen, 0.0, 1.0);
+
+
 }

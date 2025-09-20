@@ -92,7 +92,7 @@ class RaycasterForBulge {
     }
 
     // Return null or some default when no intersection
-    return null;
+    return { x: 0.5, y: 0.5, z: 0.5 };
   }
 
   // Optionally, add a method to remove the event listeners

@@ -254,7 +254,7 @@ export default function Horizon() {
         time: timeUniform,
         uFBO: { value: null },
         uProgress: progressJSRef.current,
-        uPointer: { value: new THREE.Vector3(0.0, 0.0, 0.0) },
+        uPointer: { value: new THREE.Vector3(0.5, 0.5, 0.5) },
         rotationAngle: rotationAngleJS,
         vScale: scaleJS,
         mt1: { value: 8 / totalLengthOfAnimation }, //7
@@ -567,7 +567,7 @@ export default function Horizon() {
       const invisiblePlaneGeo = new THREE.PlaneGeometry(500, 500);
       const invisiblePlaneMat = new THREE.MeshBasicMaterial({
         color: 0xff0000,
-        opacity: 0.5,
+        opacity: 0,
         transparent: true,
       });
       const invisiblePlaneMesh = new THREE.Mesh(
@@ -630,11 +630,11 @@ export default function Horizon() {
 
       //sceneRef.current.fog = new THREE.Fog(0x99ddff, 500, 1000);
 
-      const dlight = new THREE.DirectionalLight(0xffffff, 1);
+      // const dlight = new THREE.DirectionalLight(0xffffff, 1);
 
-      dlight.position.set(200, 1000, 50);
-      dlight.position.set(200, 1000, 50);
-      sceneRef.current.add(dlight);
+      // dlight.position.set(200, 1000, 50);
+      // dlight.position.set(200, 1000, 50);
+      // sceneRef.current.add(dlight);
 
       // const helper = new THREE.DirectionalLightHelper(dlight, 5);
       // sceneRef.current.add(helper);
@@ -809,6 +809,7 @@ export default function Horizon() {
       // // scan_lines.side = THREE.DoubleSide;
       // const debugPlaneMesh = new THREE.Mesh(debugPlaneGeo, debugPlaneMat);
       // debugPlaneMesh.position.set(0, 20, 0);
+      // debugPlaneMesh.rotation.x = (Math.PI / 180) * -90;
       // sceneRef.current.add(debugPlaneMesh);
 
       // console.log(scan_lines);
@@ -1038,10 +1039,11 @@ export default function Horizon() {
       // Animate the scene
       let time = 0;
       const animate = () => {
-        // if (raycasterForBulge && fboMaterial) {
-        //   fboMaterial.uniforms.uPointer.value =
-        //     raycasterForBulge.updateRaycaster();
-        // }
+        // debugPlaneMesh.lookAt(cameraRef.current.position);
+        if (raycasterForBulge && fboMaterial != null) {
+          fboMaterial.uniforms.uPointer.value =
+            raycasterForBulge.updateRaycaster();
+        }
 
         animationIdRef.current = requestAnimationFrame(animate);
 
