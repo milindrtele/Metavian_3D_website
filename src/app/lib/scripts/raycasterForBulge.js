@@ -12,12 +12,13 @@ class RaycasterForBulge {
     // Store callback functions that will be triggered on intersection
     this.clickCallbacks = [];
     this.hoverCallbacks = [];
+    this.moveCallbacks = [];
 
     this.onMouseClick = this.onMouseClick.bind(this);
     this.onMouseMove = this.onMouseMove.bind(this);
 
     // Add event listeners for mouse click and mouse move (hover)
-    window.addEventListener("click", this.onMouseClick);
+    //window.addEventListener("click", this.onMouseClick);
     window.addEventListener("mousemove", this.onMouseMove);
   }
 
@@ -32,6 +33,13 @@ class RaycasterForBulge {
   addHoverCallback(callback) {
     if (typeof callback === "function") {
       this.hoverCallbacks.push(callback);
+    }
+  }
+
+  // Method to dynamically add a move callback function
+  addMoveCallback(callback) {
+    if (typeof callback === "function") {
+      this.moveCallbacks.push(callback);
     }
   }
 
@@ -52,18 +60,25 @@ class RaycasterForBulge {
   }
 
   // Method to handle mouse hover (mousemove)
+  // onMouseMove(event) {
+  //   this.updatePointer(event);
+
+  //   // Update the raycaster with the camera and pointer position
+  //   this.raycaster.setFromCamera(this.pointer, this.camera);
+
+  //   // Calculate objects intersecting the picking ray
+  //   const intersects = this.raycaster.intersectObjects(this.scene.children);
+
+  //   // Trigger each registered hover callback function with the intersects array
+  //   this.hoverCallbacks.forEach((callback) => {
+  //     callback(intersects);
+  //   });
+  // }
+
   onMouseMove(event) {
     this.updatePointer(event);
-
-    // Update the raycaster with the camera and pointer position
-    this.raycaster.setFromCamera(this.pointer, this.camera);
-
-    // Calculate objects intersecting the picking ray
-    const intersects = this.raycaster.intersectObjects(this.scene.children);
-
-    // Trigger each registered hover callback function with the intersects array
-    this.hoverCallbacks.forEach((callback) => {
-      callback(intersects);
+    this.moveCallbacks.forEach((callback) => {
+      callback();
     });
   }
 

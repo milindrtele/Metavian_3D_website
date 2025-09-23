@@ -584,7 +584,16 @@ export default function Horizon() {
         cameraRef.current
       );
 
-      raycasterForBulge.updateRaycaster();
+      function updateBulgePosition() {
+        if (raycasterForBulge && fboMaterial != null) {
+          fboMaterial.uniforms.uPointer.value =
+            raycasterForBulge.updateRaycaster();
+        }
+      }
+
+      raycasterForBulge.addMoveCallback(updateBulgePosition);
+
+      //raycasterForBulge.updateRaycaster();
 
       // Setup raycaster with the callback
       // Instantiate the raycaster handler
@@ -742,7 +751,7 @@ export default function Horizon() {
       //   .load("kloppenheim_02_puresky_1k.hdr", function (texture) {
       //     texture.mapping = THREE.EquirectangularReflectionMapping;
       //     sceneRef.current.background = texture;
-      //     sceneRef.current.environment = texture;
+      //     //sceneRef.current.environment = texture;
       //     const vec = new THREE.Vector3(0, (Math.PI / 180) * 90, 0);
       //     sceneRef.current.environmentRotation = vec;
       //     sceneRef.current.backgroundRotation = vec;
@@ -795,22 +804,22 @@ export default function Horizon() {
       // });
 
       //add the debug plane
-      // const debugPlaneGeo = new THREE.PlaneGeometry(20, 17.7);
-      // const debugPlaneMat = new THREE.MeshBasicMaterial({
-      //   //map: new THREE.TextureLoader().load("images/ring.jpg"),
-      //   map: fboRef.current.texture,
-      //   side: THREE.DoubleSide,
-      // });
+      const debugPlaneGeo = new THREE.PlaneGeometry(20, 17.7);
+      const debugPlaneMat = new THREE.MeshBasicMaterial({
+        //map: new THREE.TextureLoader().load("images/ring.jpg"),
+        map: fboRef.current.texture,
+        side: THREE.DoubleSide,
+      });
 
       // // const scan_lines = new NodeToyMaterial({
       // //   data,
       // //   //url: "https://draft.nodetoy.co/teCGtR1LIJGk4CO1",
       // // });
       // // scan_lines.side = THREE.DoubleSide;
-      // const debugPlaneMesh = new THREE.Mesh(debugPlaneGeo, debugPlaneMat);
-      // debugPlaneMesh.position.set(0, 20, 0);
-      // debugPlaneMesh.rotation.x = (Math.PI / 180) * -90;
-      // sceneRef.current.add(debugPlaneMesh);
+      const debugPlaneMesh = new THREE.Mesh(debugPlaneGeo, debugPlaneMat);
+      debugPlaneMesh.position.set(0, 20, 0);
+      debugPlaneMesh.rotation.x = (Math.PI / 180) * -90;
+      sceneRef.current.add(debugPlaneMesh);
 
       // console.log(scan_lines);
 
@@ -1039,11 +1048,11 @@ export default function Horizon() {
       // Animate the scene
       let time = 0;
       const animate = () => {
-        // debugPlaneMesh.lookAt(cameraRef.current.position);
-        if (raycasterForBulge && fboMaterial != null) {
-          fboMaterial.uniforms.uPointer.value =
-            raycasterForBulge.updateRaycaster();
-        }
+        debugPlaneMesh.lookAt(cameraRef.current.position);
+        // if (raycasterForBulge && fboMaterial != null) {
+        //   fboMaterial.uniforms.uPointer.value =
+        //     raycasterForBulge.updateRaycaster();
+        // }
 
         animationIdRef.current = requestAnimationFrame(animate);
 
@@ -1095,7 +1104,7 @@ export default function Horizon() {
         // }
         //rendererRef.current.render(sceneRef.current, cameraRef.current);
         if (productPageVisibleRef.current == false) {
-          rendererRef.current.render(sceneRef.current, cameraRef.current);
+          //rendererRef.current.render(sceneRef.current, cameraRef.current);
         }
 
         // Render CSS3D scene
@@ -1120,7 +1129,7 @@ export default function Horizon() {
             cameraRef.current
           );
         }
-        //composer.render();
+        // composer.render();
 
         NodeToyMaterial.tick();
       };
