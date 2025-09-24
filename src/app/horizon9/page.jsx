@@ -33,6 +33,9 @@ import testVertex from "../lib/shaders/test/testVertex.glsl";
 import testFragment from "../lib/shaders/test/testFragment.glsl";
 
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
+import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
+import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
+import { OutlinePass } from "three/addons/postprocessing/OutlinePass.js";
 import { SSRPass } from "three/addons/postprocessing/SSRPass.js";
 import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
 import { TAARenderPass } from "three/addons/postprocessing/TAARenderPass.js";
@@ -230,6 +233,9 @@ export default function Horizon() {
   const productPageVisibleRef = useRef(false);
   const [productPageVisible, setProductPageVisible] = useState(false);
 
+  const outlinePassRef = useRef(null);
+  let selectedObjects = [];
+
   gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
   gsap.registerPlugin(CustomEase);
 
@@ -299,6 +305,18 @@ export default function Horizon() {
     fboGeo = new THREE.PlaneGeometry(2, 2);
     fboMesh = new THREE.Mesh(fboGeo, fboMaterial);
     fboScene.add(fboMesh);
+  }
+
+  function addSelectedObject(object) {
+    console.log(object?.name);
+    if (object == null) {
+      selectedObjects.length = 0;
+      outlinePassRef.current.selectedObjects = selectedObjects;
+    } else {
+      selectedObjects.length = 0; // clear existing array
+      selectedObjects.push(object); // add the new object
+      outlinePassRef.current.selectedObjects = selectedObjects;
+    }
   }
 
   async function setupScene(canvas) {
@@ -381,6 +399,29 @@ export default function Horizon() {
       // Add the camera to the scene
       sceneRef.current.add(cameraRef.current);
 
+      function handleLegHover(intersects) {
+        if (
+          currentUserPositionRef.current == "Menu Item 2" &&
+          intersects.length > 0
+        ) {
+          //console.log("Intersected objects:", intersects);
+          if (
+            intersects[0].object.parent &&
+            intersects[0].object.parent.parent &&
+            intersects[0].object.parent.parent.name == "legs_parent" &&
+            projection_object
+          ) {
+            console.log("Intersected objects:", intersects);
+            const selectedObject = intersects[0].object;
+
+            addSelectedObject(selectedObject);
+          } else {
+            addSelectedObject(null);
+          }
+        } else {
+        }
+      }
+
       // Callback function to handle intersects
       function handleIntersects(intersects) {
         if (
@@ -454,6 +495,27 @@ export default function Horizon() {
                 letters_anchor.children[2].position.set(...position);
               },
             });
+          }
+        }
+      }
+
+      function hoverEffectForContacts(intersects) {
+        if (
+          currentUserPositionRef.current == "Menu Item 3" &&
+          intersects.length > 0
+        ) {
+          console.log("Intersected objects:", intersects[0].object.name);
+          if (
+            intersects[0].object.name == "Discord" ||
+            intersects[0].object.name == "Facebook" ||
+            intersects[0].object.name == "Instagram" ||
+            intersects[0].object.name == "Youtube"
+          ) {
+            console.log("Intersected objects:", intersects[0].object.name);
+            const selectedObject = intersects[0].object;
+            addSelectedObject(selectedObject);
+          } else {
+            addSelectedObject(null);
           }
         }
       }
@@ -552,12 +614,16 @@ export default function Horizon() {
           intersectedObject[0].object &&
           intersectedObject[0].object.parent.userData.group == "product_models"
         ) {
-          intersectedObject[0].object.material[1].uniforms.opacity_multiplier.value = 1;
+          //intersectedObject[0].object.material[1].uniforms.opacity_multiplier.value = 1;
+          const selectedObj = intersectedObject[0].object;
+          addSelectedObject(selectedObj);
+          //outlinePassRef.current.selectedObjects = selectedObjects;
         } else {
+          addSelectedObject(null);
           projectModels.forEach((group) => {
             group.children.forEach((child) => {
               if (child.isMesh) {
-                child.material[1].uniforms.opacity_multiplier.value = 0;
+                //child.material[1].uniforms.opacity_multiplier.value = 0;
               }
             });
           });
@@ -608,7 +674,9 @@ export default function Horizon() {
       raycasterHandlerRef.current.addClickCallback(modelClickEffect); //click effect for product models
 
       //hover effects
+      raycasterHandlerRef.current.addHoverCallback(handleLegHover); //hover effect for capsule legs and its rotation
       raycasterHandlerRef.current.addHoverCallback(highlighterHoverEffect); //hover effect for contact details
+      raycasterHandlerRef.current.addHoverCallback(hoverEffectForContacts); //hover effect for contact models
       raycasterHandlerRef.current.addHoverCallback(modelHoverEffect); //hover effect for product models
 
       //setupRaycaster(sceneRef.current, cameraRef.current, handleIntersects);
@@ -980,10 +1048,25 @@ export default function Horizon() {
         maxblur: 0.01,
       });
 
+      const renderPass = new RenderPass(sceneRef.current, cameraRef.current);
+      outlinePassRef.current = new OutlinePass(
+        new THREE.Vector2(window.innerWidth, window.innerHeight),
+        sceneRef.current,
+        cameraRef.current
+      );
+      outlinePassRef.current.edgeStrength = 3.0;
+      outlinePassRef.current.edgeGlow = 1.0; // 0.0 to 1.0
+      outlinePassRef.current.edgeThickness = 4; // 1 to 4
+      outlinePassRef.current.pulsePeriod = 5; // 0 to 5
+      outlinePassRef.current.visibleEdgeColor.set("#009dff");
+      outlinePassRef.current.hiddenEdgeColor.set("#009dff");
+
       //composer.addPass(ssrPass);
-      composer.addPass(bloomPass);
+      //composer.addPass(bloomPass);
       //composer.addPass(taaRenderPassRef.current);
       //composer.addPass(bokehPass);
+      composer.addPass(renderPass);
+      composer.addPass(outlinePassRef.current);
 
       composer.addPass(new OutputPass());
 
@@ -1063,8 +1146,8 @@ export default function Horizon() {
         //   console.log(capsule_anchor.position);
         // }
 
-        if (cubeCamera != null)
-          cubeCamera.update(rendererRef.current, sceneRef.current);
+        // if (cubeCamera != null)
+        //   cubeCamera.update(rendererRef.current, sceneRef.current);
 
         //stats.update();
 
@@ -1105,6 +1188,7 @@ export default function Horizon() {
         //rendererRef.current.render(sceneRef.current, cameraRef.current);
         if (productPageVisibleRef.current == false) {
           //rendererRef.current.render(sceneRef.current, cameraRef.current);
+          composer.render();
         }
 
         // Render CSS3D scene
@@ -1129,7 +1213,6 @@ export default function Horizon() {
             cameraRef.current
           );
         }
-        // composer.render();
 
         NodeToyMaterial.tick();
       };

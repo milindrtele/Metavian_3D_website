@@ -184,15 +184,16 @@ export function loadAssetsWithPromise(
           if (callback) {
             callback;
           }
+          //////////////////////////////////////////
+          // console.log(model);
+          // const modelGeommetry = model.geometry;
+          // const modelBaseMaterial = model.material;
+          // modelGeommetry.addGroup(0, Infinity, 0);
+          // modelGeommetry.addGroup(0, Infinity, 1);
 
-          console.log(model);
-          const modelGeommetry = model.geometry;
-          const modelBaseMaterial = model.material;
-          modelGeommetry.addGroup(0, Infinity, 0);
-          modelGeommetry.addGroup(0, Infinity, 1);
-
-          const materialArray = [modelBaseMaterial, wipeEffect.clone()];
-          model.material = materialArray;
+          // const materialArray = [modelBaseMaterial, wipeEffect.clone()];
+          // model.material = materialArray;
+          //////////////////////////////////////////////
 
           //enable shadows for all objects
           // scene.traverse((child) => {
@@ -261,7 +262,7 @@ export function loadAssetsWithPromise(
     // Load the social media models
     loader.load(
       //"/models/contact models/contact_models_with_vr_headset_with_animations.glb",
-      "/models/contact models/contact_models_with_vr_headset_with_animation_and_optimisation_2.glb",
+      "/models/contact models/contact_models_with_vr_headset_with_animation_and_optimisation_2_v02.glb",
       //"/models/contact models/contacts_model_with_highliter_v01.glb",
       (gltf) => {
         social_media_models_scene = gltf.scene;
