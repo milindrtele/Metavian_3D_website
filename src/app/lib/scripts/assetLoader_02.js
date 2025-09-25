@@ -88,7 +88,7 @@ export function loadAssetsWithPromise(
 
     const check = () => {
       const checkValue = () => {
-        console.log(productPageVisible);
+        //console.log(productPageVisible);
         requestAnimationFrame(checkValue);
       };
       requestAnimationFrame(checkValue);

@@ -274,29 +274,29 @@ export default function Horizon() {
         },
         step3: {
           value: new THREE.TextureLoader().load(
-            "/images/island_2/islands_02.jpg"
+            "/images/island_3/islands_02.jpg"
           ),
         },
         step4: {
-          value: new THREE.TextureLoader().load("/images/island_2/01.jpg"),
+          value: new THREE.TextureLoader().load("/images/island_3/001.jpg"),
         },
         step5: {
-          value: new THREE.TextureLoader().load("/images/island_2/02.jpg"),
+          value: new THREE.TextureLoader().load("/images/island_3/02.jpg"),
         },
         step6: {
-          value: new THREE.TextureLoader().load("/images/island_2/03.jpg"),
+          value: new THREE.TextureLoader().load("/images/island_3/03.jpg"),
         },
         step7: {
-          value: new THREE.TextureLoader().load("/images/island_2/04.jpg"),
+          value: new THREE.TextureLoader().load("/images/island_3/04.jpg"),
         },
         step8: {
-          value: new THREE.TextureLoader().load("/images/island_2/05.jpg"),
+          value: new THREE.TextureLoader().load("/images/island_3/05.jpg"),
         },
         step9: {
-          value: new THREE.TextureLoader().load("/images/island_2/06.jpg"),
+          value: new THREE.TextureLoader().load("/images/island_3/06.jpg"),
         },
         step10: {
-          value: new THREE.TextureLoader().load("/images/island_2/06.jpg"),
+          value: new THREE.TextureLoader().load("/images/island_3/06.jpg"),
         },
       },
       vertexShader: fboVertex,
@@ -307,8 +307,14 @@ export default function Horizon() {
     fboScene.add(fboMesh);
   }
 
+  let selectionTimeout = null;
+  let lastSelectedObject = null;
   function addSelectedObject(object) {
-    console.log(object?.name);
+    if (object === lastSelectedObject) {
+      console.log("same object selected");
+      return;
+    } // If the same object is selected, do nothing
+    console.log(object);
     if (object == null) {
       selectedObjects.length = 0;
       outlinePassRef.current.selectedObjects = selectedObjects;
@@ -317,6 +323,7 @@ export default function Horizon() {
       selectedObjects.push(object); // add the new object
       outlinePassRef.current.selectedObjects = selectedObjects;
     }
+    lastSelectedObject = object;
   }
 
   async function setupScene(canvas) {
@@ -885,9 +892,9 @@ export default function Horizon() {
       // // });
       // // scan_lines.side = THREE.DoubleSide;
       const debugPlaneMesh = new THREE.Mesh(debugPlaneGeo, debugPlaneMat);
-      debugPlaneMesh.position.set(0, 20, 0);
+      debugPlaneMesh.position.set(50, 20, -100);
       debugPlaneMesh.rotation.x = (Math.PI / 180) * -90;
-      sceneRef.current.add(debugPlaneMesh);
+      cameraRef.current.add(debugPlaneMesh);
 
       // console.log(scan_lines);
 

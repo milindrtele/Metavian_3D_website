@@ -134,9 +134,9 @@ void main() {
     float pointerCircle = 1.0 - smoothstep(pointerCircleRadius - 0.005, pointerCircleRadius + 0.005, pointerCircledist);
 
     displacement += pointerCircle * 0.5 * 2.0; // increase displacement effect within pointer circle
-    // displacement *= (1.0 - greenScale); // reduce displacement effect as greenScale increases
+    displacement *= (1.0 - greenScale); // reduce displacement effect as greenScale increases
     // Output solid circle (white circle on black background)
-    //gl_FragColor = vec4(0.0, pointerCircle, 0.0, 1.0);
+    //gl_FragColor = vec4(0.0, greenScale, 0.0, 1.0);
 
     float clampedGreen = clamp(displacement + scale, -1.0, 1.0);
     gl_FragColor = vec4(0.0, clampedGreen, 0.0, 1.0);
