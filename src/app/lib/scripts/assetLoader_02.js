@@ -151,6 +151,7 @@ export function loadAssetsWithPromise(
           //mixerRef.current = mixer;
           const assetScene = gltf.scene;
           assetScene.name = name;
+          assetScene.userData.name = name;
           assetScene.userData.group = "product_models";
           const assetAnchor = assetScene.getObjectByName(anchorName);
           if (position != null)

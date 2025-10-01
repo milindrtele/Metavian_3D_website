@@ -1,0 +1,24 @@
+.overlay_container {
+    position: fixed;
+    z-index: 1;
+    bottom: 0;
+    left: 0;
+    width: 25vw;
+    height: 20vh;
+    padding: 1rem;
+    align-items: end;
+    /* background: #a6ddff; */
+    /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#31f0f7+17,1bf7aa+38&1+0,0+74 */
+    background: radial-gradient(ellipse at bottom left, rgba(49, 240, 247, 1) 0%, rgba(49, 240, 247, 0.77) 17%, rgba(27, 247, 170, 0.49) 38%, rgba(27, 247, 170, 0) 74%);
+    /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+}
+
+.overlay_content {
+    position: absolute;
+    bottom: 1rem;
+    display: flex;
+    margin-left: 1rem;
+    margin-right: auto;
+    align-items: end;
+    width: max-content;
+}

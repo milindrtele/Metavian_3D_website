@@ -124,6 +124,12 @@ import { NodeToyMaterial } from "@nodetoy/three-nodetoy";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
+//ui components
+import ProductsScreenOverlay from "../components/overlays/productsScreenOverlay/ProductsScreenOverlay.jsx";
+import UseCaseScreenOverlay from "../components/overlays/useCaseScreenOverlay/useCaseScreenOverlay.jsx";
+
+import Stars from "../lib/scripts/stars.js";
+
 export default function Horizon() {
   //loading state
   const [loadedPercentage, setLoadedPercentage] = useState(null);
@@ -172,7 +178,7 @@ export default function Horizon() {
 
   let overallAnimationLevelJS = { value: 1.0 };
   let rotationAngleJS = { value: 0.0 };
-  let scaleJS = { value: 2.75 };
+  let scaleJS = { value: 1.5 }; //2.75
   let scaleRingJS = { value: 100.0 };
   const progressJSRef = useRef({ value: 0.0 });
 
@@ -182,6 +188,7 @@ export default function Horizon() {
   let fboRef = useRef(null);
   let fboCamera = null;
   let fboScene = null;
+  const fboMaterialRef = useRef(null);
   let fboMaterial = null;
   let fboGeo = null;
   let fboMesh = null;
@@ -235,6 +242,10 @@ export default function Horizon() {
 
   const outlinePassRef = useRef(null);
   let selectedObjects = [];
+  const currentMenuForShaderRef = useRef(0);
+  const [selectedObject, setSelectedObject] = useState(null);
+
+  const starsRef = useRef(null); //stars
 
   gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
   gsap.registerPlugin(CustomEase);
@@ -255,7 +266,7 @@ export default function Horizon() {
     fboCamera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 10);
     fboCamera.position.z = 1;
     fboScene = new THREE.Scene();
-    fboMaterial = new THREE.ShaderMaterial({
+    fboMaterialRef.current = new THREE.ShaderMaterial({
       uniforms: {
         time: timeUniform,
         uFBO: { value: null },
@@ -270,60 +281,103 @@ export default function Horizon() {
         mt5: { value: 39 / totalLengthOfAnimation }, //50
         mt6: { value: 48 / totalLengthOfAnimation }, //60
         step1: {
-          value: new THREE.TextureLoader().load("/images/metavian-logo.png"),
+          value: new THREE.TextureLoader().load(
+            "/images/island_4/metavian_logo.jpg"
+          ),
         },
         step3: {
           value: new THREE.TextureLoader().load(
-            "/images/island_3/islands_02.jpg"
+            "/images/island_4/website_mask/product_island/00.jpg"
           ),
         },
         step4: {
-          value: new THREE.TextureLoader().load("/images/island_3/001.jpg"),
+          value: new THREE.TextureLoader().load(
+            "/images/island_4/website_mask/product_island/01.jpg"
+          ), //"/images/island_3/001.jpg"
         },
         step5: {
-          value: new THREE.TextureLoader().load("/images/island_3/02.jpg"),
+          value: new THREE.TextureLoader().load(
+            "/images/island_4/website_mask/product_island/02.jpg"
+          ),
         },
         step6: {
-          value: new THREE.TextureLoader().load("/images/island_3/03.jpg"),
+          value: new THREE.TextureLoader().load(
+            "/images/island_4/website_mask/product_island/03.jpg"
+          ),
         },
         step7: {
-          value: new THREE.TextureLoader().load("/images/island_3/04.jpg"),
+          value: new THREE.TextureLoader().load(
+            "/images/island_4/website_mask/product_island/04.jpg"
+          ),
         },
         step8: {
-          value: new THREE.TextureLoader().load("/images/island_3/05.jpg"),
+          value: new THREE.TextureLoader().load(
+            "/images/island_4/website_mask/product_island/05.jpg"
+          ),
         },
         step9: {
-          value: new THREE.TextureLoader().load("/images/island_3/06.jpg"),
+          value: new THREE.TextureLoader().load(
+            "/images/island_4/website_mask/product_island/06.jpg"
+          ),
         },
         step10: {
-          value: new THREE.TextureLoader().load("/images/island_3/06.jpg"),
+          value: new THREE.TextureLoader().load(
+            "/images/island_4/website_mask/product_island/06.jpg"
+          ),
         },
+        capsuleMask: {
+          value: new THREE.TextureLoader().load(
+            "/images/island_4/website_mask/capsule/00.jpg"
+          ),
+        },
+        contactsMask: {
+          value: new THREE.TextureLoader().load(
+            "/images/island_4/website_mask/contact_mask/01.jpg"
+          ),
+        },
+        teamMask: {
+          value: new THREE.TextureLoader().load(
+            "/images/island_4/website_mask/team/00.jpg"
+          ),
+        },
+        printerMask: {
+          value: new THREE.TextureLoader().load(
+            "/images/island_4/website_mask/printer/00.jpg"
+          ),
+        },
+        currentMenuItem: { value: currentMenuForShaderRef.current },
       },
       vertexShader: fboVertex,
       fragmentShader: fboFragment,
     });
     fboGeo = new THREE.PlaneGeometry(2, 2);
-    fboMesh = new THREE.Mesh(fboGeo, fboMaterial);
+    fboMesh = new THREE.Mesh(fboGeo, fboMaterialRef.current);
     fboScene.add(fboMesh);
   }
 
   let selectionTimeout = null;
   let lastSelectedObject = null;
   function addSelectedObject(object) {
-    if (object === lastSelectedObject) {
+    console.log("entered");
+    setSelectedObject(object);
+    if (object != null && object === lastSelectedObject) {
+      console.log(object.name);
       console.log("same object selected");
       return;
     } // If the same object is selected, do nothing
-    console.log(object);
+
     if (object == null) {
+      console.log("no object selected");
       selectedObjects.length = 0;
       outlinePassRef.current.selectedObjects = selectedObjects;
+      lastSelectedObject = object;
     } else {
+      console.log("new object selected : " + object.name);
       selectedObjects.length = 0; // clear existing array
       selectedObjects.push(object); // add the new object
       outlinePassRef.current.selectedObjects = selectedObjects;
+      lastSelectedObject = object;
     }
-    lastSelectedObject = object;
   }
 
   async function setupScene(canvas) {
@@ -376,7 +430,7 @@ export default function Horizon() {
         75,
         window.innerWidth / window.innerHeight,
         0.1,
-        1000
+        2000
       );
       cameraRef.current.position.set(0, 130, -1);
       cameraRef.current.lookAt(0, 0, 0);
@@ -418,10 +472,10 @@ export default function Horizon() {
             intersects[0].object.parent.parent.name == "legs_parent" &&
             projection_object
           ) {
-            console.log("Intersected objects:", intersects);
-            const selectedObject = intersects[0].object;
+            //console.log("Intersected objects:", intersects);
+            //const selectedObject = intersects[0].object;
 
-            addSelectedObject(selectedObject);
+            addSelectedObject(intersects[0].object);
           } else {
             addSelectedObject(null);
           }
@@ -449,8 +503,10 @@ export default function Horizon() {
               projected_screen,
               iframe
             );
+            //addSelectedObject(intersects[0].object);
           }
         } else {
+          //addSelectedObject(null);
           //console.log(intersects[0].object.name);
         }
       }
@@ -519,8 +575,8 @@ export default function Horizon() {
             intersects[0].object.name == "Youtube"
           ) {
             console.log("Intersected objects:", intersects[0].object.name);
-            const selectedObject = intersects[0].object;
-            addSelectedObject(selectedObject);
+            //const selectedObject = intersects[0].object;
+            addSelectedObject(intersects[0].object);
           } else {
             addSelectedObject(null);
           }
@@ -616,24 +672,30 @@ export default function Horizon() {
 
       function modelHoverEffect(intersectedObject) {
         if (
-          intersectedObject &&
-          intersectedObject[0] &&
-          intersectedObject[0].object &&
-          intersectedObject[0].object.parent.userData.group == "product_models"
+          currentUserPositionRef.current == "Menu Item 1" &&
+          intersectedObject.length > 0
         ) {
-          //intersectedObject[0].object.material[1].uniforms.opacity_multiplier.value = 1;
-          const selectedObj = intersectedObject[0].object;
-          addSelectedObject(selectedObj);
-          //outlinePassRef.current.selectedObjects = selectedObjects;
-        } else {
-          addSelectedObject(null);
-          projectModels.forEach((group) => {
-            group.children.forEach((child) => {
-              if (child.isMesh) {
-                //child.material[1].uniforms.opacity_multiplier.value = 0;
-              }
-            });
-          });
+          if (
+            intersectedObject &&
+            intersectedObject[0] &&
+            intersectedObject[0].object &&
+            intersectedObject[0].object.parent.userData.group ==
+              "product_models"
+          ) {
+            //intersectedObject[0].object.material[1].uniforms.opacity_multiplier.value = 1;
+            const selectedObj = intersectedObject[0].object;
+            addSelectedObject(selectedObj);
+            //outlinePassRef.current.selectedObjects = selectedObjects;
+          } else {
+            addSelectedObject(null);
+            // projectModels.forEach((group) => {
+            //   group.children.forEach((child) => {
+            //     if (child.isMesh) {
+            //       //child.material[1].uniforms.opacity_multiplier.value = 0;
+            //     }
+            //   });
+            // });
+          }
         }
       }
 
@@ -658,8 +720,8 @@ export default function Horizon() {
       );
 
       function updateBulgePosition() {
-        if (raycasterForBulge && fboMaterial != null) {
-          fboMaterial.uniforms.uPointer.value =
+        if (raycasterForBulge && fboMaterialRef.current != null) {
+          fboMaterialRef.current.uniforms.uPointer.value =
             raycasterForBulge.updateRaycaster();
         }
       }
@@ -879,22 +941,22 @@ export default function Horizon() {
       // });
 
       //add the debug plane
-      const debugPlaneGeo = new THREE.PlaneGeometry(20, 17.7);
-      const debugPlaneMat = new THREE.MeshBasicMaterial({
-        //map: new THREE.TextureLoader().load("images/ring.jpg"),
-        map: fboRef.current.texture,
-        side: THREE.DoubleSide,
-      });
+      // const debugPlaneGeo = new THREE.PlaneGeometry(20, 17.7);
+      // const debugPlaneMat = new THREE.MeshBasicMaterial({
+      //   //map: new THREE.TextureLoader().load("images/ring.jpg"),
+      //   map: fboRef.current.texture,
+      //   side: THREE.DoubleSide,
+      // });
 
       // // const scan_lines = new NodeToyMaterial({
       // //   data,
       // //   //url: "https://draft.nodetoy.co/teCGtR1LIJGk4CO1",
       // // });
       // // scan_lines.side = THREE.DoubleSide;
-      const debugPlaneMesh = new THREE.Mesh(debugPlaneGeo, debugPlaneMat);
-      debugPlaneMesh.position.set(50, 20, -100);
-      debugPlaneMesh.rotation.x = (Math.PI / 180) * -90;
-      cameraRef.current.add(debugPlaneMesh);
+      // const debugPlaneMesh = new THREE.Mesh(debugPlaneGeo, debugPlaneMat);
+      // debugPlaneMesh.position.set(50, 20, -100);
+      // debugPlaneMesh.rotation.x = (Math.PI / 180) * -90;
+      // cameraRef.current.add(debugPlaneMesh);
 
       // console.log(scan_lines);
 
@@ -1138,9 +1200,12 @@ export default function Horizon() {
       // Animate the scene
       let time = 0;
       const animate = () => {
-        debugPlaneMesh.lookAt(cameraRef.current.position);
-        // if (raycasterForBulge && fboMaterial != null) {
-        //   fboMaterial.uniforms.uPointer.value =
+        if (starsRef.current) {
+          starsRef.current.material.uniforms.time.value = time;
+        }
+        //debugPlaneMesh.lookAt(cameraRef.current.position);
+        // if (raycasterForBulge && fboMaterialRef.current  != null) {
+        //   fboMaterialRef.current .uniforms.uPointer.value =
         //     raycasterForBulge.updateRaycaster();
         // }
 
@@ -1240,6 +1305,7 @@ export default function Horizon() {
 
     setupFBO();
     setupScene();
+    starsRef.current = new Stars(sceneRef.current, 5000, 750);
   }, []);
 
   // function showHideAssets() {
@@ -2051,7 +2117,7 @@ export default function Horizon() {
         start: "top",
         end: "20000",
         pin: true,
-        markers: true,
+        // markers: true,
         onUpdate: (self) => {
           const min = 0.15;
           const max = 1.0;
@@ -2097,7 +2163,7 @@ export default function Horizon() {
       start: "top",
       end: "25000",
       pin: true,
-      markers: true,
+      // markers: true,
       onUpdate: (self) => {
         const min = 0.15;
         const max = 1.0;
@@ -2240,6 +2306,38 @@ export default function Horizon() {
 
   const selectedItemInMainMenu = (item) => {
     currentUserPositionRef.current = item;
+    switch (item) {
+      case "home":
+        currentMenuForShaderRef.current = 0.0;
+        fboMaterialRef.current.uniforms.currentMenuItem.value = 0.0;
+        break;
+      case "Menu Item 1":
+        currentMenuForShaderRef.current = 1.0;
+        fboMaterialRef.current.uniforms.currentMenuItem.value = 1.0;
+        break;
+      case "Menu Item 2":
+        currentMenuForShaderRef.current = 2.0;
+        fboMaterialRef.current.uniforms.currentMenuItem.value = 2.0;
+        break;
+      case "Menu Item 3":
+        currentMenuForShaderRef.current = 3.0;
+        fboMaterialRef.current.uniforms.currentMenuItem.value = 3.0;
+        break;
+      case "Menu Item 4":
+        currentMenuForShaderRef.current = 4.0;
+        fboMaterialRef.current.uniforms.currentMenuItem.value = 4.0;
+        break;
+      case "Menu Item 5":
+        currentMenuForShaderRef.current = 5.0;
+        fboMaterialRef.current.uniforms.currentMenuItem.value = 5.0;
+        break;
+      default:
+        // optional: handle unknown items
+        currentMenuForShaderRef.current = -1.0;
+        fboMaterialRef.current.uniforms.currentMenuItem.value = -1.0;
+        break;
+    }
+
     actOnUserPositionChange();
   };
 
@@ -2401,6 +2499,10 @@ export default function Horizon() {
     }
   };
 
+  useEffect(() => {
+    console.log("selected object changed: ", selectedObject);
+  }, [selectedObject]);
+
   return (
     <loadingContext.Provider value={{ loadedPercentage, setLoadedPercentage }}>
       <currentSceneContext.Provider
@@ -2431,7 +2533,6 @@ export default function Horizon() {
             onChange={(e) => onScaleChange(e.target.value)}
           ></input>
         </div> */}
-
             {/* <div id="prgress_slider" className={styles.prgress_slider}>
           <p>progress</p>
           <input
@@ -2464,6 +2565,15 @@ export default function Horizon() {
               openModelViewer={toggleChildComponent}
             />
           )}
+          {currentUserPositionRef.current == "Menu Item 1" && (
+            <ProductsScreenOverlay selectedObject={selectedObject} />
+          )}
+
+          <UseCaseScreenOverlay selectedObject={selectedObject} />
+          {/* {currentUserPositionRef.current == "Menu Item 2" && (
+            <UseCaseScreenOverlay selectedObject={selectedObject} />
+          // )} */}
+
           {isHamburgerMenuVisible && <Beepie />}
           {showChild && <Model_viewer />}
           {productPageVisible && (
@@ -2474,7 +2584,7 @@ export default function Horizon() {
               product={productToViewInViewer}
             />
           )}
-          {isHamburgerMenuVisible && <SceneInfo />}
+          {/* {isHamburgerMenuVisible && <SceneInfo />} */}
         </div>
         {loadedPercentage < 100 && !productPageVisible && <Loading />}
       </currentSceneContext.Provider>

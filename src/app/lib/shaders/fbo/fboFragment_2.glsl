@@ -18,6 +18,13 @@ uniform sampler2D step7; //04.jpg
 uniform sampler2D step8; //05.jpg
 uniform sampler2D step9; //06.jpg
 uniform sampler2D step10; //06.jpg
+uniform sampler2D capsuleMask;
+uniform sampler2D contactsMask;
+uniform sampler2D teamMask;
+uniform sampler2D printerMask;
+//
+uniform float currentMenuItem;
+//
 
 uniform float mt1;
 uniform float mt2;
@@ -58,70 +65,99 @@ void main() {
     vec4 color8 = 1.0 - texture2D(step8, vec2(1.0 - newUV.x, newUV.y));  //05.jpg
     vec4 color9 = 1.0 - texture2D(step9, vec2(1.0 - newUV.x, newUV.y));  //06.jpg
     vec4 color10 = 1.0 - texture2D(step10, vec2(1.0 - newUV.x, newUV.y));  //06.jpg
+    //
+    vec4 capsuleMaskColor = 1.0 - texture2D(capsuleMask, vec2(1.0 - newUV.x, newUV.y));  //06.jpg
+    vec4 contactsMaskColor = 1.0 - texture2D(contactsMask, vec2(1.0 - newUV.x, newUV.y));  //06.jpg
+    vec4 teamMaskColor = 1.0 - texture2D(teamMask, vec2(1.0 - newUV.x, newUV.y));  //06.jpg
+    vec4 printerMaskColor = 1.0 - texture2D(printerMask, vec2(1.0 - newUV.x, newUV.y));  //06.jpg
+    
 
     float dist = distance(vUv, vec2(0.5));
     float radius = 1.41;
     float outer_progress, inner_progress, innerCircle, outerCircle, displacement, scale, greenScale;
     float segmentProgress;
 
-    if (uProgress <= 0.10) { 
-        segmentProgress = clamp((uProgress - 0.00) / 0.1, 0.0, 1.0);
-        outer_progress = clamp(1.1 * segmentProgress, 0.0, 1.0);
-        inner_progress = clamp(1.1 * segmentProgress - 0.05, 0.0, 1.0);
-        innerCircle = 1.0 - smoothstep((inner_progress - 0.1) * radius, inner_progress * radius, dist);
-        outerCircle = 1.0 - smoothstep((outer_progress - 0.1) * radius, inner_progress * radius, dist);
-        displacement = outerCircle - innerCircle;
-        scale = mix(0.0, color1.r, innerCircle);
-        greenScale = mix(0.0, color1.g, innerCircle);
-    } else if (uProgress <= 0.20) {
-        segmentProgress = clamp((uProgress - 0.10) / 0.1, 0.0, 1.0);
-        outer_progress = clamp(1.1 * segmentProgress, 0.0, 1.0);
-        inner_progress = clamp(1.1 * segmentProgress - 0.05, 0.0, 1.0);
-        innerCircle = 1.0 - smoothstep((inner_progress - 0.1) * radius, inner_progress * radius, dist);
-        outerCircle = 1.0 - smoothstep((outer_progress - 0.1) * radius, inner_progress * radius, dist);
-        displacement = outerCircle - innerCircle;
-        scale = mix(color1.r, color2.r, innerCircle);
-        greenScale = mix(color1.g, color2.g, innerCircle);
-    } else if (uProgress <= 0.25) {
-        segmentProgress = clamp((uProgress - 0.20) / 0.02, 0.0, 1.0);
+    if(currentMenuItem == -1.0 || currentMenuItem == 0.0 || currentMenuItem == 1.0) {
+        if (uProgress <= 0.10) { 
+            segmentProgress = clamp((uProgress - 0.00) / 0.1, 0.0, 1.0);
+            outer_progress = clamp(1.1 * segmentProgress, 0.0, 1.0);
+            inner_progress = clamp(1.1 * segmentProgress - 0.05, 0.0, 1.0);
+            innerCircle = 1.0 - smoothstep((inner_progress - 0.1) * radius, inner_progress * radius, dist);
+            outerCircle = 1.0 - smoothstep((outer_progress - 0.1) * radius, inner_progress * radius, dist);
+            displacement = outerCircle - innerCircle;
+            scale = mix(0.0, color1.r, innerCircle);
+            greenScale = mix(0.0, color1.g, innerCircle);
+        } else if (uProgress <= 0.20) {
+            segmentProgress = clamp((uProgress - 0.10) / 0.1, 0.0, 1.0);
+            outer_progress = clamp(1.1 * segmentProgress, 0.0, 1.0);
+            inner_progress = clamp(1.1 * segmentProgress - 0.05, 0.0, 1.0);
+            innerCircle = 1.0 - smoothstep((inner_progress - 0.1) * radius, inner_progress * radius, dist);
+            outerCircle = 1.0 - smoothstep((outer_progress - 0.1) * radius, inner_progress * radius, dist);
+            displacement = outerCircle - innerCircle;
+            scale = mix(color1.r, color2.r, innerCircle);
+            greenScale = mix(color1.g, color2.g, innerCircle);
+        } else if (uProgress <= 0.25) {
+            segmentProgress = clamp((uProgress - 0.20) / 0.02, 0.0, 1.0);
+            displacement = 0.0;
+            scale = mix(color2.r, color3.r, segmentProgress);
+            greenScale = mix(color2.g, color3.g, segmentProgress);
+        } else if (uProgress <= (mTime1-0.05)) {
+            segmentProgress = clamp((uProgress - 0.25) / 0.02, 0.0, 1.0);
+            displacement = 0.0;
+            scale = mix(color3.r, color4.r, segmentProgress);
+            greenScale = mix(color3.g, color4.g, segmentProgress);
+        } else if (uProgress <= mTime2) {
+            segmentProgress = clamp((uProgress - mTime1) / 0.02, 0.0, 1.0);
+            displacement = 0.0;
+            scale = mix(color4.r, color5.r, segmentProgress);
+            greenScale = mix(color4.g, color5.g, segmentProgress);
+        } else if (uProgress <= mTime3) {
+            segmentProgress = clamp((uProgress - mTime2) / 0.02, 0.0, 1.0);
+            displacement = 0.0;
+            scale = mix(color5.r, color6.r, segmentProgress);
+            greenScale = mix(color5.g, color6.g, segmentProgress);
+        } else if (uProgress <= mTime4) {
+            segmentProgress = clamp((uProgress - mTime3) / 0.02, 0.0, 1.0);
+            displacement = 0.0;
+            scale = mix(color6.r, color7.r, segmentProgress);
+            greenScale = mix(color6.g, color7.g, segmentProgress);
+        } else if (uProgress <= mTime5) {
+            segmentProgress = clamp((uProgress - mTime4) / 0.02, 0.0, 1.0);
+            displacement = 0.0;
+            scale = mix(color7.r, color8.r, segmentProgress);
+            greenScale = mix(color7.g, color8.g, segmentProgress);
+        } else if (uProgress <= mTime6) {
+            segmentProgress = clamp((uProgress - mTime5) / 0.02, 0.0, 1.0);
+            displacement = 0.0;
+            scale = mix(color8.r, color9.r, segmentProgress);
+            greenScale = mix(color8.g, color9.g, segmentProgress);
+        } else {
+            segmentProgress = clamp((uProgress - mTime6) / 0.02, 0.0, 1.0);
+            displacement = 0.0;
+            scale = mix(color9.r, color2.r, segmentProgress);
+            greenScale = mix(color9.g, color2.g, segmentProgress);
+        }
+    }
+     else if(currentMenuItem == 2.0) {
         displacement = 0.0;
-        scale = mix(color2.r, color3.r, segmentProgress);
-        greenScale = mix(color2.g, color3.g, segmentProgress);
-    } else if (uProgress <= (mTime1-0.05)) {
-        segmentProgress = clamp((uProgress - 0.25) / 0.02, 0.0, 1.0);
+        scale = capsuleMaskColor.r;
+        greenScale = capsuleMaskColor.g;
+    } else if(currentMenuItem == 3.0) {
         displacement = 0.0;
-        scale = mix(color3.r, color4.r, segmentProgress);
-        greenScale = mix(color3.g, color4.g, segmentProgress);
-    } else if (uProgress <= mTime2) {
-        segmentProgress = clamp((uProgress - mTime1) / 0.02, 0.0, 1.0);
+        scale = contactsMaskColor.r;
+        greenScale = contactsMaskColor.g;
+    } else if(currentMenuItem == 4.0) {
         displacement = 0.0;
-        scale = mix(color4.r, color5.r, segmentProgress);
-        greenScale = mix(color4.g, color5.g, segmentProgress);
-    } else if (uProgress <= mTime3) {
-        segmentProgress = clamp((uProgress - mTime2) / 0.02, 0.0, 1.0);
+        scale = teamMaskColor.r;
+        greenScale = teamMaskColor.g;
+    } else if(currentMenuItem == 5.0) {
         displacement = 0.0;
-        scale = mix(color5.r, color6.r, segmentProgress);
-        greenScale = mix(color5.g, color6.g, segmentProgress);
-    } else if (uProgress <= mTime4) {
-        segmentProgress = clamp((uProgress - mTime3) / 0.02, 0.0, 1.0);
-        displacement = 0.0;
-        scale = mix(color6.r, color7.r, segmentProgress);
-        greenScale = mix(color6.g, color7.g, segmentProgress);
-    } else if (uProgress <= mTime5) {
-        segmentProgress = clamp((uProgress - mTime4) / 0.02, 0.0, 1.0);
-        displacement = 0.0;
-        scale = mix(color7.r, color8.r, segmentProgress);
-        greenScale = mix(color7.g, color8.g, segmentProgress);
-    } else if (uProgress <= mTime6) {
-        segmentProgress = clamp((uProgress - mTime5) / 0.02, 0.0, 1.0);
-        displacement = 0.0;
-        scale = mix(color8.r, color9.r, segmentProgress);
-        greenScale = mix(color8.g, color9.g, segmentProgress);
+        scale = printerMaskColor.r;
+        greenScale = printerMaskColor.g;
     } else {
-        segmentProgress = clamp((uProgress - mTime6) / 0.02, 0.0, 1.0);
         displacement = 0.0;
-        scale = mix(color9.r, color2.r, segmentProgress);
-        greenScale = mix(color9.g, color2.g, segmentProgress);
+        scale = color2.r;
+        greenScale = color2.g;
     }
 
     // Compute distance from pointer position
@@ -139,5 +175,5 @@ void main() {
     //gl_FragColor = vec4(0.0, greenScale, 0.0, 1.0);
 
     float clampedGreen = clamp(displacement + scale, -1.0, 1.0);
-    gl_FragColor = vec4(0.0, clampedGreen, 0.0, 1.0);
+    gl_FragColor = vec4(greenScale, clampedGreen, 0.0, 1.0);
 }

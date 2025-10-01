@@ -4,6 +4,7 @@ uniform float uProgress;
 uniform float rotationAngle;
 uniform float vScale;
 uniform vec3 uPointer;
+//
 uniform sampler2D step1;
 uniform sampler2D step2;
 uniform sampler2D step3;
@@ -13,6 +14,14 @@ uniform sampler2D step6;
 uniform sampler2D step7;
 uniform sampler2D step8;
 uniform sampler2D step9;
+uniform sampler2D step10;
+uniform sampler2D capsuleMask;
+uniform sampler2D contactsMask;
+uniform sampler2D teamMask;
+uniform sampler2D printerMask;
+//
+uniform float currentMenuItem;
+//
 varying vec3 vNormal;
 varying vec3 vViewPosition;
 varying vec3 vNormalPosition;
