@@ -127,6 +127,9 @@ import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 //ui components
 import ProductsScreenOverlay from "../components/overlays/productsScreenOverlay/ProductsScreenOverlay.jsx";
 import UseCaseScreenOverlay from "../components/overlays/useCaseScreenOverlay/useCaseScreenOverlay.jsx";
+//
+import CircleOverlay from "../components/overlays/circleOverlay/circleOverlay.jsx";
+import LineOverlay from "../components/overlays/lineOverlay/lineOverlay.jsx";
 
 import Stars from "../lib/scripts/stars.js";
 
@@ -244,6 +247,10 @@ export default function Horizon() {
   let selectedObjects = [];
   const currentMenuForShaderRef = useRef(0);
   const [selectedObject, setSelectedObject] = useState(null);
+  //const selectedLegRef = useRef(null);
+  const [selectedLeg, setSelectedLeg] = useState(null);
+  // const scrollTriggerProgressRef = useRef(0);
+  const [scrollTriggerProgress, setscrollTriggerProgress] = useState(0);
 
   const starsRef = useRef(null); //stars
 
@@ -358,21 +365,16 @@ export default function Horizon() {
   let selectionTimeout = null;
   let lastSelectedObject = null;
   function addSelectedObject(object) {
-    console.log("entered");
     setSelectedObject(object);
     if (object != null && object === lastSelectedObject) {
-      console.log(object.name);
-      console.log("same object selected");
       return;
     } // If the same object is selected, do nothing
 
     if (object == null) {
-      console.log("no object selected");
       selectedObjects.length = 0;
       outlinePassRef.current.selectedObjects = selectedObjects;
       lastSelectedObject = object;
     } else {
-      console.log("new object selected : " + object.name);
       selectedObjects.length = 0; // clear existing array
       selectedObjects.push(object); // add the new object
       outlinePassRef.current.selectedObjects = selectedObjects;
@@ -484,7 +486,7 @@ export default function Horizon() {
       }
 
       // Callback function to handle intersects
-      function handleIntersects(intersects) {
+      async function handleIntersects(intersects) {
         if (
           currentUserPositionRef.current == "Menu Item 2" &&
           intersects.length > 0
@@ -496,13 +498,16 @@ export default function Horizon() {
             intersects[0].object.parent.parent.name == "legs_parent" &&
             projection_object
           ) {
-            animateCapsuleRotation(
-              intersects[0].object,
-              capsule_body,
-              projection_object,
-              projected_screen,
-              iframe
-            );
+            await runAnimation(intersects[0].object, "null");
+            // animateCapsuleRotation(
+            //   intersects[0].object,
+            //   capsule_body,
+            //   projection_object,
+            //   projected_screen,
+            //   iframe
+            // );
+            // selectedLegRef.current = intersects[0].object.name;
+
             //addSelectedObject(intersects[0].object);
           }
         } else {
@@ -2168,6 +2173,8 @@ export default function Horizon() {
         const min = 0.15;
         const max = 1.0;
 
+        setscrollTriggerProgress(self.progress);
+
         progressJSRef.current.value = self.progress * (max - min) + min; // for shader
 
         let progressForProductAnimation = Math.max(
@@ -2397,76 +2404,139 @@ export default function Horizon() {
     }
   };
 
-  const selectedItemInSubMenu2 = (item) => {
+  const selectedLegF = (leg) => {
+    selectedLegRef.current = leg;
+  };
+
+  async function runAnimation(leg, label) {
+    const { started, completed } = animateCapsuleRotation(
+      leg,
+      capsule_body,
+      projection_object,
+      projected_screen,
+      iframe
+    );
+
+    await started;
+    console.log(label, "started");
+    setSelectedLeg(leg.name);
+
+    await completed;
+    console.log(label, "finished");
+  }
+
+  const selectedItemInSubMenu2 = async (item) => {
     console.log(item);
+
     switch (item) {
       case "home":
-        animateCapsuleRotation(
-          intersects[0].object,
-          capsule_body,
-          projection_object,
-          projected_screen,
-          iframe
-        );
+        await runAnimation(intersects[0].object, "Home");
         break;
       case "Meta Realty":
-        animateCapsuleRotation(
-          legs_parent.children[0].children[0],
-          capsule_body,
-          projection_object,
-          projected_screen,
-          iframe
-        );
+        await runAnimation(legs_parent.children[0].children[0], "Meta Realty");
         break;
       case "Car Configurator":
-        animateCapsuleRotation(
+        await runAnimation(
           legs_parent.children[1].children[0],
-          capsule_body,
-          projection_object,
-          projected_screen,
-          iframe
+          "Car Configurator"
         );
         break;
       case "Fashion IX":
-        animateCapsuleRotation(
-          legs_parent.children[2].children[0],
-          capsule_body,
-          projection_object,
-          projected_screen,
-          iframe
-        );
+        await runAnimation(legs_parent.children[2].children[0], "Fashion IX");
         break;
       case "Edulab":
-        animateCapsuleRotation(
-          legs_parent.children[3].children[0],
-          capsule_body,
-          projection_object,
-          projected_screen,
-          iframe
-        );
+        await runAnimation(legs_parent.children[3].children[0], "Edulab");
         break;
       case "Virtual Mart":
-        animateCapsuleRotation(
-          legs_parent.children[4].children[0],
-          capsule_body,
-          projection_object,
-          projected_screen,
-          iframe
-        );
+        await runAnimation(legs_parent.children[4].children[0], "Virtual Mart");
         break;
       case "Virtual Museum":
-        animateCapsuleRotation(
+        await runAnimation(
           legs_parent.children[5].children[0],
-          capsule_body,
-          projection_object,
-          projected_screen,
-          iframe
+          "Virtual Museum"
         );
         break;
       default:
         console.warn("Unknown item");
     }
   };
+
+  // const selectedItemInSubMenu2 = async (item) => {
+  //   console.log(item);
+
+  //   switch (item) {
+  //     case "home":
+  //       // const { started, completed } = animateCapsuleRotation(
+  //       //   intersects[0].object,
+  //       //   capsule_body,
+  //       //   projection_object,
+  //       //   projected_screen,
+  //       //   iframe
+  //       // );
+  //       await started;
+  //       console.log("Animation started");
+
+  //       await completed;
+  //       console.log("Animation finished");
+  //       break;
+  //     case "Meta Realty":
+  //       const { started, completed } = animateCapsuleRotation(
+  //         legs_parent.children[0].children[0],
+  //         capsule_body,
+  //         projection_object,
+  //         projected_screen,
+  //         iframe
+  //       );
+  //       break;
+  //     case "Car Configurator":
+  //       const { started, completed } = animateCapsuleRotation(
+  //         legs_parent.children[1].children[0],
+  //         capsule_body,
+  //         projection_object,
+  //         projected_screen,
+  //         iframe
+  //       );
+  //       break;
+  //     case "Fashion IX":
+  //       const { started, completed } = animateCapsuleRotation(
+  //         legs_parent.children[2].children[0],
+  //         capsule_body,
+  //         projection_object,
+  //         projected_screen,
+  //         iframe
+  //       );
+  //       break;
+  //     case "Edulab":
+  //       const { started, completed } = animateCapsuleRotation(
+  //         legs_parent.children[3].children[0],
+  //         capsule_body,
+  //         projection_object,
+  //         projected_screen,
+  //         iframe
+  //       );
+  //       break;
+  //     case "Virtual Mart":
+  //       const { started, completed } = animateCapsuleRotation(
+  //         legs_parent.children[4].children[0],
+  //         capsule_body,
+  //         projection_object,
+  //         projected_screen,
+  //         iframe
+  //       );
+  //       break;
+  //     case "Virtual Museum":
+  //       const { started, completed } = animateCapsuleRotation(
+  //         legs_parent.children[5].children[0],
+  //         capsule_body,
+  //         projection_object,
+  //         projected_screen,
+  //         iframe
+  //       );
+  //       break;
+  //     default:
+  //       console.warn("Unknown item");
+  //   }
+  // };
 
   const selectedItemInSubMenu3 = (item) => {
     switch (item) {
@@ -2497,6 +2567,10 @@ export default function Horizon() {
         hotspot.addToScene();
       });
     }
+  };
+
+  const circleSelected = (circleName) => {
+    selectedItemInSubMenu2(circleName);
   };
 
   useEffect(() => {
@@ -2565,11 +2639,20 @@ export default function Horizon() {
               openModelViewer={toggleChildComponent}
             />
           )}
-          {currentUserPositionRef.current == "Menu Item 1" && (
+          {/* {currentUserPositionRef.current == "Menu Item 1" && (
+            <LineOverlay progress={scrollTriggerProgress} />
+          )} */}
+          {/* {currentUserPositionRef.current == "Menu Item 1" && (
             <ProductsScreenOverlay selectedObject={selectedObject} />
-          )}
+          )} */}
 
-          <UseCaseScreenOverlay selectedObject={selectedObject} />
+          {currentUserPositionRef.current == "Menu Item 2" && (
+            <CircleOverlay
+              circleSelected={circleSelected}
+              selectedLeg={selectedLeg}
+            />
+          )}
+          {/* <UseCaseScreenOverlay selectedObject={selectedObject} /> */}
           {/* {currentUserPositionRef.current == "Menu Item 2" && (
             <UseCaseScreenOverlay selectedObject={selectedObject} />
           // )} */}

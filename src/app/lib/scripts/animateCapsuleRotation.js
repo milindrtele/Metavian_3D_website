@@ -20,6 +20,11 @@ const animateCapsuleRotation = (
   projected_screen,
   iframe
 ) => {
+  let startResolver, completeResolver;
+
+  const started = new Promise((resolve) => (startResolver = resolve));
+  const completed = new Promise((resolve) => (completeResolver = resolve));
+
   function animate_capsule(targetAngle, hide) {
     if (hide) {
       // if (!projection_object.visible) {
@@ -51,6 +56,7 @@ const animateCapsuleRotation = (
           ease: "bounce.out",
           onStart: () => {
             isAnimationRunning = true;
+            startResolver(); // resolves "started"
           },
         })
         .to(projection_object_offset_value, {
@@ -66,6 +72,7 @@ const animateCapsuleRotation = (
           onComplete: () => {
             isAnimationCompleted = true;
             isAnimationRunning = false;
+            completeResolver(); // resolves "completed"
           },
         });
     } else {
@@ -98,6 +105,7 @@ const animateCapsuleRotation = (
           ease: "bounce.out",
           onStart: () => {
             isAnimationRunning = true;
+            startResolver(); // resolves "started"
           },
         })
         .to(projection_object_offset_value, {
@@ -124,6 +132,7 @@ const animateCapsuleRotation = (
           onComplete: () => {
             isAnimationCompleted = true;
             isAnimationRunning = false;
+            completeResolver(); // resolves "completed"
           },
         });
     }
@@ -273,7 +282,8 @@ const animateCapsuleRotation = (
 
   if (!isAnimationRunning) checkLeg();
 
-  return isAnimationCompleted;
+  // return isAnimationCompleted;
+  return { started, completed };
 };
 
 export { animateCapsuleRotation };

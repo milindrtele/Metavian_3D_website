@@ -1,0 +1,26 @@
+.line {
+    position: absolute;
+    top: 90vh;
+    left: 10%;
+    /* you already fixed this */
+    height: 5px;
+    width: 60%;
+    background: white;
+}
+
+.circle {
+    position: absolute;
+    top: 50%;
+    /* place vertically at middle of line */
+    height: 40px;
+    width: 40px;
+    background: white;
+    border-radius: 50%;
+    border: 2px solid #000000;
+    transform: translate(-50%, -50%);
+    cursor: grab;
+}
+
+.circle:active {
+    cursor: grabbing;
+}
