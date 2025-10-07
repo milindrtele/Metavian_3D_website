@@ -6,32 +6,59 @@
     cursor: pointer;
 }
 
-/* Base style for arcs */
-.arc {
+.m_logo{
     position: absolute;
     top: 50%;
     left: 50%;
+    width: 30%;
+    height: 30%;
     transform: translate(-50%, -50%);
+    background-image: url("/images/MetavianLogo_White.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
     border-radius: 50%;
     border-style: solid;
     border-color: transparent;
     transform-origin: center;
 }
 
+
+/* Base style for arcs */
+.arc {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    border-radius: 50%;
+    border-style: solid;
+    border-color: transparent;
+    /* opacity: 0; */
+    transform-origin: center;
+    transform: translate(-50%, -50%) scale(0.9);
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+
+.m_logo:hover .arc{
+    opacity: 1 !important;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+
 .arc_layer_1 {
-    clip-path: polygon(50% 50%, 100% 50%, 100% 75%);
+    clip-path: polygon(50% 50%, 100% 50%, 100% 70%); 
+    /* 70.75% */
 }
 
 .arc_layer_2 {
-    clip-path: polygon(50% 50%, 100% 75%, 100% 100%);
+    clip-path: polygon(50% 50%, 100% 71.5%, 100% 98.75%);
 }
 
 .arc_layer_3 {
-    clip-path: polygon(50% 50%, 100% 100%, 75% 100%);
+    clip-path: polygon(50% 50%, 98.75% 100%, 71.5% 100%);
 }
 
 .arc_layer_4 {
-    clip-path: polygon(50% 50%, 75% 100%, 50% 100%);
+    clip-path: polygon(50% 50%, 70% 100%, 50% 100%);
 }
 
 /* Outermost arc */
@@ -52,6 +79,7 @@
     border-width: 2vw;
     border-right-color: #999;
     border-bottom-color: #999;
+    display: none;
     /* mid-gray */
     /* top: 30px; */
     /* centers it inside arc3 */
