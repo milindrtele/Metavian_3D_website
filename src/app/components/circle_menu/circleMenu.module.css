@@ -1,0 +1,87 @@
+/* Main button container */
+.button {
+    position: relative;
+    width: 250px;
+    height: 250px;
+    cursor: pointer;
+}
+
+/* Base style for arcs */
+.arc {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    border-style: solid;
+    border-color: transparent;
+    transform-origin: center;
+}
+
+.arc_layer_1 {
+    clip-path: polygon(50% 50%, 100% 50%, 100% 75%);
+}
+
+.arc_layer_2 {
+    clip-path: polygon(50% 50%, 100% 75%, 100% 100%);
+}
+
+.arc_layer_3 {
+    clip-path: polygon(50% 50%, 100% 100%, 75% 100%);
+}
+
+.arc_layer_4 {
+    clip-path: polygon(50% 50%, 75% 100%, 50% 100%);
+}
+
+/* Outermost arc */
+.arc3 {
+    width: 100%;
+    height: 100%;
+    border-width: 2vw;
+    border-right-color: #333;
+    border-bottom-color: #333;
+    /* darkest */
+}
+
+/* Middle arc */
+.arc2 {
+    width: 80%;
+    /* reduced diameter */
+    height: 80%;
+    border-width: 2vw;
+    border-right-color: #999;
+    border-bottom-color: #999;
+    /* mid-gray */
+    /* top: 30px; */
+    /* centers it inside arc3 */
+    /* left: 30px; */
+}
+
+/* Innermost arc */
+.arc1 {
+    width: 50%;
+    height: 50%;
+    border-width: 2vw;
+    border-right-color: #e0e0e0;
+    border-bottom-color: #e0e0e0;
+    /* lightest */
+    /* top: 60px; */
+    /* left: 60px; */
+}
+
+/* Optional hover animation */
+.arc1:hover {
+    border-right-color: #fff;
+    border-bottom-color: #fff;
+}
+
+.arc2:hover {
+    border-right-color: #fff;
+    border-bottom-color: #fff;
+}
+
+.arc3:hover {
+    border-right-color: #fff;
+    border-bottom-color: #fff;
+}

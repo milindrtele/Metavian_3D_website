@@ -130,6 +130,7 @@ import UseCaseScreenOverlay from "../components/overlays/useCaseScreenOverlay/us
 //
 import CircleOverlay from "../components/overlays/circleOverlay/circleOverlay.jsx";
 import LineOverlay from "../components/overlays/lineOverlay/lineOverlay.jsx";
+import CircleMenu from "../components/circle_menu/CircleMenu.jsx";
 
 import Stars from "../lib/scripts/stars.js";
 
@@ -249,8 +250,8 @@ export default function Horizon() {
   const [selectedObject, setSelectedObject] = useState(null);
   //const selectedLegRef = useRef(null);
   const [selectedLeg, setSelectedLeg] = useState(null);
-  // const scrollTriggerProgressRef = useRef(0);
-  const [scrollTriggerProgress, setscrollTriggerProgress] = useState(0);
+  const scrollTriggerProgressRef = useRef(0);
+  const [scrollTriggerProgress, setScrollTriggerProgress] = useState(0);
 
   const starsRef = useRef(null); //stars
 
@@ -2173,7 +2174,8 @@ export default function Horizon() {
         const min = 0.15;
         const max = 1.0;
 
-        setscrollTriggerProgress(self.progress);
+        //scrollTriggerProgressRef.current = self.progress;
+        setScrollTriggerProgress(self.progress);
 
         progressJSRef.current.value = self.progress * (max - min) + min; // for shader
 
@@ -2639,13 +2641,13 @@ export default function Horizon() {
               openModelViewer={toggleChildComponent}
             />
           )}
-          {/* {currentUserPositionRef.current == "Menu Item 1" && (
+          <CircleMenu />
+          {currentUserPositionRef.current == "Menu Item 1" && (
             <LineOverlay progress={scrollTriggerProgress} />
-          )} */}
-          {/* {currentUserPositionRef.current == "Menu Item 1" && (
+          )}
+          {currentUserPositionRef.current == "Menu Item 1" && (
             <ProductsScreenOverlay selectedObject={selectedObject} />
-          )} */}
-
+          )}
           {currentUserPositionRef.current == "Menu Item 2" && (
             <CircleOverlay
               circleSelected={circleSelected}
@@ -2656,7 +2658,6 @@ export default function Horizon() {
           {/* {currentUserPositionRef.current == "Menu Item 2" && (
             <UseCaseScreenOverlay selectedObject={selectedObject} />
           // )} */}
-
           {isHamburgerMenuVisible && <Beepie />}
           {showChild && <Model_viewer />}
           {productPageVisible && (

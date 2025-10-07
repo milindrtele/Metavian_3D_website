@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect, use } from "react";
+import { useRef, useState, useEffect } from "react";
 import styles from "./lineOverlay.module.css";
 
 const overlayVariants = [
@@ -42,42 +42,154 @@ const overlayVariants = [
 ];
 
 function LineOverlay({ progress }) {
-  const lineRef = useRef(null);
-  const [circleX, setCircleX] = useState(0);
+  const containerRef = useRef(null);
+  const routeRef = useRef(null);
+  const pathRef = useRef(null);
+  const [circleY, setCircleY] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
+  //
+  let scrollObj = {
+    pos: 0,
+  };
+  var length = 0; // Object to animate the scroll position
+  var pathLength;
 
   useEffect(() => {
-    // const handleMouseMove = (e) => {
-    //   if (!isDragging || !lineRef.current) return;
-    //   const rect = lineRef.current.getBoundingClientRect();
-    //   let newX = (e.clientX - rect.left) * progress; // relative X position inside line
-    //   newX = Math.max(0, Math.min(newX, rect.width)); // clamp to [0, line width]
-    //   setCircleX(newX);
-    // };
+    const handleMouseMove = (e) => {
+      if (!isDragging || !containerRef.current) return;
+      const rect = containerRef.current.getBoundingClientRect();
+      let newY = e.clientY - rect.top; // relative X position inside line
+      newY = Math.max(0, Math.min(newY, rect.height)); // clamp to [0, line height]
+      setCircleY(newY);
+    };
 
-    const rect = lineRef.current.getBoundingClientRect();
-    let newX = (e.clientX - rect.left) * progress; // relative X position inside line
-    newX = Math.max(0, Math.min(newX, rect.width)); // clamp to [0, line width]
-    setCircleX(newX);
+    const handleMouseUp = () => setIsDragging(false);
 
-    // const handleMouseUp = () => setIsDragging(false);
-
-    // window.addEventListener("mousemove", handleMouseMove);
-    // window.addEventListener("mouseup", handleMouseUp);
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mouseup", handleMouseUp);
 
     return () => {
-      //   window.removeEventListener("mousemove", handleMouseMove);
-      //   window.removeEventListener("mouseup", handleMouseUp);
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseup", handleMouseUp);
     };
-  }, [isDragging, progress]);
+  }, [isDragging]);
+
+  // Draw the line
+  function drawLine(container, line, multiplier) {
+    pathLength = line.getTotalLength();
+    length = pathLength * multiplier; // Use scrollObj.pos instead of scrollPos
+    line.style.strokeDasharray = [length, pathLength].join(" ");
+  }
+
+  useEffect(() => {
+    if (!routeRef.current) return;
+
+    console.log("Progress prop changed:", progress + 0.04);
+
+    const rect = containerRef.current.getBoundingClientRect();
+    let newY = progress * rect.height; // relative X position inside line
+    newY = Math.max(0, Math.min(newY, rect.height)); // clamp to [0, line height]
+    setCircleY(newY);
+
+    drawLine(routeRef.current, pathRef.current, progress);
+  }, [progress, pathRef.current, routeRef.current]);
+
+  useEffect(() => {
+    if (!routeRef.current) return;
+    drawLine(routeRef.current, pathRef.current, 1);
+  }, [pathRef.current, routeRef.current]);
 
   return (
-    <div ref={lineRef} className={styles.line}>
-      <div
-        className={styles.circle}
-        style={{ left: `${circleX}px` }}
-        onMouseDown={() => setIsDragging(true)}
-      ></div>
+    <div ref={containerRef} className={styles.container}>
+      <svg
+        className={[styles.svg_path].join(" ")}
+        // ref={routeRef}
+        id="route_gray"
+        xmlns="http://www.w3.org/2000/svg"
+        xmlSpace="preserve"
+        width="322.653mm"
+        height="72.698mm"
+        version="1.1"
+        style={{
+          shapeRendering: "geometricPrecision",
+          textRendering: "geometricPrecision",
+          imageRendering: "optimizeQuality",
+          fillRule: "evenodd",
+          clipRule: "evenodd",
+        }}
+        viewBox="0 0 32265.28 7269.8"
+        xmlnsXlink="http://www.w3.org/1999/xlink"
+      >
+        <g id="Layer_x0020_1">
+          <metadata id="CorelCorpID_0Corel-Layer" />
+          {/* <defs>
+            <linearGradient id="grad1" x1="0%" x2="100%" y1="0%" y2="0%">
+              <stop offset="0%" stopColor="#65BA97" />
+              <stop offset="25%" stopColor="#518262" />
+              <stop offset="50%" stopColor="#7BCED3" />
+              <stop offset="75%" stopColor="#419098" />
+              <stop offset="100%" stopColor="#598ED4" />
+            </linearGradient>
+          </defs> */}
+          <path
+            id="path_gray"
+            // ref={pathRef}
+            className=""
+            stroke="#555555"
+            strokeWidth="300"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeMiterlimit="22.9256"
+            fill="none"
+            d="M50.26 2931.38l1791.1 -0.03c-101.95,-1576.4 1323.97,-2880.75 2845.93,-2880.75 1572.9,0 2847.98,1252.56 2847.98,2797.65 0,513.84 -1.06,1042.79 -1.06,1562.81 0,1545.09 1275.08,2797.65 2847.96,2797.65 1572.9,0 2847.98,-1252.56 2847.98,-2797.65 0,-525.89 -0.43,-1052.89 -0.43,-1578 0,-1545.09 1275.08,-2797.65 2847.96,-2797.65 1572.9,0 2847.98,1252.56 2847.98,2797.65 0,538.4 -0.42,1076.83 -0.42,1615.2 0,1545.09 1275.08,2797.65 2847.96,2797.65 1572.9,0 2847.98,-1252.56 2847.98,-2797.65 0,-538.39 -1.79,-1076.9 -1.79,-1615.2 0,-1545.09 1275.08,-2797.65 2847.96,-2797.65 1597.8,0 2894.11,1288.41 2846.35,2895.97l1884.19 0m0 0l-211.96 -218.04m211.96 218.04l-213.21 271.1"
+          />
+        </g>
+      </svg>
+      {/*  */}
+      <svg
+        className={[styles.svg_path].join(" ")}
+        ref={routeRef}
+        id="route"
+        xmlns="http://www.w3.org/2000/svg"
+        xmlSpace="preserve"
+        width="322.653mm"
+        height="72.698mm"
+        version="1.1"
+        style={{
+          shapeRendering: "geometricPrecision",
+          textRendering: "geometricPrecision",
+          imageRendering: "optimizeQuality",
+          fillRule: "evenodd",
+          clipRule: "evenodd",
+        }}
+        viewBox="0 0 32265.28 7269.8"
+        xmlnsXlink="http://www.w3.org/1999/xlink"
+      >
+        <g id="Layer_x0020_1">
+          <metadata id="CorelCorpID_0Corel-Layer" />
+          <defs>
+            <linearGradient id="grad1" x1="0%" x2="100%" y1="0%" y2="0%">
+              <stop offset="0%" stopColor="#65BA97" />
+              <stop offset="25%" stopColor="#518262" />
+              <stop offset="50%" stopColor="#7BCED3" />
+              <stop offset="75%" stopColor="#419098" />
+              <stop offset="100%" stopColor="#598ED4" />
+            </linearGradient>
+          </defs>
+          <path
+            id="path"
+            ref={pathRef}
+            className=""
+            stroke="url(#grad1)"
+            strokeWidth="300"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeMiterlimit="22.9256"
+            fill="none"
+            d="M50.26 2931.38l1791.1 -0.03c-101.95,-1576.4 1323.97,-2880.75 2845.93,-2880.75 1572.9,0 2847.98,1252.56 2847.98,2797.65 0,513.84 -1.06,1042.79 -1.06,1562.81 0,1545.09 1275.08,2797.65 2847.96,2797.65 1572.9,0 2847.98,-1252.56 2847.98,-2797.65 0,-525.89 -0.43,-1052.89 -0.43,-1578 0,-1545.09 1275.08,-2797.65 2847.96,-2797.65 1572.9,0 2847.98,1252.56 2847.98,2797.65 0,538.4 -0.42,1076.83 -0.42,1615.2 0,1545.09 1275.08,2797.65 2847.96,2797.65 1572.9,0 2847.98,-1252.56 2847.98,-2797.65 0,-538.39 -1.79,-1076.9 -1.79,-1615.2 0,-1545.09 1275.08,-2797.65 2847.96,-2797.65 1597.8,0 2894.11,1288.41 2846.35,2895.97l1884.19 0m0 0l-211.96 -218.04m211.96 218.04l-213.21 271.1"
+          />
+        </g>
+      </svg>
     </div>
   );
 }
