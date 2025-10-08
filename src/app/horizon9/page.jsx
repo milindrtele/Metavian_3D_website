@@ -2632,7 +2632,7 @@ export default function Horizon() {
           )}
           {isGetStartedVisible && <GetStarted continue={GetStartedContinue} />}
           {/* {isStartingMessageVisible && <GetStarted />} */}
-          {isHamburgerMenuVisible && (
+          {/* {isHamburgerMenuVisible && (
             <HamburgerMenu
               handleClickTopLevelMenuProp={selectedItemInMainMenu}
               selectedItemSubMenu1={selectedItemInSubMenu1}
@@ -2640,8 +2640,11 @@ export default function Horizon() {
               selectedItemSubMenu3={selectedItemInSubMenu3}
               openModelViewer={toggleChildComponent}
             />
+          )} */}
+          {isHamburgerMenuVisible && (
+            <CircleMenu handleClickTopLevelMenuProp={selectedItemInMainMenu} />
           )}
-          <CircleMenu />
+
           {currentUserPositionRef.current == "Menu Item 1" && (
             <LineOverlay progress={scrollTriggerProgress} />
           )}

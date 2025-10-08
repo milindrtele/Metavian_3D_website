@@ -1,18 +1,21 @@
 /* Main button container */
 .button {
-    position: relative;
-    width: 250px;
-    height: 250px;
+    position: absolute;
+    top: -9vw;
+    left: -9vw;
+    width: 25vw;
+    height: 25vw;
     cursor: pointer;
 }
 
-.m_logo{
+.m_logo {
     position: absolute;
+    z-index: 10;
     top: 50%;
     left: 50%;
-    width: 30%;
-    height: 30%;
-    transform: translate(-50%, -50%);
+    width: 20%;
+    height: 20%;
+    transform: translate(-50%, -50%) scale(1);
     background-image: url("/images/MetavianLogo_White.png");
     background-position: center;
     background-repeat: no-repeat;
@@ -21,8 +24,25 @@
     border-style: solid;
     border-color: transparent;
     transform-origin: center;
+    transition: all 0.1s ease-in-out;
 }
 
+.m_logo:hover {
+    transform: translate(-50%, -50%) scale(0.90);
+}
+
+.m_logo:hover .arc {
+    opacity: 0 !important;
+    transform: translate(-50%, -50%) scale(0.5);
+}
+
+.button:hover .arc_container {
+    display: block;
+}
+
+.arc_container {
+    display: none;
+}
 
 /* Base style for arcs */
 .arc {
@@ -38,14 +58,55 @@
     transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
 }
 
-.m_logo:hover .arc{
-    opacity: 1 !important;
-    transform: translate(-50%, -50%) scale(1);
+.text_container {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    width: 50%;
+    height: 12%;
+    display: flex;
+    justify-content: right;
+    transform-origin: left top;
 }
 
+.arc_layer_1 .text_container {
+    transform: rotate(11.25deg) translate(0, -50%);
+}
+
+.arc_layer_2 .text_container {
+    transform: rotate(33.75deg) translate(0, -50%);
+}
+
+.arc_layer_3 .text_container {
+    transform: rotate(56.25deg) translate(0, -50%);
+}
+
+.arc_layer_4 .text_container {
+    transform: rotate(78.75deg) translate(0, -50%);
+}
+
+.text_container h1 {
+    color: white;
+    font-size: 1vw;
+    white-space: nowrap;
+    position: relative;
+    top: 50%;
+    right: 5%;
+    transform: translate(0, -50%);
+    height: max-content;
+}
+
+/* .arc h1 {
+    color: white;
+    position: absolute;
+    top: 60%;
+    left: 120%;
+    transform: translate(-50%, -50%) rotate(11.25deg);
+    font-size: 5vw;
+} */
 
 .arc_layer_1 {
-    clip-path: polygon(50% 50%, 100% 50%, 100% 70%); 
+    clip-path: polygon(50% 50%, 100% 50%, 100% 70%);
     /* 70.75% */
 }
 
@@ -65,18 +126,23 @@
 .arc3 {
     width: 100%;
     height: 100%;
-    border-width: 2vw;
+    border-width: 1vw;
     border-right-color: #333;
     border-bottom-color: #333;
+    background: radial-gradient(circle, rgba(174, 229, 238, 0) 40%, rgba(148, 187, 233, 1) 100%);
     /* darkest */
+}
+
+.arc3:hover {
+    background: radial-gradient(circle, rgba(107, 201, 184, 0) 40%, rgb(46, 255, 217) 100%);
 }
 
 /* Middle arc */
 .arc2 {
-    width: 80%;
+    width: 60%;
     /* reduced diameter */
-    height: 80%;
-    border-width: 2vw;
+    height: 60%;
+    border-width: 4vw;
     border-right-color: #999;
     border-bottom-color: #999;
     display: none;
@@ -100,16 +166,16 @@
 
 /* Optional hover animation */
 .arc1:hover {
-    border-right-color: #fff;
-    border-bottom-color: #fff;
+    border-right-color: #6bc9b8;
+    border-bottom-color: #6bc9b8;
 }
 
 .arc2:hover {
-    border-right-color: #fff;
-    border-bottom-color: #fff;
+    border-right-color: #6bc9b8;
+    border-bottom-color: #6bc9b8;
 }
 
 .arc3:hover {
-    border-right-color: #fff;
-    border-bottom-color: #fff;
+    border-right-color: #6bc9b8;
+    border-bottom-color: #6bc9b8;
 }
