@@ -9,9 +9,14 @@ import {
   CSS2DRenderer,
   CSS2DObject,
 } from "three/examples/jsm/renderers/CSS2DRenderer.js";
+// import {
+//   CSS3DRenderer,
+//   CSS3DObject,
+// } from "three/addons/renderers/CSS3DRenderer.js";
 import { gsap } from "gsap";
 
 import Hotspot from "../../lib/scripts/hotspot.js";
+// import Hotspot3D from "../../lib/scripts/hotspot3D.js";
 import Loading from "../loading/loading.jsx";
 
 // Caching product and hotspot data to avoid redundant fetches
@@ -19,6 +24,7 @@ let productsDataCache = null;
 let hotspotDataCache = null;
 
 let hotspotsArray = [];
+// let hotspots3DArray = [];
 
 async function fetchProductData(url) {
   if (!productsDataCache) {
@@ -58,6 +64,8 @@ export default function ProductInfo({ product, closeClicked, css2DScene }) {
   const animationFrameId = useRef(null);
   const css2DSceneRef = useRef(null);
   const css2dRendererRef = useRef(null);
+  // const css3DSceneRef = useRef(null);
+  // const css3dRendererRef = useRef(null);
   const spotLightRef = useRef(null);
   const product_info_containerRef = useRef(null);
   const main_rotorRef = useRef(null);
@@ -124,11 +132,20 @@ export default function ProductInfo({ product, closeClicked, css2DScene }) {
     //css2Drenderer
     css2dRendererRef.current = new CSS2DRenderer();
     css2dRendererRef.current.setSize(canvas.clientWidth, canvas.clientHeight);
-    css2dRendererRef.current.domElement.style.position = "absolute";
+    // css2dRendererRef.current.domElement.style.position = "absolute";
     css2dRendererRef.current.domElement.style.top = 0;
     css2dRendererRef.current.domElement.style.pointerEvents = "none";
     css2dRendererRef.current.domElement.style.position = "fixed";
     document.body.appendChild(css2dRendererRef.current.domElement);
+
+    // //css3Drenderer
+    // css3dRendererRef.current = new CSS3DRenderer();
+    // css3dRendererRef.current.setSize(canvas.clientWidth, canvas.clientHeight);
+    // // css3dRendererRef.current.domElement.style.position = "absolute";
+    // css3dRendererRef.current.domElement.style.top = 0;
+    // css3dRendererRef.current.domElement.style.pointerEvents = "none";
+    // css3dRendererRef.current.domElement.style.position = "fixed";
+    // document.body.appendChild(css3dRendererRef.current.domElement);
 
     // Scene and camera setup
     const scene = new THREE.Scene();
@@ -136,6 +153,8 @@ export default function ProductInfo({ product, closeClicked, css2DScene }) {
 
     //css2Dscene
     css2DSceneRef.current = new THREE.Scene();
+    // //css3Dscene
+    // css3DSceneRef.current = new THREE.Scene();
 
     cameraRef.current = new THREE.PerspectiveCamera(
       50,
@@ -235,6 +254,23 @@ export default function ProductInfo({ product, closeClicked, css2DScene }) {
                     );
                     hotspotInstance.addToScene();
                     hotspotsArray.push(hotspotInstance);
+
+                    // const hotspotInstance3D = new Hotspot3D(
+                    //   "secondary",
+                    //   css3DSceneRef.current,
+                    //   hotspot.hotSpotPos,
+                    //   hotspot.distanceFormCam,
+                    //   hotspot.childHtmlUrl,
+                    //   hotspot.title,
+                    //   hotspot.subTitle,
+                    //   hotspot.videoID,
+                    //   hotspot.webURL,
+                    //   cameraRef.current,
+                    //   null, //productViewerCallback,
+                    //   false //productPageVisible
+                    // );
+                    // hotspotInstance3D.addToScene();
+                    // hotspots3DArray.push(hotspotInstance3D);
                   });
                 }
               }
@@ -263,6 +299,7 @@ export default function ProductInfo({ product, closeClicked, css2DScene }) {
       controlsRef.current.update();
       rendererRef.current.render(scene, cameraRef.current);
       css2dRendererRef.current.render(css2DSceneRef.current, cameraRef.current);
+      // css3dRendererRef.current.render(css3DSceneRef.current, cameraRef.current);
       animationFrameId.current = requestAnimationFrame(animate);
     };
     animate();
@@ -284,12 +321,30 @@ export default function ProductInfo({ product, closeClicked, css2DScene }) {
         hotspot.removeFromScene();
       });
 
+      // hotspots3DArray.forEach((hotspot3D) => {
+      //   hotspot3D.removeFromScene();
+      // });
+
       sceneRef.current = null;
+      css2DSceneRef.current = null;
+      // css3DSceneRef.current = null;
+      spotLightRef.current = null;
+      main_rotorRef.current = null;
+      tail_rotorRef.current = null;
+
+      if (css2dRendererRef.current) {
+        css2dRendererRef.current.domElement.remove();
+        css2dRendererRef.current = null;
+      }
+      // if (css3dRendererRef.current) {
+      //   css3dRendererRef.current.domElement.remove();
+      //   css3dRendererRef.current = null;
+      // }
       cameraRef.current = null;
       controlsRef.current = null;
       rendererRef.current = null;
-      css2dRendererRef.current = null;
       hotspotsArray = [];
+      // hotspots3DArray = [];
     };
   }, [product]); // Reinitialize when `product` changes
 
@@ -316,13 +371,13 @@ export default function ProductInfo({ product, closeClicked, css2DScene }) {
           controlsRef.current.enabled = true;
           controlsRef.current.enableDamping = true;
           controlsRef.current.dampingFactor = 0.2;
-          controlsRef.current.enablePan = false;
+          controlsRef.current.enablePan = true;
           controlsRef.current.minPolarAngle = (Math.PI / 180) * 45;
           controlsRef.current.maxPolarAngle = (Math.PI / 180) * 84;
           // controlsRef.current.minAzimuthAngle = Math.PI * 0.25 * -1;
           // controlsRef.current.maxAzimuthAngle = Math.PI * 0.25;
           controlsRef.current.minDistance = 10;
-          controlsRef.current.maxDistance = 30;
+          controlsRef.current.maxDistance = 100;
         },
       });
     }

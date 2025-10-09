@@ -103,7 +103,6 @@ function CircleOverlay({ circleSelected, selectedLeg }) {
       circleSelected(variant.name);
     }
   }
-  function addClass() {}
 
   return (
     <>

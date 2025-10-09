@@ -140,6 +140,7 @@ export default function Horizon() {
   const [currentSceneInfo, setCurrentSceneInfo] = useState({});
 
   const currentUserPositionRef = useRef(null);
+  const [currentUserPosition, setCurrentUserPosition] = useState(null);
   const productCameraTravelScrollTriggerRef = useRef(null);
   const contactsSceneCameraTravelScrollTriggerRef = useRef(null);
 
@@ -252,6 +253,8 @@ export default function Horizon() {
   const [selectedLeg, setSelectedLeg] = useState(null);
   const scrollTriggerProgressRef = useRef(0);
   const [scrollTriggerProgress, setScrollTriggerProgress] = useState(0);
+  const [scrollTriggerProgressContacts, setScrollTriggerProgressContacts] =
+    useState(0);
 
   const starsRef = useRef(null); //stars
 
@@ -1206,93 +1209,93 @@ export default function Horizon() {
       // Animate the scene
       let time = 0;
       const animate = () => {
-        if (starsRef.current) {
-          starsRef.current.material.uniforms.time.value = time;
-        }
-        //debugPlaneMesh.lookAt(cameraRef.current.position);
-        // if (raycasterForBulge && fboMaterialRef.current  != null) {
-        //   fboMaterialRef.current .uniforms.uPointer.value =
-        //     raycasterForBulge.updateRaycaster();
-        // }
-
-        animationIdRef.current = requestAnimationFrame(animate);
-
-        positionProjectionScreen();
-        //console.log(progressJSRef.current.value);
-
-        // if (capsule_anchor) {
-        //   console.log(capsule_anchor.position);
-        // }
-
-        // if (cubeCamera != null)
-        //   cubeCamera.update(rendererRef.current, sceneRef.current);
-
-        //stats.update();
-
-        //getAssetPositions();
-
-        // if (modelLoaded && circlepath != null) {
-        //   updatePosition(circlepath, cameraRef.current, positionAlongPathState);
-        //   //updatePosition(targetPath, targetObject, positionAlongPathState);
-        // }
-
-        time += 0.01;
-        //shaderMaterial.uniforms.time.value = time;
-        timeUniform.value = time;
-
-        spotLightParent.rotation.y += 0.01;
-        //controlsRef.current.update();
-
-        TWEEN.update();
-
-        rendererRef.current.setRenderTarget(fboRef.current);
-        rendererRef.current.render(fboScene, fboCamera);
-
-        //console.log(fbo);
-
-        rendererRef.current.setRenderTarget(null);
-
-        if (uniformsForGrid != null) {
-          uniformsForGrid.uFBO.value = fboRef.current.texture;
-        }
-        // if (startSequenceCompleteRef.current) {
-        //   rendererRef.current.render(
-        //     sceneRef.current,
-        //     blenderCameraRef.current
-        //   );
-        // } else {
-        //   rendererRef.current.render(sceneRef.current, cameraRef.current);
-        // }
-        //rendererRef.current.render(sceneRef.current, cameraRef.current);
         if (productPageVisibleRef.current == false) {
+          if (starsRef.current) {
+            starsRef.current.material.uniforms.time.value = time;
+          }
+          //debugPlaneMesh.lookAt(cameraRef.current.position);
+          // if (raycasterForBulge && fboMaterialRef.current  != null) {
+          //   fboMaterialRef.current .uniforms.uPointer.value =
+          //     raycasterForBulge.updateRaycaster();
+          // }
+
+          positionProjectionScreen();
+          //console.log(progressJSRef.current.value);
+
+          // if (capsule_anchor) {
+          //   console.log(capsule_anchor.position);
+          // }
+
+          // if (cubeCamera != null)
+          //   cubeCamera.update(rendererRef.current, sceneRef.current);
+
+          //stats.update();
+
+          //getAssetPositions();
+
+          // if (modelLoaded && circlepath != null) {
+          //   updatePosition(circlepath, cameraRef.current, positionAlongPathState);
+          //   //updatePosition(targetPath, targetObject, positionAlongPathState);
+          // }
+
+          time += 0.01;
+          //shaderMaterial.uniforms.time.value = time;
+          timeUniform.value = time;
+
+          spotLightParent.rotation.y += 0.01;
+          //controlsRef.current.update();
+
+          TWEEN.update();
+
+          rendererRef.current.setRenderTarget(fboRef.current);
+          rendererRef.current.render(fboScene, fboCamera);
+
+          //console.log(fbo);
+
+          rendererRef.current.setRenderTarget(null);
+
+          if (uniformsForGrid != null) {
+            uniformsForGrid.uFBO.value = fboRef.current.texture;
+          }
+          // if (startSequenceCompleteRef.current) {
+          //   rendererRef.current.render(
+          //     sceneRef.current,
+          //     blenderCameraRef.current
+          //   );
+          // } else {
+          //   rendererRef.current.render(sceneRef.current, cameraRef.current);
+          // }
+          //rendererRef.current.render(sceneRef.current, cameraRef.current);
+
           //rendererRef.current.render(sceneRef.current, cameraRef.current);
           composer.render();
-        }
 
-        // Render CSS3D scene
-        if (
-          css3dRendererRef.current != null &&
-          currentUserPositionRef.current == "Menu Item 2"
-        ) {
-          css3dRendererRef.current.render(
-            css3DSceneRef.current,
-            cameraRef.current
-          );
-        }
+          // Render CSS3D scene
+          if (
+            css3dRendererRef.current != null &&
+            currentUserPositionRef.current == "Menu Item 2"
+          ) {
+            css3dRendererRef.current.render(
+              css3DSceneRef.current,
+              cameraRef.current
+            );
+          }
 
-        //console.log(productPageVisibleRef.current);
-        if (
-          css2dRendererRef.current != null &&
-          currentUserPositionRef.current == "Menu Item 1" &&
-          productPageVisibleRef.current == false
-        ) {
-          css2dRendererRef.current.render(
-            css2DSceneRef.current,
-            cameraRef.current
-          );
-        }
+          //console.log(productPageVisibleRef.current);
+          if (
+            css2dRendererRef.current != null &&
+            currentUserPositionRef.current == "Menu Item 1" &&
+            productPageVisibleRef.current == false
+          ) {
+            css2dRendererRef.current.render(
+              css2DSceneRef.current,
+              cameraRef.current
+            );
+          }
 
-        NodeToyMaterial.tick();
+          NodeToyMaterial.tick();
+        }
+        animationIdRef.current = requestAnimationFrame(animate);
       };
       animate();
       window.addEventListener("resize", onWindowResize);
@@ -1667,6 +1670,7 @@ export default function Horizon() {
         setIsHamburgerMenuVisible(true);
 
         currentUserPositionRef.current = "Menu Item 1";
+        setCurrentUserPosition("Menu Item 1");
         addScrollTrigger();
       };
       aniSequenceAfterGetStarted(cameraRef.current, callback);
@@ -2245,6 +2249,7 @@ export default function Horizon() {
 
   function onMouseScrollForContactsModels(progress) {
     if (contact_models_animation_mixerRef.current != null) {
+      setScrollTriggerProgressContacts(progress);
       const elapsedTime = progress * 11.0; //totalAnimationSeconds;
       contact_models_animation_mixerRef.current.setTime(elapsedTime);
       animateSpotLights(spot_lights_array, progress);
@@ -2315,6 +2320,7 @@ export default function Horizon() {
 
   const selectedItemInMainMenu = (item) => {
     currentUserPositionRef.current = item;
+    setCurrentUserPosition(item);
     switch (item) {
       case "home":
         currentMenuForShaderRef.current = 0.0;
@@ -2645,20 +2651,23 @@ export default function Horizon() {
             <CircleMenu handleClickTopLevelMenuProp={selectedItemInMainMenu} />
           )}
 
-          {currentUserPositionRef.current == "Menu Item 1" && (
+          {currentUserPosition == "Menu Item 1" && (
             <LineOverlay progress={scrollTriggerProgress} />
           )}
-          {currentUserPositionRef.current == "Menu Item 1" && (
+          {currentUserPosition == "Menu Item 1" && (
             <ProductsScreenOverlay selectedObject={selectedObject} />
           )}
-          {currentUserPositionRef.current == "Menu Item 2" && (
+          {currentUserPosition == "Menu Item 2" && (
             <CircleOverlay
               circleSelected={circleSelected}
               selectedLeg={selectedLeg}
             />
           )}
+          {currentUserPosition == "Menu Item 3" && (
+            <LineOverlay progress={scrollTriggerProgressContacts} />
+          )}
           {/* <UseCaseScreenOverlay selectedObject={selectedObject} /> */}
-          {/* {currentUserPositionRef.current == "Menu Item 2" && (
+          {/* {currentUserPosition == "Menu Item 2" && (
             <UseCaseScreenOverlay selectedObject={selectedObject} />
           // )} */}
           {isHamburgerMenuVisible && <Beepie />}
