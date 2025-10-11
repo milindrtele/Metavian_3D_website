@@ -1,5 +1,7 @@
 "use client";
 
+import { Roboto } from "next/font/google";
+
 import { useRef, useState, useEffect } from "react";
 import * as THREE from "three";
 import { loadingContext } from "../components/contexts/loadingContext.jsx";
@@ -73,6 +75,8 @@ import {
   capsule_model,
   capsule_anchor,
   capsule_body,
+  glassMaterial,
+  glassMaterialClone,
   projection_screen_anchor,
   projection_object,
   legs_parent,
@@ -134,7 +138,14 @@ import CircleMenu from "../components/circle_menu/CircleMenu.jsx";
 
 import Stars from "../lib/scripts/stars.js";
 
+const roboto = Roboto({
+  weight: "400",
+  subsets: ["latin"],
+});
+
 export default function Horizon() {
+  // const stats = Stats();
+  // document.body.appendChild(stats.dom);
   //loading state
   const [loadedPercentage, setLoadedPercentage] = useState(null);
   const [currentSceneInfo, setCurrentSceneInfo] = useState({});
@@ -158,7 +169,6 @@ export default function Horizon() {
   let circlepath = null;
   let targetPath = null;
 
-  let stats = null;
   const canvasRef = useRef(null);
   const sceneRef = useRef(null);
   const css3DSceneRef = useRef(null);
@@ -388,8 +398,8 @@ export default function Horizon() {
 
   async function setupScene(canvas) {
     if (sceneRef.current == null) {
-      // stats = new Stats();
-      // document.body.appendChild(stats.dom);
+      const stats = new Stats();
+      document.body.appendChild(stats.dom);
       //Scene is container for objects, cameras, and lights
       sceneRef.current = new THREE.Scene();
 
@@ -593,7 +603,10 @@ export default function Horizon() {
       }
 
       function highlighterHoverEffect(intersects) {
-        if (intersects.length > 0) {
+        if (
+          currentUserPositionRef.current == "Menu Item 3" &&
+          intersects.length > 0
+        ) {
           if (intersects[0].object.name == "highlighter_address") {
             let position = highlighter_objects_array[1].position;
 
@@ -1209,6 +1222,7 @@ export default function Horizon() {
       // Animate the scene
       let time = 0;
       const animate = () => {
+        stats?.update();
         if (productPageVisibleRef.current == false) {
           if (starsRef.current) {
             starsRef.current.material.uniforms.time.value = time;
@@ -1294,6 +1308,10 @@ export default function Horizon() {
           }
 
           NodeToyMaterial.tick();
+          // if (glassMaterial && glassMaterialClone) {
+          //   glassMaterialClone.uniforms.time.value = time;
+          //   glassMaterial.uniforms.time.value = time;
+          // }
         }
         animationIdRef.current = requestAnimationFrame(animate);
       };
@@ -2590,7 +2608,7 @@ export default function Horizon() {
       <currentSceneContext.Provider
         value={{ currentSceneInfo, setCurrentSceneInfo }}
       >
-        <div id="container">
+        <div id="container" className={roboto.className}>
           <div className={styles.slidecontainer}>
             {/* <div id="rotation_slider" className={styles.rotation_slider}>
           <p>rotation</p>
@@ -2634,8 +2652,12 @@ export default function Horizon() {
           ></canvas>
           {/* {<Beepie />} */}
           {isStartingMessageVisible && (
-            <StartingMessage continue={startingMessageContinue} />
+            <StartingMessage
+              continue={startingMessageContinue}
+              loadedPercentage={loadedPercentage}
+            />
           )}
+
           {isGetStartedVisible && <GetStarted continue={GetStartedContinue} />}
           {/* {isStartingMessageVisible && <GetStarted />} */}
           {/* {isHamburgerMenuVisible && (

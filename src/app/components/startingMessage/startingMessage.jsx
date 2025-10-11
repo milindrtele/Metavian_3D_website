@@ -18,6 +18,8 @@ export default function StartingMessage(props) {
 
     const gltfloader = new GLTFLoader();
 
+    let animationId;
+
     var tween;
     var deviceType;
     var maniquine;
@@ -193,13 +195,15 @@ export default function StartingMessage(props) {
       // rectLight2.visible = false;
       // rectLight3.visible = false;
 
-      window.addEventListener("resize", () => {
+      function onResize() {
         vm_canvas.width = window.innerWidth * 0.6;
         vm_canvas.height = window.innerHeight * 1;
         camera.aspect = vm_canvas.width / vm_canvas.height;
         renderer.setSize(vm_canvas.width, vm_canvas.height);
         camera.updateProjectionMatrix();
-      });
+      }
+
+      window.addEventListener("resize", onResize);
 
       //plane.position.set(2.0238, 4.5, 7);
 
@@ -208,79 +212,115 @@ export default function StartingMessage(props) {
         new THREE.Vector3(0, 0, 3)
       );
 
-      if (deviceType == "non-touch") {
-        vm_canvas.addEventListener("mousemove", (e) => {
-          mouseIn = true;
-          // mousePosition.x =
-          //   ((e.clientX - (window.innerWidth * 0.6) / 2) /
-          //     window.innerWidth) *
-          //     2 -
-          //   window.innerWidth -
-          //   window.innerWidth * 0.6;
+      function onMouseMove(e) {
+        mouseIn = true;
+        // mousePosition.x =
+        //   ((e.clientX - (window.innerWidth * 0.6) / 2) /
+        //     window.innerWidth) *
+        //     2 -
+        //   window.innerWidth -
+        //   window.innerWidth * 0.6;
 
-          // console.log(
-          //   ((e.clientX - window.innerWidth * 0.3) / vm_canvas.width) * 2 - 1
-          // );
-          var offsets = vm_canvas.getBoundingClientRect();
-          mousePosition.x =
-            ((e.clientX - offsets.left) / vm_canvas.width) * 2 - 1;
-          mousePosition.y =
-            -((e.clientY - offsets.top) / vm_canvas.height) * 2 + 1;
-          //mousePosition.x = (e.clientX / window.innerWidth) * 2 - 1;
-          //mousePosition.y = -(e.clientY / vm_canvas.height) * 2 + 1;
-          //console.log(mousePosition.x);
-          //planeNormal.copy(camera.position).normalize();
-          //plane.setFromNormalAndCoplanarPoint(planeNormal, scene.position);
+        // console.log(
+        //   ((e.clientX - window.innerWidth * 0.3) / vm_canvas.width) * 2 - 1
+        // );
+        var offsets = vm_canvas.getBoundingClientRect();
+        mousePosition.x =
+          ((e.clientX - offsets.left) / vm_canvas.width) * 2 - 1;
+        mousePosition.y =
+          -((e.clientY - offsets.top) / vm_canvas.height) * 2 + 1;
+        //mousePosition.x = (e.clientX / window.innerWidth) * 2 - 1;
+        //mousePosition.y = -(e.clientY / vm_canvas.height) * 2 + 1;
+        //console.log(mousePosition.x);
+        //planeNormal.copy(camera.position).normalize();
+        //plane.setFromNormalAndCoplanarPoint(planeNormal, scene.position);
 
-          raycaster.setFromCamera(mousePosition, camera);
-          raycaster.ray.intersectPlane(plane, intersectionPoint);
-          target.position.set(
-            intersectionPoint.x,
-            intersectionPoint.y,
-            intersectionPoint.z
-          );
-        });
-        vm_canvas.addEventListener("mouseleave", () => {
-          // mouseIn = false;
-          // console.log("mouse left");
-          // parent.lookAt(camera.position);
-          const cameraPos = camera.position;
-
-          gsap.to(target.position, {
-            duration: 0.75, // equivalent to 750ms
-            x: camera.position.x,
-            y: camera.position.y,
-            z: camera.position.z,
-            ease: "power2.inOut", // similar to Quadratic.InOut in TWEEN
-            onUpdate: () => {
-              //console.log(target.position);
-              if (parent != null) parent.lookAt(target.position);
-            },
-          });
-
-          // tween = new TWEEN.Tween(target.position, false) // Create a new tween that modifies 'coords'.
-          //   .to(
-          //     {
-          //       x: camera.position.x,
-          //       y: camera.position.y,
-          //       z: camera.position.z,
-          //     },
-          //     750
-          //   ) // Move to (300, 200) in 0.5 second.
-          //   .easing(TWEEN.Easing.Quadratic.InOut) // Use an easing function to make the animation smooth.
-          //   .onUpdate(() => {
-          //     console.log(target.position);
-          //     if (parent != null) parent.lookAt(target.position);
-          //   })
-          //   .start(); // Start the tween immediately.
-        });
+        raycaster.setFromCamera(mousePosition, camera);
+        raycaster.ray.intersectPlane(plane, intersectionPoint);
+        target.position.set(
+          intersectionPoint.x,
+          intersectionPoint.y,
+          intersectionPoint.z
+        );
       }
 
-      renderer.setAnimationLoop(animate);
+      function onMouseLeave() {
+        // mouseIn = false;
+        // console.log("mouse left");
+        // parent.lookAt(camera.position);
+        const cameraPos = camera.position;
+
+        gsap.to(target.position, {
+          duration: 0.75, // equivalent to 750ms
+          x: camera.position.x,
+          y: camera.position.y,
+          z: camera.position.z,
+          ease: "power2.inOut", // similar to Quadratic.InOut in TWEEN
+          onUpdate: () => {
+            //console.log(target.position);
+            if (parent != null) parent.lookAt(target.position);
+          },
+        });
+
+        // tween = new TWEEN.Tween(target.position, false) // Create a new tween that modifies 'coords'.
+        //   .to(
+        //     {
+        //       x: camera.position.x,
+        //       y: camera.position.y,
+        //       z: camera.position.z,
+        //     },
+        //     750
+        //   ) // Move to (300, 200) in 0.5 second.
+        //   .easing(TWEEN.Easing.Quadratic.InOut) // Use an easing function to make the animation smooth.
+        //   .onUpdate(() => {
+        //     console.log(target.position);
+        //     if (parent != null) parent.lookAt(target.position);
+        //   })
+        //   .start(); // Start the tween immediately.
+      }
+
+      if (deviceType == "non-touch") {
+        vm_canvas.addEventListener("mousemove", onMouseMove);
+        vm_canvas.addEventListener("mouseleave", onMouseLeave);
+      }
+
+      animate();
+      // renderer.setAnimationLoop(animate);
+
+      // 🧹 Return cleanup function inside init
+      return () => {
+        renderer.setAnimationLoop(null);
+        cancelAnimationFrame(animationId);
+
+        if (deviceType === "non-touch") {
+          vm_canvas.removeEventListener("mousemove", onMouseMove);
+          vm_canvas.removeEventListener("mouseleave", onMouseLeave);
+        }
+
+        window.removeEventListener("resize", onResize);
+
+        stats.dom.remove();
+        controls?.dispose();
+
+        scene.traverse((child) => {
+          if (child.geometry) child.geometry.dispose();
+          if (child.material) {
+            if (Array.isArray(child.material)) {
+              child.material.forEach((m) => m.dispose());
+            } else {
+              child.material.dispose();
+            }
+          }
+        });
+
+        renderer.dispose();
+      };
     }
 
     var clock = new THREE.Clock();
+
     function animate(time) {
+      animationId = renderer.setAnimationLoop(animate);
       if (deviceType == "non-touch" && parent != null && mouseIn)
         parent.lookAt(target.position);
       if (deviceType == "touch") {
@@ -291,8 +331,23 @@ export default function StartingMessage(props) {
       renderer.render(scene, camera);
     }
 
-    init();
+    const cleanup = init();
+
+    return () => {
+      // 🔥 Cleanup on unmount
+      if (cleanup) cleanup();
+    };
   }, []);
+
+  useEffect(() => {
+    let timeout = null;
+    if (props.loadedPercentage >= 100) {
+      timeout = setTimeout(() => {
+        props.continue();
+      }, 10000);
+    }
+    return () => clearTimeout(timeout);
+  }, [props]);
 
   return (
     <div

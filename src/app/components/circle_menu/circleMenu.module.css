@@ -1,20 +1,20 @@
 /* Main button container */
 .button {
     position: absolute;
-    top: -9vw;
-    left: -9vw;
-    width: 25vw;
-    height: 25vw;
+    top: -17vw;
+    left: -17vw;
+    width: 35vw;
+    height: 35vw;
     cursor: pointer;
 }
 
 .m_logo {
     position: absolute;
     z-index: 10;
-    top: 50%;
-    left: 50%;
-    width: 20%;
-    height: 20%;
+    top: 60%;
+    left: 60%;
+    width: 17%;
+    height: 17%;
     transform: translate(-50%, -50%) scale(1);
     background-image: url("/images/MetavianLogo_White.png");
     background-position: center;
@@ -55,7 +55,7 @@
     /* opacity: 0; */
     transform-origin: center;
     transform: translate(-50%, -50%) scale(0.9);
-    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    transition: all 0.1s ease-in-out;
 }
 
 .text_container {
@@ -127,14 +127,22 @@
     width: 100%;
     height: 100%;
     border-width: 1vw;
-    border-right-color: #333;
-    border-bottom-color: #333;
-    background: radial-gradient(circle, rgba(174, 229, 238, 0) 40%, rgba(148, 187, 233, 1) 100%);
+    /* border-right-color: #333;
+    border-bottom-color: #333; */
+    border-right-color: #3cf4a8;
+    border-bottom-color: #3cf4a8;
+    background: radial-gradient(circle, rgba(107, 201, 184, 0) 40%, rgb(46, 255, 217) 100%);
+    /* background: radial-gradient(circle, rgba(174, 229, 238, 0) 40%, rgba(148, 187, 233, 1) 100%); */
     /* darkest */
 }
 
 .arc3:hover {
-    background: radial-gradient(circle, rgba(107, 201, 184, 0) 40%, rgb(46, 255, 217) 100%);
+    width: 106%;
+    height: 106%;
+    border-right-color: rgb(193, 222, 255);
+    border-bottom-color: rgb(193, 222, 255);
+    background: radial-gradient(circle, rgba(174, 229, 238, 0) 40%, rgb(73, 158, 255) 100%);
+    /* background: radial-gradient(circle, rgba(107, 201, 184, 0) 40%, rgb(46, 255, 217) 100%); */
 }
 
 /* Middle arc */
@@ -175,7 +183,7 @@
     border-bottom-color: #6bc9b8;
 }
 
-.arc3:hover {
+/* .arc3:hover {
     border-right-color: #6bc9b8;
     border-bottom-color: #6bc9b8;
-}
+} */

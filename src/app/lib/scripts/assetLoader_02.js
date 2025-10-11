@@ -7,12 +7,16 @@ import { NodeToyMaterial } from "@nodetoy/three-nodetoy";
 import { data } from "../shaders/scan_lines/scan_lines_shader_data.js";
 import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
 
+import glassVertexShader from "../shaders/capsule_glass/vertex.glsl";
+import glassFragmentShader from "../shaders/capsule_glass/fragment.glsl";
+
 import { teamHandler } from "./team.js";
 import { printerHandler } from "./printer.js";
 
 import Hotspot from "./hotspot";
 
 import { gsap } from "gsap";
+import { vec3 } from "three/examples/jsm/nodes/Nodes.js";
 
 let blenderCamera = null;
 let contact_model_Camera = null;
@@ -23,6 +27,8 @@ let capsule_model = null;
 let capsule_anchor = null;
 let capsule_body = null;
 let cockpit_canopy = null;
+let glassMaterial = null;
+let glassMaterialClone = null;
 let projection_screen_anchor = null;
 let projection_object = null;
 let legs_parent = null;
@@ -439,7 +445,7 @@ export function loadAssetsWithPromise(
     //load the capsule
     loader.load(
       //"models/capsule/cosmos ship of imagination.glb",
-      "models/capsule/capsule/capsule_textured_with projection_display_legs_1_1k.glb",
+      "models/capsule/capsule/capsule.glb", //capsule_textured_with projection_display_legs_1_1k
       (gltf) => {
         capsule_model = gltf.scene;
         //console.log(capsule_model);
@@ -505,7 +511,41 @@ export function loadAssetsWithPromise(
         const glass = new NodeToyMaterial({
           url: "https://draft.nodetoy.co/dcJa9nhyWG5d8MeY", //https://draft.nodetoy.co/bzBoaIaQXpLm3UTR, //"https://draft.nodetoy.co/w7BhuuAcZ2ESIjU5", //https://draft.nodetoy.co/ECrNY8O4MMUUagsb,
         });
+        glass.depthWrite = false;
         glass.side = THREE.FrontSide;
+
+        const glassBack = new NodeToyMaterial({
+          url: "https://draft.nodetoy.co/dcJa9nhyWG5d8MeY", //https://draft.nodetoy.co/bzBoaIaQXpLm3UTR, //"https://draft.nodetoy.co/w7BhuuAcZ2ESIjU5", //https://draft.nodetoy.co/ECrNY8O4MMUUagsb,
+        });
+        glassBack.depthWrite = true;
+        glassBack.side = THREE.DoubleSide;
+
+        // const glassProps = {
+        //   uniforms: {
+        //     time: { value: 0 },
+        //     lineColor: { value: new THREE.Vector4(0.0, 0.0, 1.0, 1.0) },
+        //     speed: { value: 1.0 },
+        //     frequency: { value: 10.0 },
+        //     thickness: { value: 0.1 },
+        //   },
+        // };
+
+        // glassMaterial = new THREE.ShaderMaterial({
+        //   uniforms: glassProps.uniforms,
+        //   vertexShader: glassVertexShader,
+        //   fragmentShader: glassFragmentShader,
+        //   transparent: true,
+        //   // opacity: 0.5,
+        //   side: THREE.FrontSide,
+        // });
+        // glassMaterialClone = new THREE.ShaderMaterial({
+        //   uniforms: glassProps.uniforms,
+        //   vertexShader: glassVertexShader,
+        //   fragmentShader: glassFragmentShader,
+        //   transparent: true,
+        //   // opacity: 1,
+        //   side: THREE.BackSide,
+        // });
 
         const projection = new NodeToyMaterial({
           url: "https://draft.nodetoy.co/3AFHZMh0a2doiywy", //https://draft.nodetoy.co/bzBoaIaQXpLm3UTR, //"https://draft.nodetoy.co/w7BhuuAcZ2ESIjU5", //https://draft.nodetoy.co/ECrNY8O4MMUUagsb,
@@ -551,10 +591,42 @@ export function loadAssetsWithPromise(
               //object.material = capsule_material;
               object.material.envMap = hdrImage;
 
+              if (object.name == "cockpit_canopy_original") {
+                object.material.depthWrite = false;
+                // object.visible = false;
+              }
+
               if (object.name == "cockpit_canopy") {
                 cockpit_canopy = object;
-                cockpit_canopy.material = glass;
-                cockpit_canopy.material.side = THREE.DoubleSide;
+                // object.visible = false;
+                // const cockpit_canopy_clone = cockpit_canopy.clone();
+                // cockpit_canopy_clone.scale.set(5, 5, 5);
+                // const newpos = new THREE.Vector3(
+                //   cockpit_canopy.position.x,
+                //   cockpit_canopy.position.y,
+                //   cockpit_canopy.position.z
+                // );
+
+                // // cockpit_canopy_clone.material = glassMaterialClone; //glass;
+                // // capsule_anchor.add(cockpit_canopy_clone);
+                // cockpit_canopy_clone.position.set(
+                //   newpos.x,
+                //   newpos.y + 15,
+                //   newpos.z
+                // );
+
+                cockpit_canopy.material = glass; //glassMaterial;
+                // cockpit_canopy_clone.material = glassBack; //glassMaterialClone;
+                // cockpit_canopy.material.side = THREE.DoubleSide;
+                // cockpit_canopy.remove(cockpit_canopy);
+              }
+
+              if (object.name == "cockpit_canopy_back") {
+                console.log("found canopy !!!!!!!!!!!!");
+                const cockpit_canopy_back = object;
+
+                cockpit_canopy_back.material = glassBack; //glassMaterialClone;
+                cockpit_canopy_back.material.side = THREE.BackSide;
               }
 
               //console.log(object.material);
@@ -882,6 +954,8 @@ export {
   capsule_model,
   capsule_anchor,
   capsule_body,
+  glassMaterial,
+  glassMaterialClone,
   projection_screen_anchor,
   projection_object,
   legs_parent,
