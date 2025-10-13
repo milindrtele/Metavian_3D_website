@@ -1,0 +1,48 @@
+.audio {
+    display: none;
+}
+
+.audio_overlay_container {
+    width: max-content;
+    height: max-content;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    z-index: 1000;
+    background-color: #69d4ff6a;
+    border: none;
+    border-radius: 50%;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.cross_line {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 2px;
+    height: 100%;
+    background-color: white;
+    transform-origin: top left;
+    transform: rotate(-45deg) translate(50%, 25%);
+    pointer-events: none;
+}
+
+.audio_icon {
+    background-image: url("/icons/music-solid-full.svg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    border: none;
+    border-radius: 50%;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}

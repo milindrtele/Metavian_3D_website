@@ -193,13 +193,13 @@ export function loadAssetsWithPromise(
           }
           //////////////////////////////////////////
           // console.log(model);
-          // const modelGeommetry = model.geometry;
-          // const modelBaseMaterial = model.material;
-          // modelGeommetry.addGroup(0, Infinity, 0);
-          // modelGeommetry.addGroup(0, Infinity, 1);
+          const modelGeommetry = model.geometry;
+          const modelBaseMaterial = model.material;
+          modelGeommetry.addGroup(0, Infinity, 0);
+          modelGeommetry.addGroup(0, Infinity, 1);
 
-          // const materialArray = [modelBaseMaterial, wipeEffect.clone()];
-          // model.material = materialArray;
+          const materialArray = [modelBaseMaterial, wipeEffect.clone()];
+          model.material = materialArray;
           //////////////////////////////////////////////
 
           //enable shadows for all objects

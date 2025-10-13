@@ -131,6 +131,7 @@ import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 //ui components
 import ProductsScreenOverlay from "../components/overlays/productsScreenOverlay/ProductsScreenOverlay.jsx";
 import UseCaseScreenOverlay from "../components/overlays/useCaseScreenOverlay/useCaseScreenOverlay.jsx";
+import AudioOverlay from "../components/audio_overlay/audio_overlay.jsx";
 //
 import CircleOverlay from "../components/overlays/circleOverlay/circleOverlay.jsx";
 import LineOverlay from "../components/overlays/lineOverlay/lineOverlay.jsx";
@@ -704,19 +705,19 @@ export default function Horizon() {
             intersectedObject[0].object.parent.userData.group ==
               "product_models"
           ) {
-            //intersectedObject[0].object.material[1].uniforms.opacity_multiplier.value = 1;
+            intersectedObject[0].object.material[1].uniforms.opacity_multiplier.value = 1;
             const selectedObj = intersectedObject[0].object;
             addSelectedObject(selectedObj);
             //outlinePassRef.current.selectedObjects = selectedObjects;
           } else {
             addSelectedObject(null);
-            // projectModels.forEach((group) => {
-            //   group.children.forEach((child) => {
-            //     if (child.isMesh) {
-            //       //child.material[1].uniforms.opacity_multiplier.value = 0;
-            //     }
-            //   });
-            // });
+            projectModels.forEach((group) => {
+              group.children.forEach((child) => {
+                if (child.isMesh) {
+                  child.material[1].uniforms.opacity_multiplier.value = 0;
+                }
+              });
+            });
           }
         }
       }
@@ -2705,6 +2706,7 @@ export default function Horizon() {
           {/* {isHamburgerMenuVisible && <SceneInfo />} */}
         </div>
         {loadedPercentage < 100 && !productPageVisible && <Loading />}
+        <AudioOverlay />
       </currentSceneContext.Provider>
     </loadingContext.Provider>
   );
