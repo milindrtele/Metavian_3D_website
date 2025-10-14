@@ -99,7 +99,7 @@ function LineOverlay({ progress }) {
   // }, [pathRef.current, routeRef.current]);
 
   useEffect(() => {
-    let angle = (progress + 0.04) * 360;
+    let angle = (Math.min(Math.max(progress, 0), 0.96) / 0.96) * 360;
     console.log(progress);
     changeFov(angle);
     //changeAngle(angle);
@@ -116,7 +116,7 @@ function LineOverlay({ progress }) {
 
     needleRef.current.style.background = `conic-gradient(
       rgba(0, 255, 221, 0.725) ${angle},
-      #00b7a262 ${angle}
+      rgba(73, 158, 255, 0.5) ${angle}
     )`;
     // needleRef.current.style.background = `conic-gradient(from ${angle} at 50% 50%, #00ffbb04, #00ffd0ff, #00ffd0ff )`;
   }

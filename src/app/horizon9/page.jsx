@@ -136,6 +136,7 @@ import AudioOverlay from "../components/audio_overlay/audio_overlay.jsx";
 import CircleOverlay from "../components/overlays/circleOverlay/circleOverlay.jsx";
 import LineOverlay from "../components/overlays/lineOverlay/lineOverlay.jsx";
 import CircleMenu from "../components/circle_menu/CircleMenu.jsx";
+import LandScapeMessage from "../components/landScapeMessage/LandScapeMessage.jsx";
 
 import Stars from "../lib/scripts/stars.js";
 
@@ -266,6 +267,7 @@ export default function Horizon() {
   const [scrollTriggerProgress, setScrollTriggerProgress] = useState(0);
   const [scrollTriggerProgressContacts, setScrollTriggerProgressContacts] =
     useState(0);
+  const [isLandscape, setIsLandscape] = useState(true);
 
   const starsRef = useRef(null); //stars
 
@@ -491,9 +493,10 @@ export default function Horizon() {
           ) {
             //console.log("Intersected objects:", intersects);
             //const selectedObject = intersects[0].object;
-
+            canvasRef.current.style.cursor = "pointer";
             addSelectedObject(intersects[0].object);
           } else {
+            canvasRef.current.style.cursor = "auto";
             addSelectedObject(null);
           }
         } else {
@@ -596,8 +599,10 @@ export default function Horizon() {
           ) {
             console.log("Intersected objects:", intersects[0].object.name);
             //const selectedObject = intersects[0].object;
+            canvasRef.current.style.cursor = "pointer";
             addSelectedObject(intersects[0].object);
           } else {
+            canvasRef.current.style.cursor = "auto";
             addSelectedObject(null);
           }
         }
@@ -609,6 +614,8 @@ export default function Horizon() {
           intersects.length > 0
         ) {
           if (intersects[0].object.name == "highlighter_address") {
+            canvasRef.current.style.cursor = "pointer";
+            addSelectedObject(intersects[0].object);
             let position = highlighter_objects_array[1].position;
 
             gsap.to(position, {
@@ -621,6 +628,8 @@ export default function Horizon() {
               },
             });
           } else if (intersects[0].object.name == "highlighter_email") {
+            canvasRef.current.style.cursor = "pointer";
+            addSelectedObject(intersects[0].object);
             // Set initial position
             let yValue = topPos;
 
@@ -639,6 +648,8 @@ export default function Horizon() {
               },
             });
           } else if (intersects[0].object.name == "highlighter_phone") {
+            canvasRef.current.style.cursor = "pointer";
+            addSelectedObject(intersects[0].object);
             // Set initial position
             let yValue = topPos;
 
@@ -657,6 +668,8 @@ export default function Horizon() {
               },
             });
           } else {
+            canvasRef.current.style.cursor = "auto";
+            addSelectedObject(null);
             if (
               highlighter_objects_array[1].position.y >= bottomPos ||
               highlighter_objects_array[4].position.y >= bottomPos ||
@@ -705,19 +718,23 @@ export default function Horizon() {
             intersectedObject[0].object.parent.userData.group ==
               "product_models"
           ) {
-            intersectedObject[0].object.material[1].uniforms.opacity_multiplier.value = 1;
+            // intersectedObject[0].object.material[1].uniforms.opacity_multiplier.value = 1;
+            // intersectedObject[0].object.material[1].opacity = 1;
             const selectedObj = intersectedObject[0].object;
             addSelectedObject(selectedObj);
+            canvasRef.current.style.cursor = "pointer";
             //outlinePassRef.current.selectedObjects = selectedObjects;
           } else {
             addSelectedObject(null);
-            projectModels.forEach((group) => {
-              group.children.forEach((child) => {
-                if (child.isMesh) {
-                  child.material[1].uniforms.opacity_multiplier.value = 0;
-                }
-              });
-            });
+            canvasRef.current.style.cursor = "auto";
+            //projectModels.forEach((group) => {
+            // group.children.forEach((child) => {
+            //   if (child.isMesh) {
+            //     // child.material[1].uniforms.opacity_multiplier.value = 0;
+            //     child.material[1].opacity = 0;
+            //   }
+            // });
+            //});
           }
         }
       }
@@ -1218,6 +1235,8 @@ export default function Horizon() {
         );
 
         cameraRef.current.updateProjectionMatrix();
+
+        setIsLandscape(canvasRef.current.width / canvasRef.current.height >= 1);
       }
 
       // Animate the scene
@@ -1334,6 +1353,7 @@ export default function Horizon() {
     setupFBO();
     setupScene();
     starsRef.current = new Stars(sceneRef.current, 5000, 750);
+    setIsLandscape(canvasRef.current.width / canvasRef.current.height >= 1);
   }, []);
 
   // function showHideAssets() {
@@ -2707,6 +2727,7 @@ export default function Horizon() {
         </div>
         {loadedPercentage < 100 && !productPageVisible && <Loading />}
         <AudioOverlay />
+        {isLandscape ? null : <LandScapeMessage />}
       </currentSceneContext.Provider>
     </loadingContext.Provider>
   );

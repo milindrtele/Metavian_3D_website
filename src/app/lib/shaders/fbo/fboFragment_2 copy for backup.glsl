@@ -33,17 +33,6 @@ uniform float mt4;
 uniform float mt5;
 uniform float mt6;
 
-
-float calculateDisplacement(float timeProgress, float radius, float dist) {
-    float outer_progress = clamp(1.1 * timeProgress, 0.0, 1.0);
-    float inner_progress = clamp(1.1 * timeProgress - 0.05, 0.0, 1.0);
-    float innerCircle = 1.0 - smoothstep((inner_progress - 0.1) * radius, inner_progress * radius, dist);
-    float outerCircle = 1.0 - smoothstep((outer_progress - 0.1) * radius, inner_progress * radius, dist);
-    return outerCircle - innerCircle;
-}
-
-
-
 void main() {
 
     float mTime1 = mt1 + 0.25;
@@ -87,13 +76,6 @@ void main() {
     float radius = 1.41;
     float outer_progress, inner_progress, innerCircle, outerCircle, displacement, scale, greenScale;
     float segmentProgress;
-    float cycleDuration = 5.0;
-    float cycleTime = mod(time, cycleDuration);
-    float timeProgress = cycleTime / cycleDuration;
-
-    // Compute distance from pointer position
-    float pointerCircledist = distance(vUv, uPointer.xz);
-
 
     if(currentMenuItem == -1.0 || currentMenuItem == 0.0 || currentMenuItem == 1.0) {
         if (uProgress <= 0.10) { 
@@ -116,71 +98,70 @@ void main() {
             greenScale = mix(color1.g, color2.g, innerCircle);
         } else if (uProgress <= 0.25) {
             segmentProgress = clamp((uProgress - 0.20) / 0.02, 0.0, 1.0);
-            displacement = calculateDisplacement(timeProgress, radius, dist);
+            displacement = 0.0;
             scale = mix(color2.r, color3.r, segmentProgress);
             greenScale = mix(color2.g, color3.g, segmentProgress);
         } else if (uProgress <= (mTime1-0.05)) {
             segmentProgress = clamp((uProgress - 0.25) / 0.02, 0.0, 1.0);
-            displacement = calculateDisplacement(timeProgress, radius, dist);
+            displacement = 0.0;
             scale = mix(color3.r, color4.r, segmentProgress);
             greenScale = mix(color3.g, color4.g, segmentProgress);
         } else if (uProgress <= mTime2) {
             segmentProgress = clamp((uProgress - mTime1) / 0.02, 0.0, 1.0);
-            displacement = calculateDisplacement(timeProgress, radius, dist);
+            displacement = 0.0;
             scale = mix(color4.r, color5.r, segmentProgress);
             greenScale = mix(color4.g, color5.g, segmentProgress);
         } else if (uProgress <= mTime3) {
             segmentProgress = clamp((uProgress - mTime2) / 0.02, 0.0, 1.0);
-            displacement = calculateDisplacement(timeProgress, radius, dist);
+            displacement = 0.0;
             scale = mix(color5.r, color6.r, segmentProgress);
             greenScale = mix(color5.g, color6.g, segmentProgress);
         } else if (uProgress <= mTime4) {
             segmentProgress = clamp((uProgress - mTime3) / 0.02, 0.0, 1.0);
-            displacement = calculateDisplacement(timeProgress, radius, dist);
+            displacement = 0.0;
             scale = mix(color6.r, color7.r, segmentProgress);
             greenScale = mix(color6.g, color7.g, segmentProgress);
         } else if (uProgress <= mTime5) {
             segmentProgress = clamp((uProgress - mTime4) / 0.02, 0.0, 1.0);
-            displacement = calculateDisplacement(timeProgress, radius, dist);
+            displacement = 0.0;
             scale = mix(color7.r, color8.r, segmentProgress);
             greenScale = mix(color7.g, color8.g, segmentProgress);
         } else if (uProgress <= mTime6) {
             segmentProgress = clamp((uProgress - mTime5) / 0.02, 0.0, 1.0);
-            displacement = calculateDisplacement(timeProgress, radius, dist);
+            displacement = 0.0;
             scale = mix(color8.r, color9.r, segmentProgress);
             greenScale = mix(color8.g, color9.g, segmentProgress);
         } else {
             segmentProgress = clamp((uProgress - mTime6) / 0.02, 0.0, 1.0);
-            displacement = calculateDisplacement(timeProgress, radius, dist);
+            displacement = 0.0;
             scale = mix(color9.r, color2.r, segmentProgress);
             greenScale = mix(color9.g, color2.g, segmentProgress);
         }
     }
      else if(currentMenuItem == 2.0) {
-        displacement = calculateDisplacement(timeProgress, radius, dist);
+        displacement = 0.0;
         scale = capsuleMaskColor.r;
         greenScale = capsuleMaskColor.g;
     } else if(currentMenuItem == 3.0) {
-
-        displacement = calculateDisplacement(timeProgress, radius, dist);
+        displacement = 0.0;
         scale = contactsMaskColor.r;
         greenScale = contactsMaskColor.g;
     } else if(currentMenuItem == 4.0) {
-
-        displacement = calculateDisplacement(timeProgress, radius, dist);
+        displacement = 0.0;
         scale = teamMaskColor.r;
         greenScale = teamMaskColor.g;
     } else if(currentMenuItem == 5.0) {
-
-        displacement = calculateDisplacement(timeProgress, radius, dist);
+        displacement = 0.0;
         scale = printerMaskColor.r;
         greenScale = printerMaskColor.g;
     } else {
-
-        displacement = calculateDisplacement(timeProgress, radius, dist);
+        displacement = 0.0;
         scale = color2.r;
         greenScale = color2.g;
     }
+
+    // Compute distance from pointer position
+    float pointerCircledist = distance(vUv, uPointer.xz);
 
     // Circle radius
     float pointerCircleRadius = 0.025; // adjust to make bigger/smaller
@@ -196,4 +177,3 @@ void main() {
     float clampedGreen = clamp(displacement + scale, -1.0, 1.0);
     gl_FragColor = vec4(greenScale, clampedGreen, 0.0, 1.0);
 }
-

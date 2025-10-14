@@ -4,6 +4,11 @@
     left: 0;
     width: 11vw;
     height: 11vw;
+    transform: translate(0, -15%);
+    background-image: url("/icons/mouse_green_2.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 80%;
     /* top: 40vh; */
     /* left: 5%; */
     /* height: 50vh; */
@@ -37,7 +42,7 @@
 
 .scroll_instructions {
     position: absolute;
-    top: 0;
+    top: 100%;
     left: 50%;
     transform: translate(-50%, 0);
     align-items: center;

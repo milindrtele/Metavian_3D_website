@@ -1,3 +1,13 @@
+.parent_container {
+    position: fixed;
+    width: max-content;
+    height: max-content;
+    width: 12vw;
+    height: 12vw;
+    bottom: 0;
+    left: 0;
+}
+
 .overlay_container {
     position: fixed;
     bottom: 0;
@@ -6,15 +16,39 @@
     margin-bottom: 2vw;
     width: 8vw;
     height: 8vw;
-    background-color: rgba(255, 255, 255, 0);
     border-radius: 50%;
     border-width: 2px;
     border-style: solid;
-    border-color: rgb(255, 255, 255);
+    border-color: rgba(73, 158, 255, 0.75);
     z-index: 1000;
     transform-origin: center;
     transform: rotate(-60deg);
     transition: transform 2s ease-in-out 0.5s;
+}
+
+.click_instructions {
+    position: absolute;
+    top: 90%;
+    left: 50%;
+    transform: translate(-50%, 0);
+    align-items: center;
+    text-align: center;
+    text-wrap: nowrap;
+    font-size: 1vw;
+}
+
+.mouse_container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    margin-left: 2vw;
+    margin-bottom: 2vw;
+    width: 8vw;
+    height: 8vw;
+    background-image: url("/icons/mouse_green_2.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 100%;
 }
 
 .inner_circle_container {
@@ -34,14 +68,15 @@
     left: 0%;
     width: 2vw;
     height: 2vw;
-    background-color: rgb(255, 255, 255);
+    background-color: rgba(73, 158, 255, 1);
     border-radius: 50%;
     transform-origin: center;
     /* transform: rotate(60deg) translate(200%, 50%); */
+    cursor: pointer;
 }
 
 .selected {
-    background-color: #6bc9b8 !important;
+    background-color: #3cf4a8 !important;
 }
 
 .inner_circle_1 {
@@ -72,7 +107,7 @@
     position: fixed;
     bottom: 2vw;
     left: 12vw;
-    width: 20vw;
+    width: 30vw;
     height: auto;
     background-color: rgba(0, 0, 0, 0.7);
     color: white;

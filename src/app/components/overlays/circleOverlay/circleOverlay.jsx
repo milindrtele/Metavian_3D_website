@@ -81,11 +81,11 @@ function CircleOverlay({ circleSelected, selectedLeg }) {
 
   function hoverEffect(e) {
     // e.currentTarget.style.transform = "scale(1.1)";
-    e.currentTarget.style.backgroundColor = "rgba(66, 148, 255, 1)";
+    e.currentTarget.style.backgroundColor = "#3cf4a8";
   }
   function hoverEffectOut(e) {
     // e.currentTarget.style.transform = "scale(1)";
-    e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 1)";
+    e.currentTarget.style.backgroundColor = "rgba(73, 158, 255, 1)";
   }
   function animateOnClick(e) {
     if (e.currentTarget.title) {
@@ -105,7 +105,9 @@ function CircleOverlay({ circleSelected, selectedLeg }) {
   }
 
   return (
-    <>
+    <div className={styles.parent_container}>
+      <div className={styles.click_instructions}>Click to Interact</div>
+      <div className={styles.mouse_container}></div>
       <div ref={overlayContainerRef} className={styles.overlay_container}>
         <div className={styles.outer_circle}>
           <div className={styles.inner_circle_container}>
@@ -211,7 +213,7 @@ function CircleOverlay({ circleSelected, selectedLeg }) {
           <p>{selectedVariant.description}</p>
         </div>
       )}
-    </>
+    </div>
   );
 }
 export default CircleOverlay;

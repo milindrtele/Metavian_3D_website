@@ -84,13 +84,22 @@ export function loadAssetsWithPromise(
 
     // cubeCamera = new THREE.CubeCamera(1, 1000, cubeRenderTarget);
 
-    const wipeEffect = new NodeToyMaterial({
-      url: "https://draft.nodetoy.co/0incLfxB7I6zxJwd", //https://draft.nodetoy.co/bzBoaIaQXpLm3UTR, //"https://draft.nodetoy.co/w7BhuuAcZ2ESIjU5", //https://draft.nodetoy.co/ECrNY8O4MMUUagsb,
-    });
-    console.log(wipeEffect.uniforms);
-    console.log(wipeEffect.uniforms.opacity_multiplier);
-    //wipeEffect.uniforms.opacity_multiplier.value = 0.0;
-    wipeEffect.side = THREE.FrontSide;
+    //const wipeEffect = new NodeToyMaterial({
+    //  url: "https://draft.nodetoy.co/0incLfxB7I6zxJwd", //https://draft.nodetoy.co/bzBoaIaQXpLm3UTR, //"https://draft.nodetoy.co///w7BhuuAcZ2ESIjU5", //https://draft.nodetoy.co/ECrNY8O4MMUUagsb,
+    //});
+    //console.log(wipeEffect.uniforms);
+    //console.log(wipeEffect.uniforms.opacity_multiplier);
+    ////wipeEffect.uniforms.opacity_multiplier.value = 0.0;
+    //wipeEffect.side = THREE.FrontSide;
+
+    // const texturedMaterial = new THREE.MeshStandardMaterial({
+    // color: "#ffffff",
+    // map: new THREE.TextureLoader().load(
+    // "/models/Consolidated models/saperated_animated_models/meta_realty/textures/baked.jpg"
+    // ),
+    // transperent: true,
+    // opacity: 0,
+    // });
 
     const check = () => {
       const checkValue = () => {
@@ -193,13 +202,14 @@ export function loadAssetsWithPromise(
           }
           //////////////////////////////////////////
           // console.log(model);
-          const modelGeommetry = model.geometry;
-          const modelBaseMaterial = model.material;
-          modelGeommetry.addGroup(0, Infinity, 0);
-          modelGeommetry.addGroup(0, Infinity, 1);
+          // const modelGeommetry = model.geometry;
+          // const modelBaseMaterial = model.material;
+          // modelGeommetry.addGroup(0, Infinity, 0);
+          // modelGeommetry.addGroup(0, Infinity, 1);
 
-          const materialArray = [modelBaseMaterial, wipeEffect.clone()];
-          model.material = materialArray;
+          // const materialArray = [modelBaseMaterial, wipeEffect.clone()];
+          // const materialArray = [modelBaseMaterial, texturedMaterial];
+          // model.material = materialArray;
           //////////////////////////////////////////////
 
           //enable shadows for all objects

@@ -1,9 +1,9 @@
 .beepi_container {
   position: absolute;
   right: 0;
-  top: calc(100vh - 20vw);
-  width: 20vw;
-  height: 20vw;
+  top: calc(100vh - 15vw);
+  width: 15vw;
+  height: 15vw;
   display: flex;
 }
 
@@ -17,29 +17,29 @@
 
 .coming_soon_message_container {
   position: relative;
-  top: -100px;
-  left: -110px;
+  top: -5vh;
+  left: -5.5vw;
   color: black;
 }
 
 p.bubble {
   position: relative;
-  width: 250px;
+  width: 13vw;
   text-align: center;
   line-height: 1.4em;
-  margin: 40px auto;
+  margin: 2vh auto;
   background-color: #fff;
-  border: 8px solid #333;
-  border-radius: 30px;
+  border: 0.3vw solid #333;
+  border-radius: 1.5vw;
   font-family: sans-serif;
-  padding: 20px;
-  font-size: large;
+  padding: 1vw;
+  font-size: 0.6vw;
 }
 
 p.thought {
-  width: 300px;
-  border-radius: 200px;
-  padding: 30px;
+  width: 15vw;
+  border-radius: 10vw;
+  padding: 1.5vw;
 }
 
 p.bubble:before,
@@ -51,38 +51,34 @@ p.bubble:after {
 }
 
 p.speech:before {
-  left: 30px;
-  bottom: -50px;
-  border: 25px solid;
+  left: 1.5vw;
+  bottom: -2.5vw;
+  border: 1.25vw solid;
   border-color: #333 transparent transparent #333;
 }
 
 p.speech:after {
-  left: 38px;
-  bottom: -30px;
-  border: 15px solid;
+  left: 1.9vw;
+  bottom: -1.5vw;
+  border: 0.75vw solid;
   border-color: #fff transparent transparent #fff;
 }
 
 p.thought:before,
 p.thought:after {
-  right: 10px;
-  bottom: -30px;
-  width: 40px;
-  height: 40px;
+  right: 0.5vw;
+  bottom: -1.5vw;
+  width: 2vw;
+  height: 2vw;
   background-color: #fff;
-  border: 8px solid #333;
-  -webkit-border-radius: 28px;
-  -moz-border-radius: 28px;
-  border-radius: 28px;
+  border: 0.3vw solid #333;
+  border-radius: 1.5vw;
 }
 
 p.thought:after {
-  width: 20px;
-  height: 20px;
-  right: 5px;
-  bottom: -40px;
-  -webkit-border-radius: 18px;
-  -moz-border-radius: 18px;
-  border-radius: 18px;
+  width: 1vw;
+  height: 1vw;
+  right: 0.25vw;
+  bottom: -2vw;
+  border-radius: 1vw;
 }

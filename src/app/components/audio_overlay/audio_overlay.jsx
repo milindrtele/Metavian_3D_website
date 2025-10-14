@@ -24,7 +24,7 @@ export default function AudioOverlay({ audioSrc, onClose }) {
     >
       <div className={styles.audio_icon}></div>
       {isPlaying ? null : <div className={styles.cross_line}></div>}
-      <audio ref={audioRef} className={styles.audio} autoPlay>
+      <audio ref={audioRef} className={styles.audio} autoPlay loop>
         <source
           src="/audio/Thoughts_source_910353/Thoughts.mp3"
           type="audio/mpeg"
