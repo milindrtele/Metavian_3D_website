@@ -95,7 +95,7 @@ function ProductsScreenOverlay({ isActive, onClose, selectedObject }) {
       <div ref={overlay_containerRef} className={styles.overlay_container}>
         <div className={styles.overlay_content}>
           <h2>{selectedVariant?.name}</h2>
-          {/* <p>This is the content of the products screen overlay.</p> */}
+          <p>{selectedVariant?.description}</p>
         </div>
       </div>
       {/* )} */}
