@@ -116,6 +116,7 @@ import { tweenCameraToNewPositionAndRotation } from "./lib/scripts/tweenCameraTo
 import { setupGrid } from "./lib/scripts/setupGrid.js";
 
 import { animateProductModels } from "./lib/scripts/animateProductModels.js";
+import { camAnimator } from "./lib/scripts/animateCameraOnCursor.js";
 
 import aniSequenceAfterGetStarted from "./lib/scripts/aniSequenceAfterSetStarted.js";
 import aniSwquenceBeforeGetStarted from "./lib/scripts/aniSequenceBeforeGetStarted.js";
@@ -270,6 +271,9 @@ export default function Horizon() {
   const [isLandscape, setIsLandscape] = useState(true);
 
   const starsRef = useRef(null); //stars
+
+  //
+  const camCursorAnimatorRef = useRef(null);
 
   gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
   gsap.registerPlugin(CustomEase);
@@ -1239,6 +1243,12 @@ export default function Horizon() {
         setIsLandscape(canvasRef.current.width / canvasRef.current.height >= 1);
       }
 
+      camCursorAnimatorRef.current = new camAnimator(cameraRef.current, {
+        x: 0,
+        y: 0,
+        z: 0,
+      });
+
       // Animate the scene
       let time = 0;
       const animate = () => {
@@ -1882,6 +1892,8 @@ export default function Horizon() {
               { x: 0, y: 100, z: 0 } // New camera position
             );
             currentCameraTargetRef.current = { x: 0, y: 0, z: 0 };
+            //
+            camCursorAnimatorRef.current.remove();
           })
           .catch((error) => {
             console.error("Failed to stop video: ", error);
@@ -1929,6 +1941,8 @@ export default function Horizon() {
               y: -0.43,
               z: -30.8687,
             };
+            //
+            camCursorAnimatorRef.current.remove();
           })
           .catch((error) => {
             console.error("Failed to stop video: ", error);
@@ -1963,6 +1977,8 @@ export default function Horizon() {
           { x: -13, y: 4, z: -95 } // New camera position
         );
         currentCameraTargetRef.current = { x: 53.8746, y: 0.041, z: -30.8687 };
+        //
+        camCursorAnimatorRef.current.remove();
       } else if (currentUserPositionRef.current == "Menu Item 3") {
         removeAllHotspotsFromArray();
         stopVideoIfLoaded()
@@ -2010,6 +2026,8 @@ export default function Horizon() {
               y: 7.38414,
               z: -93.5994,
             };
+            //
+            camCursorAnimatorRef.current.remove();
           })
           .catch((error) => {
             console.error("Failed to stop video: ", error);
@@ -2040,7 +2058,18 @@ export default function Horizon() {
               currentCameraTargetRef.current,
               { x: 55.0009, y: 2.47723, z: 107.594 }, // Target position
               { x: 54.4541, y: 6.28496, z: 51.9438 } // New camera position
-            );
+            ).then(() => {
+              //
+              // camCursorAnimatorRef.current.currentCamPos =
+              //   cameraRef.current.position;
+              camCursorAnimatorRef.current.currentCamTarget = {
+                x: 55.0009,
+                y: 2.47723,
+                z: 107.594,
+              };
+              camCursorAnimatorRef.current.init();
+            });
+            //
             currentCameraTargetRef.current = {
               x: 55.0009,
               y: 2.47723,
@@ -2087,6 +2116,8 @@ export default function Horizon() {
             };
 
             printerScene.addToScene();
+
+            camCursorAnimatorRef.current.remove();
           })
           .catch((error) => {
             console.error("Failed to stop video: ", error);

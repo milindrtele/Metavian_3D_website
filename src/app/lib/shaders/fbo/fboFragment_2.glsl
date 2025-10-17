@@ -102,7 +102,7 @@ void main() {
             inner_progress = clamp(1.1 * segmentProgress - 0.05, 0.0, 1.0);
             innerCircle = 1.0 - smoothstep((inner_progress - 0.1) * radius, inner_progress * radius, dist);
             outerCircle = 1.0 - smoothstep((outer_progress - 0.1) * radius, inner_progress * radius, dist);
-            displacement = outerCircle - innerCircle;
+            displacement = (outerCircle - innerCircle) ;
             scale = mix(0.0, color1.r, innerCircle);
             greenScale = mix(0.0, color1.g, innerCircle);
         } else if (uProgress <= 0.20) {
@@ -111,7 +111,7 @@ void main() {
             inner_progress = clamp(1.1 * segmentProgress - 0.05, 0.0, 1.0);
             innerCircle = 1.0 - smoothstep((inner_progress - 0.1) * radius, inner_progress * radius, dist);
             outerCircle = 1.0 - smoothstep((outer_progress - 0.1) * radius, inner_progress * radius, dist);
-            displacement = outerCircle - innerCircle;
+            displacement = (outerCircle - innerCircle) + calculateDisplacement(timeProgress, radius, dist);
             scale = mix(color1.r, color2.r, innerCircle);
             greenScale = mix(color1.g, color2.g, innerCircle);
         } else if (uProgress <= 0.25) {

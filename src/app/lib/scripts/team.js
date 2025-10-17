@@ -12,7 +12,7 @@ class teamHandler {
     // Load a glTF resource
     this.loader.load(
       // resource URL
-      "/models/team_scene/cleaned_team.glb",
+      "/models/team_scene/cleaned_team_v02.glb",
       // called when the resource is loaded
       (gltf) => {
         // Use arrow function here

@@ -3,8 +3,8 @@
 }
 
 .audio_overlay_container {
-    width: 4vw;
-    height: 4vw;
+    width: 2vw;
+    height: 2vw;
     position: fixed;
     bottom: 0;
     right: 0;
