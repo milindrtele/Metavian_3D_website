@@ -1,11 +1,55 @@
+@keyframes swing {
+  0% {
+    transform: translate(-14%, 14%) rotate(-15deg);
+  }
+
+  50% {
+    transform: translate(-14%, 14%) rotate(15deg);
+  }
+
+  100% {
+    transform: translate(-14%, 14%) rotate(-15deg);
+  }
+}
+
+.kandil {
+  position: fixed;
+  top: -2.5vw;
+  right: 2vw;
+  width: 10vw;
+  height: 15vw;
+  background-image: url("/images/diwali/kandil_02.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  transform-origin: top center;
+  animation: swing 3s ease-in-out infinite;
+}
+
+.rangoli {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 20vw;
+  height: 20vw;
+  background-image: url("/images/diwali/Celebration_Greeting_Sticker.gif");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  transform: translate(-14%, 14%);
+}
+
 .starting_message_page {
   position: absolute;
   width: 100vw;
   height: 100vh;
-  display: flex; /* Enable Flexbox */
+  display: flex;
+  /* Enable Flexbox */
   flex-direction: row;
-  justify-content: center; /* Center horizontally */
-  align-items: center; /* Center vertically */
+  justify-content: center;
+  /* Center horizontally */
+  align-items: center;
+  /* Center vertically */
   background-color: rgba(0, 0, 0, 0.442);
 }
 
@@ -36,4 +80,31 @@
   margin-top: 5%;
   font-size: 1vw;
   text-align: end;
+}
+
+.cta_2d_website {
+  margin-top: 20%;
+  margin-left: auto;
+  margin-right: 0;
+  font-size: 1vw;
+  text-align: end;
+  padding: 1%;
+  width: max-content;
+  border-radius: 10px;
+}
+
+.cta_2d_website:hover {
+  background-color: rgb(164, 60, 255);
+}
+
+.click_anywhere {
+  position: fixed;
+  bottom: 1%;
+  left: 1%;
+  opacity: 0;
+  transition: opacity 3s ease;
+}
+
+.add_opacity {
+  opacity: 1;
 }

@@ -8,10 +8,15 @@ import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
 import { gsap } from "gsap";
 import { NodeToyMaterial } from "@nodetoy/three-nodetoy";
 
+import DiwaliWishes from "../diwali_wishes/diwali_wishes.jsx";
+
 import { RectAreaLightHelper } from "three/addons/helpers/RectAreaLightHelper.js";
 import { RectAreaLightUniformsLib } from "three/addons/lights/RectAreaLightUniformsLib.js";
 
 export default function StartingMessage(props) {
+  const [isDiwaliVisible, setIsDiwaliVisible] = useState(false);
+  const clickMessageRef = useRef(null);
+
   useEffect(() => {
     const vm_canvas = document.getElementById("vitruvian_man_canvas");
     let camera, scene, renderer, controls;
@@ -339,40 +344,72 @@ export default function StartingMessage(props) {
     };
   }, []);
 
+  // useEffect(() => {
+  //   let timeout = null;
+  //   if (props.loadedPercentage >= 100) {
+  //     timeout = setTimeout(() => {
+  //       props.continue();
+  //     }, 10000);
+  //   }
+  //   return () => clearTimeout(timeout);
+  // }, [props]);
+
   useEffect(() => {
     let timeout = null;
     if (props.loadedPercentage >= 100) {
       timeout = setTimeout(() => {
-        props.continue();
-      }, 10000);
+        setIsDiwaliVisible(true);
+      }, 1000);
     }
     return () => clearTimeout(timeout);
   }, [props]);
 
+  useEffect(() => {
+    setTimeout(() => {
+      clickMessageRef.current.classList.add(styles.add_opacity);
+    }, 1000); // 0.1s delay
+  }, []);
+
+  const closeDiwaliWhish = () => {
+    setIsDiwaliVisible(false);
+  };
+
   return (
-    <div
-      onClick={() => {
-        props.continue();
-      }}
-      className={styles.starting_message_page}
-    >
-      <canvas
-        id="vitruvian_man_canvas"
-        className={styles.vitruvian_man_canvas}
-      ></canvas>
-      <div className={styles.starting_message_container}>
-        <p className={styles.starting_message_title}>DID YOU KNOW ?</p>
-        <p className={styles.starting_message}>
-          {/* Lorem Ipsum is simply dummy text of the printing and typesetting
+    <>
+      <div
+        onClick={() => {
+          props.continue();
+        }}
+        className={styles.starting_message_page}
+      >
+        <canvas
+          id="vitruvian_man_canvas"
+          className={styles.vitruvian_man_canvas}
+        ></canvas>
+        <div className={styles.starting_message_container}>
+          <p className={styles.starting_message_title}>DID YOU KNOW ?</p>
+          <p className={styles.starting_message}>
+            {/* Lorem Ipsum is simply dummy text of the printing and typesetting
           industry. Lorem Ipsum has been the industry's standard dummy text ever
           since the 1500s, when an unknown printer took a galley of type and
           scrambled it to make a type specimen book. */}
-          Imagination is more important than knowledge. For knowledge is
-          limited, whereas imagination embraces the entire world, stimulating
-          progress, giving birth to evolution.
-        </p>
-        {/* <p className={styles.albert}>- Albert Einstein</p> */}
+            Imagination is more important than knowledge. For knowledge is
+            limited, whereas imagination embraces the entire world, stimulating
+            progress, giving birth to evolution.
+          </p>
+          {/* <p className={styles.albert}>- Albert Einstein</p> */}
+          <a href="https://metavian.tech/">
+            <div className={styles.cta_2d_website}>
+              Checkout our 2D website...
+            </div>
+          </a>
+          <p ref={clickMessageRef} className={styles.click_anywhere}>
+            click anywhere to continue...
+          </p>
+        </div>
       </div>
-    </div>
+
+      {isDiwaliVisible ? <DiwaliWishes close={closeDiwaliWhish} /> : null}
+    </>
   );
 }

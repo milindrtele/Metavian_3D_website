@@ -1,0 +1,82 @@
+@keyframes swing {
+    0% {
+        transform: translate(-14%, 14%) rotate(-15deg);
+    }
+
+    50% {
+        transform: translate(-14%, 14%) rotate(15deg);
+    }
+
+    100% {
+        transform: translate(-14%, 14%) rotate(-15deg);
+    }
+}
+
+.wishes_container {
+    opacity: 0;
+    transition: opacity 3s ease;
+}
+
+.kandil {
+    position: fixed;
+    top: -2.5vw;
+    right: 2vw;
+    width: 15vw;
+    height: 20vw;
+    background-image: url("/images/diwali/kandil_glow.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    transform-origin: top center;
+    animation: swing 3s ease-in-out infinite;
+}
+
+.rangoli {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 20vw;
+    height: 20vw;
+    background-image: url("/images/diwali/Celebration_Greeting_Sticker.gif");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    transform: translate(-14%, 14%);
+}
+
+.fireworks {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: block;
+    z-index: 0;
+
+}
+
+.add_opacity {
+    opacity: 1;
+}
+
+.text {
+    position: fixed;
+    top: 10%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2vw;
+    color: white;
+}
+
+.happy_diwali {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50vw;
+    height: 20vw;
+    background-image: url("/images/diwali/Happy Diwali text_2.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
