@@ -405,8 +405,8 @@ export default function Horizon() {
 
   async function setupScene(canvas) {
     if (sceneRef.current == null) {
-      const stats = new Stats();
-      document.body.appendChild(stats.dom);
+      // const stats = new Stats();
+      // document.body.appendChild(stats.dom);
       //Scene is container for objects, cameras, and lights
       sceneRef.current = new THREE.Scene();
 
@@ -752,12 +752,14 @@ export default function Horizon() {
             // obj.selectedObj.material.map.repeat.set(1, 1);
           // })
           const selectedObj = intersectedObject[0].object;
+
           // selectedObj.material.map.repeat.set(0.5, 0.5);
           addSelectedObject(selectedObj);
+          canvasRef.current.style.cursor = "pointer";
         }else{
           
-          addSelectedObject(null);
-          canvasRef.current.style.cursor = "pointer";
+          // addSelectedObject(null);
+          
           canvasRef.current.style.cursor = "auto";
         }
       }
@@ -1272,7 +1274,7 @@ export default function Horizon() {
       // Animate the scene
       let time = 0;
       const animate = () => {
-        stats?.update();
+        // stats?.update();
         if (productPageVisibleRef.current == false) {
           if (starsRef.current) {
             starsRef.current.material.uniforms.time.value = time;

@@ -41,8 +41,8 @@ export default function StartingMessage(props) {
     const mousePosition = new THREE.Vector2();
     const raycaster = new THREE.Raycaster();
 
-    const stats = Stats();
-    document.body.appendChild(stats.dom);
+    // const stats = Stats();
+    // document.body.appendChild(stats.dom);
 
     if (window.matchMedia("(any-hover: none)").matches) {
       console.log("no hover detected");
@@ -304,7 +304,7 @@ export default function StartingMessage(props) {
 
         window.removeEventListener("resize", onResize);
 
-        stats.dom.remove();
+        // stats.dom.remove();
         controls?.dispose();
 
         scene.traverse((child) => {
@@ -331,7 +331,7 @@ export default function StartingMessage(props) {
       if (deviceType == "touch") {
         controls.update(clock.getDelta());
       }
-      stats.update();
+      // stats.update();
       if (tween != null) tween.update(time);
       renderer.render(scene, camera);
     }
