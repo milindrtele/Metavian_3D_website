@@ -25,6 +25,8 @@ class teamHandler {
         gltf.cameras; // Array<THREE.Camera>
         gltf.asset; // Object
 
+        this.teamFrameParent = this.teamScene.getObjectByName("frames_parent");
+
         //this.scene.add(this.teamScene);
       },
       undefined,

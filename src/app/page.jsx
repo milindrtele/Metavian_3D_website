@@ -743,6 +743,25 @@ export default function Horizon() {
         }
       }
 
+      function teamSceneHoverEffect(intersectedObject){
+        if (
+          currentUserPositionRef.current == "Menu Item 4" &&
+          intersectedObject.length > 0 && intersectedObject[0].object.parent.name == "frames_parent"
+        ){
+          // selectedObjects?.forEach((obj)=>{
+            // obj.selectedObj.material.map.repeat.set(1, 1);
+          // })
+          const selectedObj = intersectedObject[0].object;
+          // selectedObj.material.map.repeat.set(0.5, 0.5);
+          addSelectedObject(selectedObj);
+        }else{
+          
+          addSelectedObject(null);
+          canvasRef.current.style.cursor = "pointer";
+          canvasRef.current.style.cursor = "auto";
+        }
+      }
+
       const invisiblePlaneGeo = new THREE.PlaneGeometry(500, 500);
       const invisiblePlaneMat = new THREE.MeshBasicMaterial({
         color: 0xff0000,
@@ -791,6 +810,7 @@ export default function Horizon() {
       raycasterHandlerRef.current.addHoverCallback(highlighterHoverEffect); //hover effect for contact details
       raycasterHandlerRef.current.addHoverCallback(hoverEffectForContacts); //hover effect for contact models
       raycasterHandlerRef.current.addHoverCallback(modelHoverEffect); //hover effect for product models
+      raycasterHandlerRef.current.addHoverCallback(teamSceneHoverEffect); //hover effect for tewam frames
 
       //setupRaycaster(sceneRef.current, cameraRef.current, handleIntersects);
 
@@ -2060,8 +2080,8 @@ export default function Horizon() {
               { x: 54.4541, y: 6.28496, z: 51.9438 } // New camera position
             ).then(() => {
               //
-              // camCursorAnimatorRef.current.currentCamPos =
-              //   cameraRef.current.position;
+              camCursorAnimatorRef.current.currentCamPos =
+                { x: 54.4541, y: 6.28496, z: 51.9438 };
               camCursorAnimatorRef.current.currentCamTarget = {
                 x: 55.0009,
                 y: 2.47723,

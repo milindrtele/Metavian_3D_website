@@ -365,10 +365,12 @@ export default function StartingMessage(props) {
   }, [props]);
 
   useEffect(() => {
+    if(props.loadedPercentage >= 100){
     setTimeout(() => {
       clickMessageRef.current.classList.add(styles.add_opacity);
     }, 1000); // 0.1s delay
-  }, []);
+  }
+  }, [props]);
 
   const closeDiwaliWhish = () => {
     setIsDiwaliVisible(false);
