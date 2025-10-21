@@ -389,7 +389,7 @@ export default function StartingMessage(props) {
           className={styles.vitruvian_man_canvas}
         ></canvas>
         <div className={styles.starting_message_container}>
-          <p className={styles.starting_message_title}>DID YOU KNOW ?</p>
+          {/* <p className={styles.starting_message_title}>DID YOU KNOW ?</p>*/}
           <p className={styles.starting_message}>
             {/* Lorem Ipsum is simply dummy text of the printing and typesetting
           industry. Lorem Ipsum has been the industry's standard dummy text ever
@@ -399,7 +399,7 @@ export default function StartingMessage(props) {
             limited, whereas imagination embraces the entire world, stimulating
             progress, giving birth to evolution.
           </p>
-          {/* <p className={styles.albert}>- Albert Einstein</p> */}
+          <p className={styles.albert}>- Albert Einstein</p>
           <a href="https://metavian.tech/">
             <div className={styles.cta_2d_website}>
               Checkout our 2D website...
