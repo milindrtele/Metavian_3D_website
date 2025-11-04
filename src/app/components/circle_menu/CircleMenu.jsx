@@ -12,7 +12,7 @@ export default function CircleMenu(props) {
       <div
         className={[styles.m_logo].join(" ")}
         onClick={handleClickTopLevelMenu}
-        name="Menu Item 1"
+        name="home"
       ></div>
       <div className={[styles.arc_container].join(" ")}>
         {/* layer 1 */}

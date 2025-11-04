@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { gsap } from "gsap";
 
 class teamHandler {
   constructor(scene, loader) {
@@ -17,7 +18,7 @@ class teamHandler {
       (gltf) => {
         // Use arrow function here
         console.log(gltf.scene);
-        this.teamScene = gltf.scene; // Now 'this' correctly refers to the class instance
+        this.teamScene = gltf.scene;
 
         gltf.animations; // Array<THREE.AnimationClip>
         gltf.scene; // THREE.Group
@@ -49,6 +50,42 @@ class teamHandler {
     } else {
       console.log("teamScene is not loaded yet.");
     }
+  }
+
+  scaleTextureUp(object) {
+    object.material.map.wrapS = THREE.RepeatWrapping;
+    object.material.map.wrapT = THREE.RepeatWrapping;
+    let scale = {
+      x: object.material.map.repeat.x,
+      y: object.material.map.repeat.y,
+    };
+    let targetScale = { x: 2, y: 2 };
+    gsap.to(scale, {
+      ...targetScale,
+      duration: 1,
+      onUpdate: () => {
+        object.material.map.repeat.set(scale.x, scale.y);
+      },
+      onComplete: () => {},
+    });
+  }
+
+  scaleTextureDown(object) {
+    object.material.map.wrapS = THREE.RepeatWrapping;
+    object.material.map.wrapT = THREE.RepeatWrapping;
+    let scale = {
+      x: object.material.map.repeat.x,
+      y: object.material.map.repeat.y,
+    };
+    let targetScale = { x: 1, y: 1 };
+    gsap.to(scale, {
+      ...targetScale,
+      duration: 1,
+      onUpdate: () => {
+        object.material.map.repeat.set(scale.x, scale.y);
+      },
+      onComplete: () => {},
+    });
   }
 }
 

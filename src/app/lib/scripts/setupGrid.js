@@ -36,7 +36,7 @@ export function setupGrid(renderer, loader, uniformsForGrid, scene) {
     // Now that the base cube is loaded, create the InstancedMesh
     let mat = new THREE.MeshPhysicalMaterial({
       color: 0x5d294f, //0x363636
-      roughness: 0.3,
+      roughness: 0.5,
       // metalness: 1,
       // sheen: 1,
       // sheenColor: 0xadc921,
@@ -50,7 +50,7 @@ export function setupGrid(renderer, loader, uniformsForGrid, scene) {
 
     let mat2 = new THREE.MeshPhysicalMaterial({
       color: 0x5d294f, //0x363636
-      roughness: 0.3,
+      roughness: 0.5,
       // metalness: 1,
       // sheen: 1,
       // sheenColor: 0xadc921,

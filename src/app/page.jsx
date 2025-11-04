@@ -150,6 +150,7 @@ export default function Horizon() {
   // const stats = Stats();
   // document.body.appendChild(stats.dom);
   //loading state
+
   const [loadedPercentage, setLoadedPercentage] = useState(null);
   const [currentSceneInfo, setCurrentSceneInfo] = useState({});
 
@@ -275,6 +276,9 @@ export default function Horizon() {
   //
   const camCursorAnimatorRef = useRef(null);
 
+  //
+  const videoRef = useRef(null);
+
   gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
   gsap.registerPlugin(CustomEase);
 
@@ -308,6 +312,7 @@ export default function Horizon() {
         mt4: { value: 31 / totalLengthOfAnimation }, //40
         mt5: { value: 39 / totalLengthOfAnimation }, //50
         mt6: { value: 48 / totalLengthOfAnimation }, //60
+        step0: { value: new THREE.VideoTexture(videoRef.current) },
         step1: {
           value: new THREE.TextureLoader().load(
             "/images/island_4/metavian_logo.jpg"
@@ -1257,7 +1262,7 @@ export default function Horizon() {
           if (starsRef.current) {
             starsRef.current.material.uniforms.time.value = time;
           }
-          //debugPlaneMesh.lookAt(cameraRef.current.position);
+          // debugPlaneMesh.lookAt(cameraRef.current.position);
           // if (raycasterForBulge && fboMaterialRef.current  != null) {
           //   fboMaterialRef.current .uniforms.uPointer.value =
           //     raycasterForBulge.updateRaycaster();
@@ -1889,7 +1894,12 @@ export default function Horizon() {
               controlsRef.current,
               currentCameraTargetRef.current,
               { x: 0, y: 0, z: 0 }, // Target position
-              { x: 0, y: 100, z: 0 } // New camera position
+              { x: 0, y: 125, z: 0 }, // New camera position
+              {
+                x: (Math.PI / 180) * -90,
+                y: (Math.PI / 180) * 0,
+                z: (Math.PI / 180) * 0,
+              } // New camera rotation
             );
             currentCameraTargetRef.current = { x: 0, y: 0, z: 0 };
             //
@@ -2393,8 +2403,8 @@ export default function Horizon() {
     setCurrentUserPosition(item);
     switch (item) {
       case "home":
-        currentMenuForShaderRef.current = 0.0;
-        fboMaterialRef.current.uniforms.currentMenuItem.value = 0.0;
+        currentMenuForShaderRef.current = -1.0;
+        fboMaterialRef.current.uniforms.currentMenuItem.value = -1.0;
         break;
       case "Menu Item 1":
         currentMenuForShaderRef.current = 1.0;
@@ -2661,42 +2671,25 @@ export default function Horizon() {
         value={{ currentSceneInfo, setCurrentSceneInfo }}
       >
         <div id="container" className={roboto.className}>
-          <div className={styles.slidecontainer}>
-            {/* <div id="rotation_slider" className={styles.rotation_slider}>
-          <p>rotation</p>
-          <input
-            type="range"
-            min="0"
-            max="360"
-            step="1"
-            onChange={(e) => onRotationChange(e.target.value)}
-          ></input>
-        </div>
-
-        <div id="scale_slider" className={styles.scale_slider}>
-          <p>scale</p>
-          <input
-            type="range"
-            min="1"
-            max="10"
-            step="0.01"
-            className="slider"
-            id="myRange"
-            onChange={(e) => onScaleChange(e.target.value)}
-          ></input>
-        </div> */}
-            {/* <div id="prgress_slider" className={styles.prgress_slider}>
-          <p>progress</p>
-          <input
-            type="range"
-            min="0.0"
-            max="1.0"
-            step="0.001"
-            className="slider"
-            onChange={(e) => onProgressChange(e.target.value)}
-          ></input>
-        </div> */}
-          </div>
+          <video
+            ref={videoRef}
+            muted
+            autoPlay
+            loop
+            style={{
+              // display: "none",
+              visibility: "hidden",
+              pointerEvents: "none",
+              position: "absolute",
+              zIndex: 10,
+              top: 0,
+              right: 0,
+            }}
+            width="250"
+          >
+            <source src="/videos/76430-559159236_small.mp4" type="video/mp4" />
+          </video>
+          <div className={styles.slidecontainer}></div>
           <canvas
             id="canvas"
             className={styles.canvas}
@@ -2709,22 +2702,10 @@ export default function Horizon() {
               loadedPercentage={loadedPercentage}
             />
           )}
-
           {isGetStartedVisible && <GetStarted continue={GetStartedContinue} />}
-          {/* {isStartingMessageVisible && <GetStarted />} */}
-          {/* {isHamburgerMenuVisible && (
-            <HamburgerMenu
-              handleClickTopLevelMenuProp={selectedItemInMainMenu}
-              selectedItemSubMenu1={selectedItemInSubMenu1}
-              selectedItemSubMenu2={selectedItemInSubMenu2}
-              selectedItemSubMenu3={selectedItemInSubMenu3}
-              openModelViewer={toggleChildComponent}
-            />
-          )} */}
           {isHamburgerMenuVisible && (
             <CircleMenu handleClickTopLevelMenuProp={selectedItemInMainMenu} />
           )}
-
           {currentUserPosition == "Menu Item 1" && (
             <LineOverlay progress={scrollTriggerProgress} />
           )}
@@ -2740,10 +2721,6 @@ export default function Horizon() {
           {currentUserPosition == "Menu Item 3" && (
             <LineOverlay progress={scrollTriggerProgressContacts} />
           )}
-          {/* <UseCaseScreenOverlay selectedObject={selectedObject} /> */}
-          {/* {currentUserPosition == "Menu Item 2" && (
-            <UseCaseScreenOverlay selectedObject={selectedObject} />
-          // )} */}
           {isHamburgerMenuVisible && <Beepie />}
           {showChild && <Model_viewer />}
           {productPageVisible && (
@@ -2754,7 +2731,6 @@ export default function Horizon() {
               product={productToViewInViewer}
             />
           )}
-          {/* {isHamburgerMenuVisible && <SceneInfo />} */}
         </div>
         {loadedPercentage < 100 && !productPageVisible && <Loading />}
         <AudioOverlay />

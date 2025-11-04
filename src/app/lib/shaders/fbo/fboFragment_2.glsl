@@ -8,6 +8,7 @@ uniform float vScale;
 uniform float uProgress;
 uniform vec3 uPointer;
 
+uniform sampler2D step0; //video texture
 uniform sampler2D step1; //metavian-logo
 
 uniform sampler2D step3; //islands_02.jpg
@@ -65,7 +66,16 @@ void main() {
     );
     vec2 newUV = rotatedUV + pivot;
 
+    float rotateVideoAngle = 180.0 * PI / 180.0;
+    vec2 scaledUVForVideo = centeredUV * vec2(2.0, 4.0);
+    vec2 rotatedUVForVideo = vec2(
+        scaledUVForVideo.x * cos(rotateVideoAngle) - scaledUVForVideo.y * sin(rotateVideoAngle),
+        scaledUVForVideo.x * sin(rotateVideoAngle) + scaledUVForVideo.y * cos(rotateVideoAngle)
+    );
+    vec2 uvForVideo = rotatedUVForVideo + pivot;
+
     // Fetch textures
+    vec4 color0 =  texture2D(step0, vec2(1.0 - uvForVideo.x, uvForVideo.y)); //video texture
     vec4 color1 = texture2D(step1, newUV); //metavian-logo
     vec4 color2 = vec4(0.0); // all black
     vec4 color3 = 1.0 - texture2D(step3, vec2(1.0 - newUV.x, newUV.y));  //islands_02.jpg
@@ -94,8 +104,13 @@ void main() {
     // Compute distance from pointer position
     float pointerCircledist = distance(vUv, uPointer.xz);
 
-
-    if(currentMenuItem == -1.0 || currentMenuItem == 0.0 || currentMenuItem == 1.0) {
+    if(currentMenuItem == -1.0 ) {
+        // displacement = calculateDisplacement(timeProgress, radius, dist);
+        displacement = 0.0;
+        scale = color0.r;
+        // greenScale = color0.g;
+    }
+    else if( currentMenuItem == 0.0 || currentMenuItem == 1.0) {
         if (uProgress <= 0.10) { 
             segmentProgress = clamp((uProgress - 0.00) / 0.1, 0.0, 1.0);
             outer_progress = clamp(1.1 * segmentProgress, 0.0, 1.0);
