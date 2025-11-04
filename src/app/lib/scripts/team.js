@@ -13,7 +13,7 @@ class teamHandler {
     // Load a glTF resource
     this.loader.load(
       // resource URL
-      "/models/team_scene/cleaned_team_v02.glb",
+      "/models/team_scene/cleaned_team_v03.glb",
       // called when the resource is loaded
       (gltf) => {
         // Use arrow function here
@@ -25,6 +25,8 @@ class teamHandler {
         gltf.scenes; // Array<THREE.Group>
         gltf.cameras; // Array<THREE.Camera>
         gltf.asset; // Object
+
+        this.teamFrameParent = this.teamScene.getObjectByName("frames_parent");
 
         //this.scene.add(this.teamScene);
       },

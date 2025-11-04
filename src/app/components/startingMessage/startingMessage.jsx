@@ -41,8 +41,8 @@ export default function StartingMessage(props) {
     const mousePosition = new THREE.Vector2();
     const raycaster = new THREE.Raycaster();
 
-    const stats = Stats();
-    document.body.appendChild(stats.dom);
+    // const stats = Stats();
+    // document.body.appendChild(stats.dom);
 
     if (window.matchMedia("(any-hover: none)").matches) {
       console.log("no hover detected");
@@ -304,7 +304,7 @@ export default function StartingMessage(props) {
 
         window.removeEventListener("resize", onResize);
 
-        stats.dom.remove();
+        // stats.dom.remove();
         controls?.dispose();
 
         scene.traverse((child) => {
@@ -331,7 +331,7 @@ export default function StartingMessage(props) {
       if (deviceType == "touch") {
         controls.update(clock.getDelta());
       }
-      stats.update();
+      // stats.update();
       if (tween != null) tween.update(time);
       renderer.render(scene, camera);
     }
@@ -365,10 +365,12 @@ export default function StartingMessage(props) {
   }, [props]);
 
   useEffect(() => {
+    if(props.loadedPercentage >= 100){
     setTimeout(() => {
       clickMessageRef.current.classList.add(styles.add_opacity);
     }, 1000); // 0.1s delay
-  }, []);
+  }
+  }, [props]);
 
   const closeDiwaliWhish = () => {
     setIsDiwaliVisible(false);
@@ -387,7 +389,7 @@ export default function StartingMessage(props) {
           className={styles.vitruvian_man_canvas}
         ></canvas>
         <div className={styles.starting_message_container}>
-          <p className={styles.starting_message_title}>DID YOU KNOW ?</p>
+          {/* <p className={styles.starting_message_title}>DID YOU KNOW ?</p>*/}
           <p className={styles.starting_message}>
             {/* Lorem Ipsum is simply dummy text of the printing and typesetting
           industry. Lorem Ipsum has been the industry's standard dummy text ever
@@ -397,7 +399,7 @@ export default function StartingMessage(props) {
             limited, whereas imagination embraces the entire world, stimulating
             progress, giving birth to evolution.
           </p>
-          {/* <p className={styles.albert}>- Albert Einstein</p> */}
+          <p className={styles.albert}>- Albert Einstein</p>
           <a href="https://metavian.tech/">
             <div className={styles.cta_2d_website}>
               Checkout our 2D website...

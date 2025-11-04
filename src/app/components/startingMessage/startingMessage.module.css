@@ -51,6 +51,7 @@
   align-items: center;
   /* Center vertically */
   background-color: rgba(0, 0, 0, 0.442);
+  color: #8dd5ff;
 }
 
 .vitruvian_man_canvas {
@@ -85,16 +86,18 @@
 .cta_2d_website {
   margin-top: 20%;
   margin-left: auto;
-  margin-right: 0;
+  margin-right: auto;
   font-size: 1vw;
   text-align: end;
   padding: 1%;
   width: max-content;
   border-radius: 10px;
+  background-color: rgb(164, 60, 255);
+  color: #ffffff;
 }
 
 .cta_2d_website:hover {
-  background-color: rgb(164, 60, 255);
+  background-color: rgb(60, 177, 255);
 }
 
 .click_anywhere {

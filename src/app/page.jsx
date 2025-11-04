@@ -410,8 +410,8 @@ export default function Horizon() {
 
   async function setupScene(canvas) {
     if (sceneRef.current == null) {
-      const stats = new Stats();
-      document.body.appendChild(stats.dom);
+      // const stats = new Stats();
+      // document.body.appendChild(stats.dom);
       //Scene is container for objects, cameras, and lights
       sceneRef.current = new THREE.Scene();
 
@@ -725,7 +725,7 @@ export default function Horizon() {
             intersectedObject[0] &&
             intersectedObject[0].object &&
             intersectedObject[0].object.parent.userData.group ==
-              "product_models"
+            "product_models"
           ) {
             // intersectedObject[0].object.material[1].uniforms.opacity_multiplier.value = 1;
             // intersectedObject[0].object.material[1].opacity = 1;
@@ -745,6 +745,27 @@ export default function Horizon() {
             // });
             //});
           }
+        }
+      }
+
+      function teamSceneHoverEffect(intersectedObject) {
+        if (
+          currentUserPositionRef.current == "Menu Item 4" &&
+          intersectedObject.length > 0 && intersectedObject[0].object.parent.name == "frames_parent"
+        ) {
+          // selectedObjects?.forEach((obj)=>{
+          // obj.selectedObj.material.map.repeat.set(1, 1);
+          // })
+          const selectedObj = intersectedObject[0].object;
+
+          // selectedObj.material.map.repeat.set(0.5, 0.5);
+          addSelectedObject(selectedObj);
+          canvasRef.current.style.cursor = "pointer";
+        } else {
+
+          // addSelectedObject(null);
+
+          canvasRef.current.style.cursor = "auto";
         }
       }
 
@@ -796,6 +817,7 @@ export default function Horizon() {
       raycasterHandlerRef.current.addHoverCallback(highlighterHoverEffect); //hover effect for contact details
       raycasterHandlerRef.current.addHoverCallback(hoverEffectForContacts); //hover effect for contact models
       raycasterHandlerRef.current.addHoverCallback(modelHoverEffect); //hover effect for product models
+      raycasterHandlerRef.current.addHoverCallback(teamSceneHoverEffect); //hover effect for tewam frames
 
       //setupRaycaster(sceneRef.current, cameraRef.current, handleIntersects);
 
@@ -1256,8 +1278,13 @@ export default function Horizon() {
 
       // Animate the scene
       let time = 0;
+      let clock = new THREE.Clock();
+      let delta = 0;
+      // 30 fps
+      let interval = 1 / 60;
       const animate = () => {
-        stats?.update();
+        // stats?.update();
+
         if (productPageVisibleRef.current == false) {
           if (starsRef.current) {
             starsRef.current.material.uniforms.time.value = time;
@@ -1268,87 +1295,91 @@ export default function Horizon() {
           //     raycasterForBulge.updateRaycaster();
           // }
 
-          positionProjectionScreen();
-          //console.log(progressJSRef.current.value);
+            positionProjectionScreen();
+            //console.log(progressJSRef.current.value);
 
-          // if (capsule_anchor) {
-          //   console.log(capsule_anchor.position);
-          // }
+            // if (capsule_anchor) {
+            //   console.log(capsule_anchor.position);
+            // }
 
-          // if (cubeCamera != null)
-          //   cubeCamera.update(rendererRef.current, sceneRef.current);
+            // if (cubeCamera != null)
+            //   cubeCamera.update(rendererRef.current, sceneRef.current);
 
-          //stats.update();
+            //stats.update();
 
-          //getAssetPositions();
+            //getAssetPositions();
 
-          // if (modelLoaded && circlepath != null) {
-          //   updatePosition(circlepath, cameraRef.current, positionAlongPathState);
-          //   //updatePosition(targetPath, targetObject, positionAlongPathState);
-          // }
+            // if (modelLoaded && circlepath != null) {
+            //   updatePosition(circlepath, cameraRef.current, positionAlongPathState);
+            //   //updatePosition(targetPath, targetObject, positionAlongPathState);
+            // }
 
-          time += 0.01;
-          //shaderMaterial.uniforms.time.value = time;
-          timeUniform.value = time;
+            time += 0.01;
+            //shaderMaterial.uniforms.time.value = time;
+            timeUniform.value = time;
 
-          spotLightParent.rotation.y += 0.01;
-          //controlsRef.current.update();
+            spotLightParent.rotation.y += 0.01;
+            //controlsRef.current.update();
 
-          TWEEN.update();
+            TWEEN.update();
 
-          rendererRef.current.setRenderTarget(fboRef.current);
-          rendererRef.current.render(fboScene, fboCamera);
+            rendererRef.current.setRenderTarget(fboRef.current);
+            rendererRef.current.render(fboScene, fboCamera);
 
-          //console.log(fbo);
+            //console.log(fbo);
 
-          rendererRef.current.setRenderTarget(null);
+            rendererRef.current.setRenderTarget(null);
 
-          if (uniformsForGrid != null) {
-            uniformsForGrid.uFBO.value = fboRef.current.texture;
+            if (uniformsForGrid != null) {
+              uniformsForGrid.uFBO.value = fboRef.current.texture;
+            }
+            // if (startSequenceCompleteRef.current) {
+            //   rendererRef.current.render(
+            //     sceneRef.current,
+            //     blenderCameraRef.current
+            //   );
+            // } else {
+            //   rendererRef.current.render(sceneRef.current, cameraRef.current);
+            // }
+            //rendererRef.current.render(sceneRef.current, cameraRef.current);
+
+            //rendererRef.current.render(sceneRef.current, cameraRef.current);
+            composer.render();
+
+            // Render CSS3D scene
+            if (
+              css3dRendererRef.current != null &&
+              currentUserPositionRef.current == "Menu Item 2"
+            ) {
+              css3dRendererRef.current.render(
+                css3DSceneRef.current,
+                cameraRef.current
+              );
+            }
+
+            //console.log(productPageVisibleRef.current);
+            if (
+              css2dRendererRef.current != null &&
+              currentUserPositionRef.current == "Menu Item 1" &&
+              productPageVisibleRef.current == false
+            ) {
+              css2dRendererRef.current.render(
+                css2DSceneRef.current,
+                cameraRef.current
+              );
+            }
+
+            NodeToyMaterial.tick();
+            // if (glassMaterial && glassMaterialClone) {
+            //   glassMaterialClone.uniforms.time.value = time;
+            //   glassMaterial.uniforms.time.value = time;
+            // }
+
+            delta = delta % interval;
           }
-          // if (startSequenceCompleteRef.current) {
-          //   rendererRef.current.render(
-          //     sceneRef.current,
-          //     blenderCameraRef.current
-          //   );
-          // } else {
-          //   rendererRef.current.render(sceneRef.current, cameraRef.current);
-          // }
-          //rendererRef.current.render(sceneRef.current, cameraRef.current);
-
-          //rendererRef.current.render(sceneRef.current, cameraRef.current);
-          composer.render();
-
-          // Render CSS3D scene
-          if (
-            css3dRendererRef.current != null &&
-            currentUserPositionRef.current == "Menu Item 2"
-          ) {
-            css3dRendererRef.current.render(
-              css3DSceneRef.current,
-              cameraRef.current
-            );
-          }
-
-          //console.log(productPageVisibleRef.current);
-          if (
-            css2dRendererRef.current != null &&
-            currentUserPositionRef.current == "Menu Item 1" &&
-            productPageVisibleRef.current == false
-          ) {
-            css2dRendererRef.current.render(
-              css2DSceneRef.current,
-              cameraRef.current
-            );
-          }
-
-          NodeToyMaterial.tick();
-          // if (glassMaterial && glassMaterialClone) {
-          //   glassMaterialClone.uniforms.time.value = time;
-          //   glassMaterial.uniforms.time.value = time;
-          // }
         }
         animationIdRef.current = requestAnimationFrame(animate);
+        delta += clock.getDelta();
       };
       animate();
       window.addEventListener("resize", onWindowResize);
@@ -2070,8 +2101,8 @@ export default function Horizon() {
               { x: 54.4541, y: 6.28496, z: 51.9438 } // New camera position
             ).then(() => {
               //
-              // camCursorAnimatorRef.current.currentCamPos =
-              //   cameraRef.current.position;
+              camCursorAnimatorRef.current.currentCamPos =
+                { x: 54.4541, y: 6.28496, z: 51.9438 };
               camCursorAnimatorRef.current.currentCamTarget = {
                 x: 55.0009,
                 y: 2.47723,
