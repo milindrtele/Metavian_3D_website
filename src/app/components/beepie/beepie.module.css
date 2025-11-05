@@ -17,8 +17,8 @@
 
 .coming_soon_message_container {
   position: relative;
-  top: -5vh;
-  left: -5.5vw;
+  top: -10vh;
+  left: -7vw;
   color: black;
 }
 
@@ -33,7 +33,7 @@ p.bubble {
   border-radius: 1.5vw;
   font-family: sans-serif;
   padding: 1vw;
-  font-size: 0.6vw;
+  font-size: 1vw;
 }
 
 p.thought {

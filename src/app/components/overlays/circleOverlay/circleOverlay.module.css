@@ -19,7 +19,7 @@
     border-radius: 50%;
     border-width: 2px;
     border-style: solid;
-    border-color: rgba(73, 158, 255, 0.75);
+    border-color: #3cf4a8;
     z-index: 1000;
     transform-origin: center;
     transform: rotate(-60deg);
@@ -68,7 +68,8 @@
     left: 0%;
     width: 2vw;
     height: 2vw;
-    background-color: rgba(73, 158, 255, 1);
+    background-color: #3cf4a8;
+    /*rgba(73, 158, 255, 1)*/
     border-radius: 50%;
     transform-origin: center;
     /* transform: rotate(60deg) translate(200%, 50%); */
@@ -76,7 +77,8 @@
 }
 
 .selected {
-    background-color: #3cf4a8 !important;
+    background-color: rgba(73, 158, 255, 1) !important;
+    /* #3cf4a8 */
 }
 
 .inner_circle_1 {

@@ -17,7 +17,7 @@ export default function CircleMenu(props) {
       <div className={[styles.arc_container].join(" ")}>
         {/* layer 1 */}
         <div
-          className={[styles.arc3, styles.arc, styles.arc_layer_1].join(" ")}
+          className={[styles.arc3, styles.arc, styles.arc_layer_1, props.currentMenu == "Menu Item 1" ? styles.active : ""].join(" ")}
           onClick={handleClickTopLevelMenu}
           name="Menu Item 1"
         >
@@ -33,7 +33,7 @@ export default function CircleMenu(props) {
       ></div> */}
         {/* layer 2 */}
         <div
-          className={[styles.arc3, styles.arc, styles.arc_layer_2].join(" ")}
+          className={[styles.arc3, styles.arc, styles.arc_layer_2, props.currentMenu == "Menu Item 2" ? styles.active : ""].join(" ")}
           onClick={handleClickTopLevelMenu}
           name="Menu Item 2"
         >
@@ -49,7 +49,7 @@ export default function CircleMenu(props) {
       ></div> */}
         {/* layer 3 */}
         <div
-          className={[styles.arc3, styles.arc, styles.arc_layer_3].join(" ")}
+          className={[styles.arc3, styles.arc, styles.arc_layer_3, props.currentMenu == "Menu Item 3" ? styles.active : ""].join(" ")}
           onClick={handleClickTopLevelMenu}
           name="Menu Item 3"
         >
@@ -65,7 +65,7 @@ export default function CircleMenu(props) {
       ></div> */}
         {/* layer 4 */}
         <div
-          className={[styles.arc3, styles.arc, styles.arc_layer_4].join(" ")}
+          className={[styles.arc3, styles.arc, styles.arc_layer_4, props.currentMenu == "Menu Item 4" ? styles.active : ""].join(" ")}
           onClick={handleClickTopLevelMenu}
           name="Menu Item 4"
         >

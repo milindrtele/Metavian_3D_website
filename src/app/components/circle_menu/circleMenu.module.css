@@ -183,6 +183,10 @@
     border-bottom-color: #6bc9b8;
 }
 
+.active {
+    background: radial-gradient(circle, rgba(174, 229, 238, 0) 40%, rgb(73, 158, 255) 100%);
+}
+
 /* .arc3:hover {
     border-right-color: #6bc9b8;
     border-bottom-color: #6bc9b8;

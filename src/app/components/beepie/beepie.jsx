@@ -60,7 +60,7 @@ export default function Beepie(props) {
       camera = new THREE.PerspectiveCamera(
         50,
         beepie_canvasRef.current.clientWidth /
-          beepie_canvasRef.current.clientHeight,
+        beepie_canvasRef.current.clientHeight,
         0.1,
         1000
       );
@@ -240,6 +240,7 @@ export default function Beepie(props) {
     let visibilityInterval; // Declare globally in the component scope
 
     function setComingSoonVisibility() {
+      if (comingSoonMessageVisible) return; // If already visible, do nothing
       clearInterval(visibilityInterval); // Clear any existing interval
       setComingSoonMessageVisible(true);
 
@@ -250,7 +251,7 @@ export default function Beepie(props) {
     }
 
     // Attach the event listener
-    beepie_canvasRef.current.addEventListener("click", setComingSoonVisibility);
+    beepie_canvasRef.current.addEventListener("mouseover", setComingSoonVisibility);
 
     var clock = new THREE.Clock();
     function animate(time) {
@@ -270,7 +271,7 @@ export default function Beepie(props) {
 
     return () => {
       beepie_canvasRef.current.removeEventListener(
-        "click",
+        "mouseover",
         setComingSoonVisibility
       );
     };
@@ -310,7 +311,7 @@ export default function Beepie(props) {
     };
   }, [fullText]);
 
-  useEffect(() => {}, []);
+  useEffect(() => { }, []);
   return (
     <div className={[styles.beepi_container].join(" ")}>
       <canvas

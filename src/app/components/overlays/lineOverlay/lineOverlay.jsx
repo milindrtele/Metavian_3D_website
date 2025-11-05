@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, use } from "react";
 import styles from "./lineOverlay.module.css";
 
 const overlayVariants = [
@@ -120,6 +120,14 @@ function LineOverlay({ progress }) {
     )`;
     // needleRef.current.style.background = `conic-gradient(from ${angle} at 50% 50%, #00ffbb04, #00ffd0ff, #00ffd0ff )`;
   }
+
+  useEffect(() => {
+    if (progress <= 0.1) {
+      containerRef.current.classList.remove(styles.position_left_bottom);
+    } else {
+      containerRef.current.classList.add(styles.position_left_bottom);
+    }
+  }, [progress]);
 
   return (
     <div ref={containerRef} className={styles.container}>

@@ -2034,6 +2034,8 @@ export default function Horizon() {
         currentCameraTargetRef.current = { x: 53.8746, y: 0.041, z: -30.8687 };
         //
         camCursorAnimatorRef.current.remove();
+
+        circleSelected("Meta Realty");
       } else if (currentUserPositionRef.current == "Menu Item 3") {
         pauseShaderVideo();
         removeAllHotspotsFromArray();
@@ -2752,7 +2754,7 @@ export default function Horizon() {
           )}
           {isGetStartedVisible && <GetStarted continue={GetStartedContinue} />}
           {isHamburgerMenuVisible && (
-            <CircleMenu handleClickTopLevelMenuProp={selectedItemInMainMenu} />
+            <CircleMenu handleClickTopLevelMenuProp={selectedItemInMainMenu} currentMenu={currentUserPositionRef.current} />
           )}
           {currentUserPosition == "Menu Item 1" && (
             <LineOverlay progress={scrollTriggerProgress} />

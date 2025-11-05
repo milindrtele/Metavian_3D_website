@@ -81,11 +81,11 @@ function CircleOverlay({ circleSelected, selectedLeg }) {
 
   function hoverEffect(e) {
     // e.currentTarget.style.transform = "scale(1.1)";
-    e.currentTarget.style.backgroundColor = "#3cf4a8";
+    e.currentTarget.style.backgroundColor = "rgba(73, 158, 255, 1)";
   }
   function hoverEffectOut(e) {
     // e.currentTarget.style.transform = "scale(1)";
-    e.currentTarget.style.backgroundColor = "rgba(73, 158, 255, 1)";
+    e.currentTarget.style.backgroundColor = "#3cf4a8";
   }
   function animateOnClick(e) {
     if (e.currentTarget.title) {
