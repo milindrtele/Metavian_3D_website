@@ -2726,7 +2726,7 @@ export default function Horizon() {
             loop
             style={{
               // display: "none",
-              // visibility: "hidden",
+              visibility: "hidden",
               pointerEvents: "none",
               position: "absolute",
               zIndex: 10,
