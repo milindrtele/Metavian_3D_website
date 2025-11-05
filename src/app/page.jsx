@@ -1295,89 +1295,89 @@ export default function Horizon() {
           //     raycasterForBulge.updateRaycaster();
           // }
 
-            positionProjectionScreen();
-            //console.log(progressJSRef.current.value);
+          positionProjectionScreen();
+          //console.log(progressJSRef.current.value);
 
-            // if (capsule_anchor) {
-            //   console.log(capsule_anchor.position);
-            // }
+          // if (capsule_anchor) {
+          //   console.log(capsule_anchor.position);
+          // }
 
-            // if (cubeCamera != null)
-            //   cubeCamera.update(rendererRef.current, sceneRef.current);
+          // if (cubeCamera != null)
+          //   cubeCamera.update(rendererRef.current, sceneRef.current);
 
-            //stats.update();
+          //stats.update();
 
-            //getAssetPositions();
+          //getAssetPositions();
 
-            // if (modelLoaded && circlepath != null) {
-            //   updatePosition(circlepath, cameraRef.current, positionAlongPathState);
-            //   //updatePosition(targetPath, targetObject, positionAlongPathState);
-            // }
+          // if (modelLoaded && circlepath != null) {
+          //   updatePosition(circlepath, cameraRef.current, positionAlongPathState);
+          //   //updatePosition(targetPath, targetObject, positionAlongPathState);
+          // }
 
-            time += 0.01;
-            //shaderMaterial.uniforms.time.value = time;
-            timeUniform.value = time;
+          time += 0.01;
+          //shaderMaterial.uniforms.time.value = time;
+          timeUniform.value = time;
 
-            spotLightParent.rotation.y += 0.01;
-            //controlsRef.current.update();
+          spotLightParent.rotation.y += 0.01;
+          //controlsRef.current.update();
 
-            TWEEN.update();
+          TWEEN.update();
 
-            rendererRef.current.setRenderTarget(fboRef.current);
-            rendererRef.current.render(fboScene, fboCamera);
+          rendererRef.current.setRenderTarget(fboRef.current);
+          rendererRef.current.render(fboScene, fboCamera);
 
-            //console.log(fbo);
+          //console.log(fbo);
 
-            rendererRef.current.setRenderTarget(null);
+          rendererRef.current.setRenderTarget(null);
 
-            if (uniformsForGrid != null) {
-              uniformsForGrid.uFBO.value = fboRef.current.texture;
-            }
-            // if (startSequenceCompleteRef.current) {
-            //   rendererRef.current.render(
-            //     sceneRef.current,
-            //     blenderCameraRef.current
-            //   );
-            // } else {
-            //   rendererRef.current.render(sceneRef.current, cameraRef.current);
-            // }
-            //rendererRef.current.render(sceneRef.current, cameraRef.current);
-
-            //rendererRef.current.render(sceneRef.current, cameraRef.current);
-            composer.render();
-
-            // Render CSS3D scene
-            if (
-              css3dRendererRef.current != null &&
-              currentUserPositionRef.current == "Menu Item 2"
-            ) {
-              css3dRendererRef.current.render(
-                css3DSceneRef.current,
-                cameraRef.current
-              );
-            }
-
-            //console.log(productPageVisibleRef.current);
-            if (
-              css2dRendererRef.current != null &&
-              currentUserPositionRef.current == "Menu Item 1" &&
-              productPageVisibleRef.current == false
-            ) {
-              css2dRendererRef.current.render(
-                css2DSceneRef.current,
-                cameraRef.current
-              );
-            }
-
-            NodeToyMaterial.tick();
-            // if (glassMaterial && glassMaterialClone) {
-            //   glassMaterialClone.uniforms.time.value = time;
-            //   glassMaterial.uniforms.time.value = time;
-            // }
-
-            delta = delta % interval;
+          if (uniformsForGrid != null) {
+            uniformsForGrid.uFBO.value = fboRef.current.texture;
           }
+          // if (startSequenceCompleteRef.current) {
+          //   rendererRef.current.render(
+          //     sceneRef.current,
+          //     blenderCameraRef.current
+          //   );
+          // } else {
+          //   rendererRef.current.render(sceneRef.current, cameraRef.current);
+          // }
+          //rendererRef.current.render(sceneRef.current, cameraRef.current);
+
+          //rendererRef.current.render(sceneRef.current, cameraRef.current);
+          composer.render();
+
+          // Render CSS3D scene
+          if (
+            css3dRendererRef.current != null &&
+            currentUserPositionRef.current == "Menu Item 2"
+          ) {
+            css3dRendererRef.current.render(
+              css3DSceneRef.current,
+              cameraRef.current
+            );
+          }
+
+          //console.log(productPageVisibleRef.current);
+          if (
+            css2dRendererRef.current != null &&
+            currentUserPositionRef.current == "Menu Item 1" &&
+            productPageVisibleRef.current == false
+          ) {
+            css2dRendererRef.current.render(
+              css2DSceneRef.current,
+              cameraRef.current
+            );
+          }
+
+          NodeToyMaterial.tick();
+          // if (glassMaterial && glassMaterialClone) {
+          //   glassMaterialClone.uniforms.time.value = time;
+          //   glassMaterial.uniforms.time.value = time;
+          // }
+
+          delta = delta % interval;
         }
+        // }
         animationIdRef.current = requestAnimationFrame(animate);
         delta += clock.getDelta();
       };
@@ -1895,6 +1895,17 @@ export default function Horizon() {
       canvasRef.current.removeEventListener("scroll", actOnScroll, false);
     }
 
+    function playShaderVideo() {
+      if (videoRef.current) {
+        videoRef.current.play();
+      }
+    }
+    function pauseShaderVideo() {
+      if (videoRef.current) {
+        videoRef.current.pause();
+      }
+    }
+
     // Check if the user position has changed
     if (old_pos != current_pos) {
       // Handling the "home" position
@@ -1935,11 +1946,13 @@ export default function Horizon() {
             currentCameraTargetRef.current = { x: 0, y: 0, z: 0 };
             //
             camCursorAnimatorRef.current.remove();
+            playShaderVideo();
           })
           .catch((error) => {
             console.error("Failed to stop video: ", error);
           });
       } else if (currentUserPositionRef.current == "Menu Item 1") {
+        pauseShaderVideo();
         addAllHotspotsFromArray();
         stopVideoIfLoaded()
           .then(() => {
@@ -1989,6 +2002,7 @@ export default function Horizon() {
             console.error("Failed to stop video: ", error);
           });
       } else if (currentUserPositionRef.current == "Menu Item 2") {
+        pauseShaderVideo();
         addScrollInteractionForCapsule();
         removeAllHotspotsFromArray();
         sceneRef.current.remove(social_media_models_scene);
@@ -2021,6 +2035,7 @@ export default function Horizon() {
         //
         camCursorAnimatorRef.current.remove();
       } else if (currentUserPositionRef.current == "Menu Item 3") {
+        pauseShaderVideo();
         removeAllHotspotsFromArray();
         stopVideoIfLoaded()
           .then(() => {
@@ -2074,6 +2089,7 @@ export default function Horizon() {
             console.error("Failed to stop video: ", error);
           });
       } else if (currentUserPositionRef.current == "Menu Item 4") {
+        pauseShaderVideo();
         removeAllHotspotsFromArray();
         stopVideoIfLoaded()
           .then(() => {
@@ -2123,6 +2139,7 @@ export default function Horizon() {
             console.error("Failed to stop video: ", error);
           });
       } else if (currentUserPositionRef.current == "Menu Item 5") {
+        pauseShaderVideo();
         removeAllHotspotsFromArray();
         stopVideoIfLoaded()
           .then(() => {
@@ -2639,7 +2656,7 @@ export default function Horizon() {
   //         legs_parent.children[4].children[0],
   //         capsule_body,
   //         projection_object,
-  //         projected_screen,
+  //         projected_screen,s
   //         iframe
   //       );
   //       break;
@@ -2705,11 +2722,11 @@ export default function Horizon() {
           <video
             ref={videoRef}
             muted
-            autoPlay
+            // autoPlay
             loop
             style={{
               // display: "none",
-              visibility: "hidden",
+              // visibility: "hidden",
               pointerEvents: "none",
               position: "absolute",
               zIndex: 10,
