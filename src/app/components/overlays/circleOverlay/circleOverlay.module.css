@@ -79,6 +79,9 @@
 .selected {
     background-color: rgba(73, 158, 255, 1) !important;
     /* #3cf4a8 */
+    border-color: #fff;
+    border-width: 2px;
+    border-style: solid;
 }
 
 .inner_circle_1 {

@@ -617,6 +617,31 @@ export default function Horizon() {
         }
       }
 
+      function clikEffectForContacts(intersects) {
+        if (
+          currentUserPositionRef.current == "Menu Item 3" &&
+          intersects.length > 0
+        ) {
+          if (
+            intersects[0].object.name == "Discord"
+          ) {
+            window.open("https://discord.gg/cw9ujX44", "_blank");
+          } else if (
+            intersects[0].object.name == "Facebook"
+          ) {
+            window.open("https://www.facebook.com/metaviantech", "_blank");
+          } else if (
+            intersects[0].object.name == "Instagram"
+          ) {
+            window.open("https://www.instagram.com/accounts/login/?next=%2Fmetaviantech%2F&source=omni_redirect", "_blank");
+          } else if (
+            intersects[0].object.name == "Youtube"
+          ) {
+            window.open("https://www.youtube.com/@metaviantechnologies", "_blank");
+          }
+        }
+      }
+
       function highlighterHoverEffect(intersects) {
         if (
           currentUserPositionRef.current == "Menu Item 3" &&
@@ -811,6 +836,7 @@ export default function Horizon() {
       raycasterHandlerRef.current.addClickCallback(handleIntersects); //click effect for capsule legs and its rotation
       raycasterHandlerRef.current.addClickCallback(highlighterClickEffect); //click effect for contact details
       raycasterHandlerRef.current.addClickCallback(modelClickEffect); //click effect for product models
+      raycasterHandlerRef.current.addClickCallback(clikEffectForContacts); //click effect for contact models
 
       //hover effects
       raycasterHandlerRef.current.addHoverCallback(handleLegHover); //hover effect for capsule legs and its rotation

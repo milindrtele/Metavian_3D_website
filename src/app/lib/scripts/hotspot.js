@@ -27,7 +27,8 @@ class Hotspot {
     webURL,
     mainCamera,
     productViewerCallback,
-    productPageVisible
+    productPageVisible,
+    iconURL
   ) {
     this.hotspotType = hotspotType;
     this.cssScene = cssScene;
@@ -51,6 +52,7 @@ class Hotspot {
     //this.videoEmbedFunction = videoEmbedFunction;
     //this.videoID = videoID || null;
     this.webURL = webURL || null;
+    this.iconURL = iconURL || null;
 
     this.mainCamera = mainCamera;
     this.productViewerCallback = productViewerCallback;
@@ -165,6 +167,9 @@ class Hotspot {
       //if (this.productViewerCallback) this.productViewerCallback(this.title);
       window.open(this.webURL, "_blank");
     });
+    if (this.iconURL) {
+      action_button.style.backgroundImage = `url(${this.iconURL})`;
+    }
   }
 
   // positionStemAndFlag(child) {

@@ -365,11 +365,11 @@ export default function StartingMessage(props) {
   }, [props]);
 
   useEffect(() => {
-    if(props.loadedPercentage >= 100){
-    setTimeout(() => {
-      clickMessageRef.current.classList.add(styles.add_opacity);
-    }, 1000); // 0.1s delay
-  }
+    if (props.loadedPercentage >= 100) {
+      setTimeout(() => {
+        clickMessageRef.current.classList.add(styles.add_opacity);
+      }, 1000); // 0.1s delay
+    }
   }, [props]);
 
   const closeDiwaliWhish = () => {
@@ -401,8 +401,25 @@ export default function StartingMessage(props) {
           </p>
           <p className={styles.albert}>- Albert Einstein</p>
           <a href="https://metavian.tech/">
-            <div className={styles.cta_2d_website}>
+            {/* <div className={styles.cta_2d_website}>
               Checkout our 2D website...
+            </div> */}
+            <div className={styles.cssbuttons_io_button}>
+              Checkout our 2D website...
+              <div className={styles.icon}>
+                <svg
+                  height="24"
+                  width="24"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path d="M0 0h24v24H0z" fill="none"></path>
+                  <path
+                    d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z"
+                    fill="currentColor"
+                  ></path>
+                </svg>
+              </div>
             </div>
           </a>
           <p ref={clickMessageRef} className={styles.click_anywhere}>

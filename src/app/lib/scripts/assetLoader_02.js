@@ -279,7 +279,8 @@ export function loadAssetsWithPromise(
     // Load the social media models
     loader.load(
       //"/models/contact models/contact_models_with_vr_headset_with_animations.glb",
-      "/models/contact models/contact_models_with_vr_headset_with_animation_and_optimisation_2_v02.glb",
+      // "/models/contact models/contact_models_with_vr_headset_with_animation_and_optimisation_2_v02.glb",
+      "/models/contact models/contact_model_6_11_25.glb",
       //"/models/contact models/contacts_model_with_highliter_v01.glb",
       (gltf) => {
         social_media_models_scene = gltf.scene;

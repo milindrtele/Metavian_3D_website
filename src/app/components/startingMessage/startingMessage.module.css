@@ -64,7 +64,7 @@
   padding-left: 0;
   margin: auto;
   width: 50vw;
-  height: max-content;
+  height: 100vh;
   text-align: center;
 }
 
@@ -74,7 +74,7 @@
 }
 
 .starting_message {
-  font-size: 1.5vw;
+  font-size: 2vw;
 }
 
 .albert {
@@ -84,7 +84,7 @@
 }
 
 .cta_2d_website {
-  margin-top: 20%;
+  /* margin-top: 20%;
   margin-left: auto;
   margin-right: auto;
   font-size: 1vw;
@@ -93,11 +93,67 @@
   width: max-content;
   border-radius: 10px;
   background-color: rgb(164, 60, 255);
-  color: #ffffff;
+  color: #ffffff; */
 }
 
-.cta_2d_website:hover {
+/* .cta_2d_website:hover {
   background-color: rgb(60, 177, 255);
+} */
+
+.cssbuttons_io_button {
+  width: max-content;
+  margin: 20% auto;
+  background: #97d4fc;
+  color: white;
+  font-family: inherit;
+  padding: 0.35em;
+  padding-left: 1.2em;
+  font-size: 17px;
+  font-weight: 500;
+  border-radius: 0.9em;
+  border: none;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  box-shadow: inset 0 0 1.6em -0.6em #714da6;
+  overflow: hidden;
+  position: relative;
+  height: 2.8em;
+  padding-right: 3.3em;
+  cursor: pointer;
+}
+
+.cssbuttons_io_button .icon {
+  background: white;
+  margin-left: 1em;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 2.2em;
+  width: 2.2em;
+  border-radius: 0.7em;
+  box-shadow: 0.1em 0.1em 0.6em 0.2em #7b52b9;
+  right: 0.3em;
+  transition: all 0.3s;
+}
+
+.cssbuttons_io_button:hover .icon {
+  width: calc(100% - 0.6em);
+}
+
+.cssbuttons_io_button .icon svg {
+  width: 1.1em;
+  transition: transform 0.3s;
+  color: #7b52b9;
+}
+
+.cssbuttons_io_button:hover .icon svg {
+  transform: translateX(0.1em);
+}
+
+.cssbuttons_io_button:active .icon {
+  transform: scale(0.95);
 }
 
 .click_anywhere {

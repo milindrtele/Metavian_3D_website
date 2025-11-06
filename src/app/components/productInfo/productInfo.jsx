@@ -18,6 +18,8 @@ import { gsap } from "gsap";
 import Hotspot from "../../lib/scripts/hotspot.js";
 // import Hotspot3D from "../../lib/scripts/hotspot3D.js";
 import Loading from "../loading/loading.jsx";
+//stars
+import Stars from "../../lib/scripts/stars.js";
 
 // Caching product and hotspot data to avoid redundant fetches
 let productsDataCache = null;
@@ -70,6 +72,7 @@ export default function ProductInfo({ product, closeClicked, css2DScene }) {
   const product_info_containerRef = useRef(null);
   const main_rotorRef = useRef(null);
   const tail_rotorRef = useRef(null);
+  const starsRef = useRef(null); //stars
 
   function forVirtualProduction(scene) {
     // Create a video element
@@ -201,6 +204,8 @@ export default function ProductInfo({ product, closeClicked, css2DScene }) {
     // const spotLightHelper = new THREE.SpotLightHelper(spotLightRef.current);
     // scene.add(spotLightHelper);
 
+    starsRef.current = new Stars(sceneRef.current, 5000, 750);
+
     // Load HDRI Environment
     rgbeLoader
       .setPath("models/capsule/capsule/")
@@ -250,7 +255,8 @@ export default function ProductInfo({ product, closeClicked, css2DScene }) {
                       hotspot.webURL,
                       cameraRef.current,
                       null, //productViewerCallback,
-                      false //productPageVisible
+                      false, //productPageVisible
+                      hotspot.iconURL
                     );
                     hotspotInstance.addToScene();
                     hotspotsArray.push(hotspotInstance);
@@ -294,12 +300,17 @@ export default function ProductInfo({ product, closeClicked, css2DScene }) {
     };
 
     // Animation loop
+    let time = 0;
     const animate = () => {
+      if (starsRef.current) {
+        starsRef.current.material.uniforms.time.value = time;
+      }
       animateRotors();
       controlsRef.current.update();
       rendererRef.current.render(scene, cameraRef.current);
       css2dRendererRef.current.render(css2DSceneRef.current, cameraRef.current);
       // css3dRendererRef.current.render(css3DSceneRef.current, cameraRef.current);
+      time += 0.01;
       animationFrameId.current = requestAnimationFrame(animate);
     };
     animate();
@@ -320,6 +331,8 @@ export default function ProductInfo({ product, closeClicked, css2DScene }) {
       hotspotsArray.forEach((hotspot) => {
         hotspot.removeFromScene();
       });
+
+      starsRef.current.dispose();
 
       // hotspots3DArray.forEach((hotspot3D) => {
       //   hotspot3D.removeFromScene();

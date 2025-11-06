@@ -50,4 +50,17 @@ export default class Stars {
     const points = new THREE.Points(geometry, this.material);
     this.scene.add(points);
   }
+
+  dispose() {
+    // Remove from scene
+    if (this.points) this.scene.remove(this.points);
+
+    // Dispose GPU resources
+    if (this.geometry) this.geometry.dispose();
+    if (this.material) this.material.dispose();
+
+    this.points = null;
+    this.geometry = null;
+    this.material = null;
+  }
 }
