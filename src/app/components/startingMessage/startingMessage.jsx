@@ -376,6 +376,7 @@ export default function StartingMessage(props) {
     setIsDiwaliVisible(false);
   };
 
+
   return (
     <>
       <div

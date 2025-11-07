@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import styles from "./getStarted.module.css";
 import { gsap } from "gsap";
+import { div } from "three/examples/jsm/nodes/Nodes";
 
 export default function GetStarted(props) {
   //const button = document.getElementById("button");
@@ -13,6 +14,28 @@ export default function GetStarted(props) {
 
   const mapAllTextRef = useRef(null);
   const loopThroughElementsRef = useRef(null);
+
+  const [user, setUser] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    async function checkUser() {
+      const res = await fetch("/api/me");
+      const data = await res.json();
+
+      if (data.authenticated) {
+        console.log("Logged in user:", data.user);
+        setUser(data.user);
+        setIsLoggedIn(true);
+        // redirect if needed
+      } else {
+        console.log("Not logged in");
+        setIsLoggedIn(false);
+      }
+    }
+
+    checkUser();
+  }, []);
 
   useEffect(() => {
     // document.getElementById("input_1").style.position = "absolute";
@@ -148,9 +171,50 @@ export default function GetStarted(props) {
     });
   }, []);
 
-  function submitClicked() {
-    mapAllTextRef.current(loopThroughElementsRef.current);
-    setIsButtonClicked(true);
+
+
+
+  // function submitClicked() {
+  //   mapAllTextRef.current(loopThroughElementsRef.current);
+  //   setIsButtonClicked(true);
+  // }
+
+  async function submitClicked(buttonType) {
+    const name = document.getElementById("input_1")?.value;
+    const email = document.getElementById("input_2")?.value;
+    const password = document.getElementById("input_3")?.value;
+    const phone = document.getElementById("input_4")?.value;
+    let res;
+    if (buttonType === "login") {
+      res = await fetch("/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+    }
+    else if (buttonType === "register") {
+      res = await fetch("/api/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, password, phone }),
+      });
+    }
+    else if (buttonType === "skip") {
+      // just proceed
+      mapAllTextRef.current(loopThroughElementsRef.current);
+      setIsButtonClicked(true);
+      return;
+    }
+
+    const data = await res.json();
+    console.log(data);
+
+    if (res.status === 200 || res.status === 201) {
+      mapAllTextRef.current(loopThroughElementsRef.current);
+      setIsButtonClicked(true);
+    } else {
+      alert(data.error || data.message || "Something went wrong");
+    }
   }
 
   return (
@@ -177,43 +241,90 @@ export default function GetStarted(props) {
             A Venture into Infinite Possibilities in AR, VR, and Spatial
             Computing.
           </p>
-          <input
-            id="input_1"
-            className={[
-              styles.name,
-              styles.inputs,
-              styles.input_1,
-              styles.position_right,
-              styles.animate,
-            ].join(" ")}
-            type="text"
-            placeholder="Your Name / Username"
-          />
-          <input
-            id="input_2"
-            className={[
-              styles.email,
-              styles.inputs,
-              styles.input_2,
-              styles.position_right,
-              styles.animate,
-            ].join(" ")}
-            type="text"
-            placeholder="Email"
-          />
-          <input
-            id="input_3"
-            className={[
-              styles.password,
-              styles.inputs,
-              styles.input_3,
-              styles.position_right,
-              styles.animate,
-            ].join(" ")}
-            type="password"
-            placeholder="Password"
-          />
-          {/* <button
+          {isLoggedIn && user ? (<><div className={[
+            styles.welcome_back_text,
+            styles.position_right,
+            styles.animate,
+          ].join(" ")}>welcome back {user.name}</div>
+            <button
+              className={[
+                styles.skip_button_style,
+                styles.cssbuttons_io_button,
+                styles.position_right,
+                isButtonClicked ? styles.grey_out : "",
+                styles.animate,
+              ].join(" ")}
+              onClick={() => {
+                submitClicked("skip");
+              }}
+            >
+              Continue
+              <div className={styles.icon}>
+                <svg
+                  height="24"
+                  width="24"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path d="M0 0h24v24H0z" fill="none"></path>
+                  <path
+                    d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z"
+                    fill="currentColor"
+                  ></path>
+                </svg>
+              </div>
+            </button></>) :
+            (<><input
+              id="input_1"
+              className={
+                [
+                  styles.name,
+                  styles.inputs,
+                  styles.input_1,
+                  styles.position_right,
+                  styles.animate,
+                ].join(" ")}
+              type="text"
+              placeholder="Your Name / Username"
+            />
+              <input
+                id="input_2"
+                className={[
+                  styles.email,
+                  styles.inputs,
+                  styles.input_2,
+                  styles.position_right,
+                  styles.animate,
+                ].join(" ")}
+                type="text"
+                placeholder="Email"
+              />
+              <input
+                id="input_3"
+                className={[
+                  styles.password,
+                  styles.inputs,
+                  styles.input_3,
+                  styles.position_right,
+                  styles.animate,
+                ].join(" ")}
+                type="password"
+                placeholder="Password"
+              />
+              <input
+                id="input_4"
+                className={[
+                  styles.phone,
+                  styles.inputs,
+                  styles.input_4,
+                  styles.position_right,
+                  styles.animate,
+                ].join(" ")}
+                type="tel"
+                placeholder="Phone Number"
+                pattern="^(\+91|0091|0|91)?[6-9]\d{9}$"
+              />
+              {/* <button
             id="button"
             className={[
               styles.get_started_button,
@@ -227,64 +338,93 @@ export default function GetStarted(props) {
           >
             Get Started
           </button> */}
-          <button
-            className={[
-              styles.cssbuttons_io_button,
-              styles.position_right,
-              isButtonClicked ? styles.grey_out : "",
-              styles.animate,
-            ].join(" ")}
-          // onClick={() => {
-          //   submitClicked();
-          // }}
-          >
-            Get started
-            <div className={styles.icon}>
-              <svg
-                height="24"
-                width="24"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
+              {/* get started / login */}
+              <button
+                className={[
+                  styles.get_started_button_style,
+                  styles.cssbuttons_io_button,
+                  styles.position_right,
+                  isButtonClicked ? styles.grey_out : "",
+                  styles.animate,
+                ].join(" ")}
+                onClick={() => { submitClicked("login") }}
               >
-                <path d="M0 0h24v24H0z" fill="none"></path>
-                <path
-                  d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z"
-                  fill="currentColor"
-                ></path>
-              </svg>
-            </div>
-          </button>
+                Log in
+                <div className={styles.icon}>
+                  <svg
+                    height="24"
+                    width="24"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="M0 0h24v24H0z" fill="none"></path>
+                    <path
+                      d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z"
+                      fill="currentColor"
+                    ></path>
+                  </svg>
+                </div>
+              </button>
 
-          <button
-            className={[
-              styles.skip_button_style,
-              styles.cssbuttons_io_button,
-              styles.position_right,
-              isButtonClicked ? styles.grey_out : "",
-              styles.animate,
-            ].join(" ")}
-            onClick={() => {
-              submitClicked();
-            }}
-          >
-            Skip
-            <div className={styles.icon}>
-              <svg
-                height="24"
-                width="24"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
+              {/* register new user */}
+              <button
+                className={[
+                  styles.register_button_style,
+                  styles.cssbuttons_io_button,
+                  styles.position_right,
+                  isButtonClicked ? styles.grey_out : "",
+                  styles.animate,
+                ].join(" ")}
+                onClick={() => { submitClicked("register") }}
               >
-                <path d="M0 0h24v24H0z" fill="none"></path>
-                <path
-                  d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z"
-                  fill="currentColor"
-                ></path>
-              </svg>
-            </div>
-          </button>
+                Register new user
+                <div className={styles.icon}>
+                  <svg
+                    height="24"
+                    width="24"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="M0 0h24v24H0z" fill="none"></path>
+                    <path
+                      d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z"
+                      fill="currentColor"
+                    ></path>
+                  </svg>
+                </div>
+              </button>
 
-          {/* <button
+              {/* skip */}
+              <button
+                className={[
+                  styles.skip_button_style,
+                  styles.cssbuttons_io_button,
+                  styles.position_right,
+                  isButtonClicked ? styles.grey_out : "",
+                  styles.animate,
+                ].join(" ")}
+                onClick={() => {
+                  submitClicked("skip");
+                }}
+              >
+                Skip
+                <div className={styles.icon}>
+                  <svg
+                    height="24"
+                    width="24"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="M0 0h24v24H0z" fill="none"></path>
+                    <path
+                      d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z"
+                      fill="currentColor"
+                    ></path>
+                  </svg>
+                </div>
+              </button>
+
+              {/* <button
             id="button"
             className={[
               styles.skip_button,
@@ -298,6 +438,8 @@ export default function GetStarted(props) {
           >
             <p>Skip</p>
           </button> */}
+            </>)}
+
         </div>
       </div>
     </div>

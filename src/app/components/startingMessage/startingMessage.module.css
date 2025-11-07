@@ -60,11 +60,10 @@
 }
 
 .starting_message_container {
-  padding: 12%;
-  padding-left: 0;
   margin: auto;
-  width: 50vw;
-  height: 100vh;
+  margin-left: 0;
+  width: 37vw;
+  height: max-content;
   text-align: center;
 }
 
@@ -74,12 +73,12 @@
 }
 
 .starting_message {
-  font-size: 2vw;
+  font-size: 2.5vw;
 }
 
 .albert {
   margin-top: 5%;
-  font-size: 1vw;
+  font-size: 1.25vw;
   text-align: end;
 }
 
@@ -102,7 +101,10 @@
 
 .cssbuttons_io_button {
   width: max-content;
-  margin: 20% auto;
+  /* margin: 20% auto; */
+  margin-right: 0;
+  margin-left: auto;
+  margin-top: 15%;
   background: #97d4fc;
   color: white;
   font-family: inherit;

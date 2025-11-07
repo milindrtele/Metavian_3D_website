@@ -94,6 +94,12 @@
   /* height: 5%; */
 }
 
+.input_4 {
+  bottom: 40vh;
+  width: 100%;
+  /* height: 5%; */
+}
+
 .inputs::placeholder {
   font-weight: bold;
   opacity: 0.5;
@@ -232,10 +238,30 @@
   transform: translateX(0vw);
 }
 
+.get_started_button_style {
+  width: 40% !important;
+  bottom: 30vh;
+  left: 0;
+}
+
+.register_button_style {
+  width: 50% !important;
+  bottom: 30vh;
+  right: 0
+}
+
 .skip_button_style {
 
   width: 50% !important;
-  bottom: 25vh;
+  bottom: 20vh;
+}
+
+.welcome_back_text {
+  font-size: 1.5vw;
+  font-weight: bold;
+  color: #ffffff;
+  bottom: 70vh;
+  text-align: center;
 }
 
 @media (aspect-ratio > 9/16) {
