@@ -28,7 +28,10 @@ class Hotspot {
     mainCamera,
     productViewerCallback,
     productPageVisible,
-    iconURL
+    iconURL,
+    type,
+    downloadCallback,
+    productName
   ) {
     this.hotspotType = hotspotType;
     this.cssScene = cssScene;
@@ -58,6 +61,9 @@ class Hotspot {
     this.productViewerCallback = productViewerCallback;
 
     this.productPageVisible = productPageVisible;
+    this.type = type || null;
+    this.downloadCallback = downloadCallback || null;
+    this.productName = productName || null;
 
     this.init();
   }
@@ -114,6 +120,14 @@ class Hotspot {
     });
   }
 
+  setVisibility(visible) {
+    if (visible) {
+      this.showObject();
+    } else {
+      this.hideObject();
+    }
+  }
+
   setupInnerText(child) {
     const title = this.child.querySelector("#title");
     if (title) {
@@ -165,7 +179,12 @@ class Hotspot {
     action_button.addEventListener("click", () => {
       console.log("button clicked " + this.title);
       //if (this.productViewerCallback) this.productViewerCallback(this.title);
-      window.open(this.webURL, "_blank");
+      if (this.type === "brochure_download") {
+        console.log("download brochure for " + this.productName);
+        if (this.downloadCallback) this.downloadCallback(this.productName);
+      } else {
+        window.open(this.webURL, "_blank");
+      }
     });
     if (this.iconURL) {
       action_button.style.backgroundImage = `url(${this.iconURL})`;

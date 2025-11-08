@@ -1,4 +1,4 @@
-import { useEffect, useRef, useContext } from "react";
+import { useEffect, useState, useRef, useContext } from "react";
 import * as THREE from "three";
 import { loadingContext } from "../contexts/loadingContext.jsx";
 import styles from "./productInfo.module.css";
@@ -20,6 +20,9 @@ import Hotspot from "../../lib/scripts/hotspot.js";
 import Loading from "../loading/loading.jsx";
 //stars
 import Stars from "../../lib/scripts/stars.js";
+
+//get started
+import GetStarted from "../getStarted/getStarted.jsx";
 
 // Caching product and hotspot data to avoid redundant fetches
 let productsDataCache = null;
@@ -73,6 +76,7 @@ export default function ProductInfo({ product, closeClicked, css2DScene }) {
   const main_rotorRef = useRef(null);
   const tail_rotorRef = useRef(null);
   const starsRef = useRef(null); //stars
+  const [showLogin, setShowLogin] = useState(false);
 
   function forVirtualProduction(scene) {
     // Create a video element
@@ -215,6 +219,8 @@ export default function ProductInfo({ product, closeClicked, css2DScene }) {
         scene.environmentIntensity = 0.25;
       });
 
+
+
     // Load Product Model
     fetchProductData("/json/productInfo.json").then((data) => {
       const productData = data?.find(
@@ -234,53 +240,7 @@ export default function ProductInfo({ product, closeClicked, css2DScene }) {
             if (product == "virtual_production")
               forVirtualProduction(gltf.scene);
 
-            fetchHotspotData("/json/hotspotData.json").then((data) => {
-              const productData = data?.find(
-                (item) => item.productModelName === product
-              );
-              if (productData != null) {
-                //css2DHotspot
-                const hotspotArray = productData.hotspotArray;
-                if (hotspotArray) {
-                  hotspotArray.forEach((hotspot) => {
-                    const hotspotInstance = new Hotspot(
-                      "secondary",
-                      css2DSceneRef.current,
-                      hotspot.hotSpotPos,
-                      hotspot.distanceFormCam,
-                      hotspot.childHtmlUrl,
-                      hotspot.title,
-                      hotspot.subTitle,
-                      hotspot.videoID,
-                      hotspot.webURL,
-                      cameraRef.current,
-                      null, //productViewerCallback,
-                      false, //productPageVisible
-                      hotspot.iconURL
-                    );
-                    hotspotInstance.addToScene();
-                    hotspotsArray.push(hotspotInstance);
 
-                    // const hotspotInstance3D = new Hotspot3D(
-                    //   "secondary",
-                    //   css3DSceneRef.current,
-                    //   hotspot.hotSpotPos,
-                    //   hotspot.distanceFormCam,
-                    //   hotspot.childHtmlUrl,
-                    //   hotspot.title,
-                    //   hotspot.subTitle,
-                    //   hotspot.videoID,
-                    //   hotspot.webURL,
-                    //   cameraRef.current,
-                    //   null, //productViewerCallback,
-                    //   false //productPageVisible
-                    // );
-                    // hotspotInstance3D.addToScene();
-                    // hotspots3DArray.push(hotspotInstance3D);
-                  });
-                }
-              }
-            });
           },
           (xhr) => {
             //console.log(xhr);
@@ -362,6 +322,14 @@ export default function ProductInfo({ product, closeClicked, css2DScene }) {
   }, [product]); // Reinitialize when `product` changes
 
   useEffect(() => {
+    if (hotspotsArray) {
+      hotspotsArray.forEach((hotspot) => {
+        hotspot.setVisibility(showLogin);
+      });
+    }
+  }, [showLogin]);
+
+  useEffect(() => {
     if (loadedPercentage === 100 && cameraRef.current) {
       let camStartPos = new THREE.Vector3(-50, 50, 50);
       let camEndPos = new THREE.Vector3(15, 10, 15);
@@ -391,10 +359,84 @@ export default function ProductInfo({ product, closeClicked, css2DScene }) {
           // controlsRef.current.maxAzimuthAngle = Math.PI * 0.25;
           controlsRef.current.minDistance = 10;
           controlsRef.current.maxDistance = 100;
+
+          // Load Hotspot Data and create hotspots
+          fetchHotspotData("/json/hotspotData.json").then((data) => {
+            const productData = data?.find(
+              (item) => item.productModelName === product
+            );
+            if (productData != null) {
+              //css2DHotspot
+              const hotspotArray = productData.hotspotArray;
+              if (hotspotArray) {
+                hotspotArray.forEach((hotspot) => {
+                  const hotspotInstance = new Hotspot(
+                    "secondary",
+                    css2DSceneRef.current,
+                    hotspot.hotSpotPos,
+                    hotspot.distanceFormCam,
+                    hotspot.childHtmlUrl,
+                    hotspot.title,
+                    hotspot.subTitle,
+                    hotspot.videoID,
+                    hotspot.webURL,
+                    cameraRef.current,
+                    null, //productViewerCallback,
+                    false, //productPageVisible
+                    hotspot.iconURL,
+                    hotspot.type,
+                    allowBrochureDownload,
+                    hotspot.productName
+                  );
+                  hotspotInstance.addToScene();
+                  hotspotsArray.push(hotspotInstance);
+
+                  // const hotspotInstance3D = new Hotspot3D(
+                  //   "secondary",
+                  //   css3DSceneRef.current,
+                  //   hotspot.hotSpotPos,
+                  //   hotspot.distanceFormCam,
+                  //   hotspot.childHtmlUrl,
+                  //   hotspot.title,
+                  //   hotspot.subTitle,
+                  //   hotspot.videoID,
+                  //   hotspot.webURL,
+                  //   cameraRef.current,
+                  //   null, //productViewerCallback,
+                  //   false //productPageVisible
+                  // );
+                  // hotspotInstance3D.addToScene();
+                  // hotspots3DArray.push(hotspotInstance3D);
+                });
+              }
+            }
+          });
         },
       });
     }
   }, [loadedPercentage]);
+
+  //allow brochure download
+  const allowBrochureDownload = async (productName) => {
+    const res = await fetch(`/api/download-brochure?product=${productName}`);
+
+    if (res.status === 401) {
+      setShowLogin(true);
+      return;
+    }
+
+    // ✅ Convert response to a downloadable blob
+    const blob = await res.blob();
+    const url = window.URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "Brochure.pdf";
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    window.URL.revokeObjectURL(url);
+  };
 
   return (
     <div
@@ -410,6 +452,7 @@ export default function ProductInfo({ product, closeClicked, css2DScene }) {
       </div>
       {/* <Loading /> */}
       {loadedPercentage < 100 ? <Loading /> : null}
+      {showLogin ? <><div className={[styles.login_background].join(" ")}><GetStarted isDownloadRequest={true} closeCallback={() => setShowLogin(false)} /></div></> : null}
     </div>
   );
 }

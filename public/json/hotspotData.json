@@ -18,6 +18,7 @@
         "hotspotArray": [
             {
                 "id": 0,
+                "productName": "Car Configurator",
                 "hotSpotPos": [
                     5,
                     0,
@@ -32,6 +33,7 @@
             },
             {
                 "id": 1,
+                "productName": "Car Configurator",
                 "hotSpotPos": [
                     0,
                     10,
@@ -46,6 +48,7 @@
             },
             {
                 "id": 2,
+                "productName": "Car Configurator",
                 "hotSpotPos": [
                     -5,
                     0,
@@ -53,10 +56,11 @@
                 ],
                 "distanceFormCam": 30,
                 "childHtmlUrl": "/innerHtml/hotspot.html",
-                "title": "More Datails",
-                "subTitle": "Visualize your next car",
+                "title": "Car Configurator",
+                "subTitle": "Download Brochure",
+                "type": "brochure_download",
                 "webURL": "https://metavian.tech/index.html#gmc_car",
-                "iconURL": "/icons/internet.png"
+                "iconURL": "/icons/download.png"
             }
         ]
     },
@@ -80,6 +84,7 @@
         "hotspotArray": [
             {
                 "id": 0,
+                "productName": "Virtual Mart",
                 "hotSpotPos": [
                     -6.88312,
                     4.10252,
@@ -94,6 +99,7 @@
             },
             {
                 "id": 1,
+                "productName": "Virtual Mart",
                 "hotSpotPos": [
                     5.60678,
                     -1.77776,
@@ -108,6 +114,7 @@
             },
             {
                 "id": 2,
+                "productName": "Virtual Mart",
                 "hotSpotPos": [
                     7.33895,
                     4.10252,
@@ -141,6 +148,7 @@
         "hotspotArray": [
             {
                 "id": 0,
+                "productName": "Fashion IX",
                 "hotSpotPos": [
                     -7.72469,
                     5.63703,
@@ -155,6 +163,7 @@
             },
             {
                 "id": 1,
+                "productName": "Fashion IX",
                 "hotSpotPos": [
                     4.98392,
                     -1.81657,
@@ -169,6 +178,7 @@
             },
             {
                 "id": 2,
+                "productName": "Fashion IX",
                 "hotSpotPos": [
                     9.06669,
                     5.70875,
@@ -176,10 +186,10 @@
                 ],
                 "distanceFormCam": 30,
                 "childHtmlUrl": "/innerHtml/hotspot.html",
-                "title": "More Details",
-                "subTitle": "More details on fashionIX",
-                "webURL": "https://metavian.tech/",
-                "iconURL": "/icons/internet.png"
+                "subTitle": "Download Brochure",
+                "type": "brochure_download",
+                "webURL": "https://metavian.tech/index.html#gmc_car",
+                "iconURL": "/icons/download.png"
             }
         ]
     },
@@ -203,6 +213,7 @@
         "hotspotArray": [
             {
                 "id": 0,
+                "productName": "Edulab",
                 "hotSpotPos": [
                     -5.73743,
                     6.19643,
@@ -217,6 +228,7 @@
             },
             {
                 "id": 1,
+                "productName": "Edulab",
                 "hotSpotPos": [
                     7.38981,
                     -3.35066,
@@ -231,6 +243,7 @@
             },
             {
                 "id": 2,
+                "productName": "Edulab",
                 "hotSpotPos": [
                     7.43571,
                     6.28823,
@@ -265,6 +278,7 @@
         "hotspotArray": [
             {
                 "id": 0,
+                "productName": "Virtual Production",
                 "hotSpotPos": [
                     -8.49589,
                     7.05086,
@@ -279,6 +293,7 @@
             },
             {
                 "id": 1,
+                "productName": "Virtual Production",
                 "hotSpotPos": [
                     0,
                     -3.43839,
@@ -293,6 +308,7 @@
             },
             {
                 "id": 2,
+                "productName": "Virtual Production",
                 "hotSpotPos": [
                     8.61148,
                     7.05086,
@@ -327,6 +343,7 @@
         "hotspotArray": [
             {
                 "id": 0,
+                "productName": "Meta Realty",
                 "hotSpotPos": [
                     -7.04078,
                     8.21473,
@@ -341,6 +358,7 @@
             },
             {
                 "id": 1,
+                "productName": "Meta Realty",
                 "hotSpotPos": [
                     6.92199,
                     -2.22493,
@@ -355,6 +373,7 @@
             },
             {
                 "id": 2,
+                "productName": "Meta Realty",
                 "hotSpotPos": [
                     7.26191,
                     7.91085,

@@ -1,7 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import styles from "./getStarted.module.css";
 import { gsap } from "gsap";
-import { div } from "three/examples/jsm/nodes/Nodes";
 
 export default function GetStarted(props) {
   //const button = document.getElementById("button");
@@ -169,7 +168,7 @@ export default function GetStarted(props) {
       }, delay);
       delay = delay + 200;
     });
-  }, []);
+  }, [isLoggedIn]);
 
 
 
@@ -179,6 +178,21 @@ export default function GetStarted(props) {
   //   setIsButtonClicked(true);
   // }
 
+  async function logoutClicked() {
+    const res = await fetch("/api/logout", {
+      method: "GET",
+    });
+    const data = await res.json();
+    console.log(data);
+
+    if (res.status === 200) {
+      setUser(null);
+      setIsLoggedIn(false);
+    } else {
+      alert(data.error || data.message || "Something went wrong");
+    }
+  }
+
   async function submitClicked(buttonType) {
     const name = document.getElementById("input_1")?.value;
     const email = document.getElementById("input_2")?.value;
@@ -186,6 +200,10 @@ export default function GetStarted(props) {
     const phone = document.getElementById("input_4")?.value;
     let res;
     if (buttonType === "login") {
+      if (!email || !password) {
+        alert("Please enter email and password");
+        return;
+      }
       res = await fetch("/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -193,6 +211,10 @@ export default function GetStarted(props) {
       });
     }
     else if (buttonType === "register") {
+      if (!name || !email || !password) {
+        alert("Please fill name, email and password to register");
+        return;
+      }
       res = await fetch("/api/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -202,7 +224,11 @@ export default function GetStarted(props) {
     else if (buttonType === "skip") {
       // just proceed
       mapAllTextRef.current(loopThroughElementsRef.current);
-      setIsButtonClicked(true);
+      if (props.isDownloadRequest) {
+        props.closeCallback();
+      } else {
+        setIsButtonClicked(true);
+      }
       return;
     }
 
@@ -211,7 +237,11 @@ export default function GetStarted(props) {
 
     if (res.status === 200 || res.status === 201) {
       mapAllTextRef.current(loopThroughElementsRef.current);
-      setIsButtonClicked(true);
+      if (props.isDownloadRequest) {
+        props.closeCallback();
+      } else {
+        setIsButtonClicked(true);
+      }
     } else {
       alert(data.error || data.message || "Something went wrong");
     }
@@ -227,8 +257,7 @@ export default function GetStarted(props) {
               styles.position_right,
               styles.animate,
             ].join(" ")}
-          >
-            Welcome to Metavian
+          >{props.isDownloadRequest ? "Login to Download" : "Welcome to Metavian"}
           </p>
           <p
             className={[
@@ -245,13 +274,14 @@ export default function GetStarted(props) {
             styles.welcome_back_text,
             styles.position_right,
             styles.animate,
-          ].join(" ")}>welcome back {user.name}</div>
+          ].join(" ")}>Welcome back {user.name}</div>
             <button
               className={[
                 styles.skip_button_style,
                 styles.cssbuttons_io_button,
                 styles.position_right,
                 isButtonClicked ? styles.grey_out : "",
+                styles.continue_button_style,
                 styles.animate,
               ].join(" ")}
               onClick={() => {
@@ -273,7 +303,37 @@ export default function GetStarted(props) {
                   ></path>
                 </svg>
               </div>
-            </button></>) :
+            </button>
+            {/*  */}
+            <button
+              className={[
+                styles.logout_cssbuttons_io_button,
+                styles.position_right,
+                isButtonClicked ? styles.grey_out : "",
+                styles.logout_button_style,
+                styles.animate,
+              ].join(" ")}
+              onClick={() => {
+                logoutClicked();
+              }}
+            ><p>Logout</p>
+
+              <div className={styles.icon}>
+                <svg
+                  height="24"
+                  width="24"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path d="M0 0h24v24H0z" fill="none"></path>
+                  <path
+                    d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z"
+                    fill="currentColor"
+                  ></path>
+                </svg>
+              </div>
+            </button>
+          </>) :
             (<><input
               id="input_1"
               className={
