@@ -774,23 +774,26 @@ export default function Horizon() {
       }
 
       function teamSceneHoverEffect(intersectedObject) {
-        if (
-          currentUserPositionRef.current == "Menu Item 4" &&
-          intersectedObject.length > 0 && intersectedObject[0].object.parent.name == "frames_parent"
+        if (currentUserPositionRef.current == "Menu Item 4"
         ) {
-          // selectedObjects?.forEach((obj)=>{
-          // obj.selectedObj.material.map.repeat.set(1, 1);
-          // })
-          const selectedObj = intersectedObject[0].object;
+          if (
+            intersectedObject.length > 0 && intersectedObject[0].object.userData.type == "hover_box"
+          ) {
+            // selectedObjects?.forEach((obj)=>{
+            // obj.selectedObj.material.map.repeat.set(1, 1);
+            // })
+            const selectedObj = intersectedObject[0].object;
 
-          // selectedObj.material.map.repeat.set(0.5, 0.5);
-          addSelectedObject(selectedObj);
-          canvasRef.current.style.cursor = "pointer";
-        } else {
+            // selectedObj.material.map.repeat.set(0.5, 0.5);
+            addSelectedObject(selectedObj.parent);
+            teamScene.rotateChair(selectedObj.name);
+            canvasRef.current.style.cursor = "pointer";
+          } else {
 
-          // addSelectedObject(null);
+            // addSelectedObject(null);
 
-          canvasRef.current.style.cursor = "auto";
+            canvasRef.current.style.cursor = "auto";
+          }
         }
       }
 
@@ -1955,7 +1958,7 @@ export default function Horizon() {
             sceneRef.current.remove(projection_object);
             sceneRef.current.remove(social_media_models_scene);
 
-            teamScene.removeFromScene();
+            if (teamScene) teamScene.removeFromScene();
 
             tweenCameraToNewPositionAndRotation(
               cameraRef.current,
@@ -2007,7 +2010,7 @@ export default function Horizon() {
               addScrollTrigger();
             }
 
-            teamScene.removeFromScene();
+            if (teamScene) teamScene.removeFromScene();
 
             tweenCameraToNewPositionAndRotation(
               cameraRef.current,
@@ -2048,7 +2051,7 @@ export default function Horizon() {
           }
         });
 
-        teamScene.removeFromScene();
+        if (teamScene) teamScene.removeFromScene();
 
         tweenCameraToNewPositionAndRotation(
           cameraRef.current,
@@ -2092,7 +2095,7 @@ export default function Horizon() {
               addScrollTriggerForContactsModels();
             });
 
-            teamScene.removeFromScene();
+            if (teamScene) teamScene.removeFromScene();
 
             tweenCameraToNewPositionAndRotation(
               cameraRef.current,
@@ -2142,11 +2145,11 @@ export default function Horizon() {
               controlsRef.current,
               currentCameraTargetRef.current,
               { x: 55.0009, y: 2.47723, z: 107.594 }, // Target position
-              { x: 54.4541, y: 6.28496, z: 51.9438 } // New camera position
+              { x: 54.4541, y: 6.28496, z: 70 } // New camera  z:51.9438
             ).then(() => {
               //
               camCursorAnimatorRef.current.currentCamPos =
-                { x: 54.4541, y: 6.28496, z: 51.9438 };
+                { x: 54.4541, y: 6.28496, z: 70 };
               camCursorAnimatorRef.current.currentCamTarget = {
                 x: 55.0009,
                 y: 2.47723,
@@ -2186,7 +2189,7 @@ export default function Horizon() {
             sceneRef.current.remove(capsule_anchorRef.current);
             sceneRef.current.remove(projection_object);
             sceneRef.current.remove(social_media_models_scene);
-            teamScene.removeFromScene();
+            if (teamScene) teamScene.removeFromScene();
 
             tweenCameraToNewPositionAndRotation(
               cameraRef.current,
@@ -2737,9 +2740,9 @@ export default function Horizon() {
     selectedItemInSubMenu2(circleName);
   };
 
-  useEffect(() => {
-    console.log("selected object changed: ", selectedObject);
-  }, [selectedObject]);
+  // useEffect(() => {
+  //   console.log("selected object changed: ", selectedObject);
+  // }, [selectedObject]);
 
   return (
     <loadingContext.Provider value={{ loadedPercentage, setLoadedPercentage }}>

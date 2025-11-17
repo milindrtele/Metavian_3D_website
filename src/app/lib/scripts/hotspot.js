@@ -31,7 +31,8 @@ class Hotspot {
     iconURL,
     type,
     downloadCallback,
-    productName
+    productName,
+    callCalendly
   ) {
     this.hotspotType = hotspotType;
     this.cssScene = cssScene;
@@ -64,6 +65,7 @@ class Hotspot {
     this.type = type || null;
     this.downloadCallback = downloadCallback || null;
     this.productName = productName || null;
+    this.callCalendly = callCalendly || null;
 
     this.init();
   }
@@ -140,6 +142,9 @@ class Hotspot {
 
     const hotspot = this.child.querySelector("#hotspot_container_parent");
     const hotspot_icon = this.child.querySelector("#hotspot_icon");
+    if (this.iconURL) {
+      hotspot_icon.style.backgroundImage = `url(${this.iconURL})`;
+    }
     const details_container = this.child.querySelector("#details_container");
 
     let mouseIn = false;
@@ -182,6 +187,8 @@ class Hotspot {
       if (this.type === "brochure_download") {
         console.log("download brochure for " + this.productName);
         if (this.downloadCallback) this.downloadCallback(this.productName);
+      } else if (this.type === "calendly") {
+        this.callCalendly(this.productName);
       } else {
         window.open(this.webURL, "_blank");
       }

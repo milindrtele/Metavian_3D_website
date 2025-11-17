@@ -5,13 +5,13 @@ const overlayVariants = [
   {
     id: 1,
 
-    name: "Car Configurator",
+    name: "3D Car Configurator",
     model_name: "car_configurator",
     description: "Description for Car Configurator",
   },
   {
     id: 2,
-    name: "Meta Realty",
+    name: "MetaRealty VR",
     model_name: "meta_realty",
     description: "Description for Meta Realty",
   },
@@ -23,7 +23,7 @@ const overlayVariants = [
   },
   {
     id: 4,
-    name: "Edulab",
+    name: "VR EduLab",
     model_name: "edulab_v1",
     description: "Description for Edulab",
   },

@@ -183,7 +183,7 @@
   }
 
   to {
-    width: 16vw;
+    width: 20vw;
     height: 6vw;
     left: -40%;
     top: -40%;
@@ -229,9 +229,9 @@
 #hotspot_icon {
   width: 100%;
   height: 100%;
-  transform: rotate(45deg);
-  background-image: url("../../public/icons/plus-solid.svg");
-  background-size: 30%;
+  transform: rotate(-45deg);
+  /* background-image: url("../../public/icons/plus-solid.svg"); */
+  background-size: 60%;
   background-position: center;
   background-repeat: no-repeat;
   /* transition: opacity 0.25s ease-in-out; */

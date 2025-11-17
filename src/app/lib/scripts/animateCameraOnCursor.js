@@ -26,7 +26,8 @@ class camAnimator {
       y: -(event.clientY / window.innerHeight) * 2 + 1, // Normalize Y to [-1, 1]
     };
 
-    this.camera.position.x = this.currentCamPos.x + this.mousePos.x * this.rotationSpeed;
+    this.camera.position.x =
+      this.currentCamPos.x - this.mousePos.x * this.rotationSpeed;
 
     console.log("x : " + this.currentCamPos.x);
     // this.camera.position.x = THREE.MathUtils.lerp(

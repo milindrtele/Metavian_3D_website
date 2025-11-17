@@ -100,7 +100,6 @@ function LineOverlay({ progress }) {
 
   useEffect(() => {
     let angle = (Math.min(Math.max(progress, 0), 0.96) / 0.96) * 360;
-    console.log(progress);
     changeFov(angle);
     //changeAngle(angle);
   }, [progress]);

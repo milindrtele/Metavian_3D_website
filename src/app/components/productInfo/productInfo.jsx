@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef, useContext } from "react";
 import * as THREE from "three";
+import Script from "next/script";
 import { loadingContext } from "../contexts/loadingContext.jsx";
 import styles from "./productInfo.module.css";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
@@ -28,7 +29,7 @@ import GetStarted from "../getStarted/getStarted.jsx";
 let productsDataCache = null;
 let hotspotDataCache = null;
 
-let hotspotsArray = [];
+// let hotspotsArray = [];
 // let hotspots3DArray = [];
 
 async function fetchProductData(url) {
@@ -77,6 +78,7 @@ export default function ProductInfo({ product, closeClicked, css2DScene }) {
   const tail_rotorRef = useRef(null);
   const starsRef = useRef(null); //stars
   const [showLogin, setShowLogin] = useState(false);
+  const hotspotsArrayRef = useRef([]);
 
   function forVirtualProduction(scene) {
     // Create a video element
@@ -288,7 +290,7 @@ export default function ProductInfo({ product, closeClicked, css2DScene }) {
         }
       });
 
-      hotspotsArray.forEach((hotspot) => {
+      hotspotsArrayRef.current.forEach((hotspot) => {
         hotspot.removeFromScene();
       });
 
@@ -316,21 +318,21 @@ export default function ProductInfo({ product, closeClicked, css2DScene }) {
       cameraRef.current = null;
       controlsRef.current = null;
       rendererRef.current = null;
-      hotspotsArray = [];
+      hotspotsArrayRef.current = [];
       // hotspots3DArray = [];
     };
   }, [product]); // Reinitialize when `product` changes
 
   useEffect(() => {
-    if (hotspotsArray) {
-      hotspotsArray.forEach((hotspot) => {
+    if (hotspotsArrayRef.current) {
+      hotspotsArrayRef.current.forEach((hotspot) => {
         hotspot.setVisibility(showLogin);
       });
     }
   }, [showLogin]);
 
   useEffect(() => {
-    if (loadedPercentage === 100 && cameraRef.current) {
+    if (loadedPercentage === 100 && cameraRef.current && hotspotsArrayRef.current.length === 0) {
       let camStartPos = new THREE.Vector3(-50, 50, 50);
       let camEndPos = new THREE.Vector3(15, 10, 15);
 
@@ -386,10 +388,11 @@ export default function ProductInfo({ product, closeClicked, css2DScene }) {
                     hotspot.iconURL,
                     hotspot.type,
                     allowBrochureDownload,
-                    hotspot.productName
+                    hotspot.productName,
+                    callCalendly
                   );
                   hotspotInstance.addToScene();
-                  hotspotsArray.push(hotspotInstance);
+                  hotspotsArrayRef.current.push(hotspotInstance);
 
                   // const hotspotInstance3D = new Hotspot3D(
                   //   "secondary",
@@ -416,9 +419,21 @@ export default function ProductInfo({ product, closeClicked, css2DScene }) {
     }
   }, [loadedPercentage]);
 
+  const callCalendly = (productName) => {
+    const calendlyUrl = `https://calendly.com/team-metavian`;
+    window.open(calendlyUrl, "_blank");
+  }
+
   //allow brochure download
   const allowBrochureDownload = async (productName) => {
     const res = await fetch(`/api/download-brochure?product=${productName}`);
+    console.log(`/api/download-brochure?product=${productName}`);
+
+    if (!res.ok) {
+      const error = await res.json();
+      alert(error.error || "Failed to download");
+      return;
+    }
 
     if (res.status === 401) {
       setShowLogin(true);
@@ -428,10 +443,11 @@ export default function ProductInfo({ product, closeClicked, css2DScene }) {
     // ✅ Convert response to a downloadable blob
     const blob = await res.blob();
     const url = window.URL.createObjectURL(blob);
+    console.log("Download URL:", url);
 
     const link = document.createElement("a");
     link.href = url;
-    link.download = "Brochure.pdf";
+    link.download = `${productName} Brochure.pdf`//"Brochure.pdf";
     document.body.appendChild(link);
     link.click();
     link.remove();
@@ -443,6 +459,14 @@ export default function ProductInfo({ product, closeClicked, css2DScene }) {
       ref={product_info_containerRef}
       className={styles.product_info_container}
     >
+      <link
+        href="https://assets.calendly.com/assets/external/widget.css"
+        rel="stylesheet"
+      />
+      <Script
+        src="https://assets.calendly.com/assets/external/widget.js"
+        strategy="lazyOnload"
+      />
       <canvas
         className={styles.product_3d_viewer}
         ref={productCanvasRef}

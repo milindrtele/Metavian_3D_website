@@ -9,7 +9,7 @@ export async function GET(req) {
   try {
     const url = new URL(req.url);
     const product = url.searchParams.get("product");
-    console.log("Requested product:", product);
+    // console.log("Requested product:", product);
 
     if (!product) {
       return new Response("Missing product", { status: 400 });
@@ -20,16 +20,20 @@ export async function GET(req) {
       return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
     }
 
-    console.log("Token found:", token);
+    // console.log("Token found:", token);
 
     // ✅ Validate token
-    jwt.verify(token, process.env.JWT_SECRET);
+    try {
+      jwt.verify(token, process.env.JWT_SECRET);
+    } catch (err) {
+      return NextResponse.json({ error: "Invalid token" }, { status: 401 });
+    }
 
     // ✅ Map product to specific file
     const fileMap = {
       "Car Configurator": "3D-Car-Config-Features.pdf",
       "Virtual Mart": "Roof-Configurator.pdf",
-      "Fashion IX": "Virtual-Fashion-Store.pdf",
+      "Fashion IX": "Virtual-Fashion-Store-Vertical.pdf",
       Edulab: "Roof-Configurator.pdf",
       "Virtual Production": "Roof-Configurator.pdf",
       "Meta Realty": "Metarealty_Brochure.pdf",
@@ -45,7 +49,7 @@ export async function GET(req) {
       process.cwd(),
       "src",
       "pdf",
-      "Product Brochures",
+      "Product_Brochures",
       brochureFile
     );
     const fileBuffer = fs.readFileSync(filePath);

@@ -13,7 +13,7 @@
             "childHtmlUrl": "/innerHtml/hotspot.html",
             "title": "Car Configurator",
             "subTitle": "Visualize your next car",
-            "webURL": "https://www.surajwaterpark.com/"
+            "webURL": "https://metavian.tech/"
         },
         "hotspotArray": [
             {
@@ -26,7 +26,7 @@
                 ],
                 "distanceFormCam": 30,
                 "childHtmlUrl": "/innerHtml/hotspot.html",
-                "title": "Checkout Car Configurator",
+                "title": "Checkout Car Configurator on web",
                 "subTitle": "Visualize your next car",
                 "webURL": "https://gmc.metavian.io/",
                 "iconURL": "/icons/internet.png"
@@ -35,9 +35,9 @@
                 "id": 1,
                 "productName": "Car Configurator",
                 "hotSpotPos": [
-                    0,
+                    5,
                     10,
-                    0
+                    -5
                 ],
                 "distanceFormCam": 30,
                 "childHtmlUrl": "/innerHtml/hotspot.html",
@@ -61,6 +61,22 @@
                 "type": "brochure_download",
                 "webURL": "https://metavian.tech/index.html#gmc_car",
                 "iconURL": "/icons/download.png"
+            },
+            {
+                "id": 3,
+                "productName": "Car Configurator",
+                "hotSpotPos": [
+                    -5,
+                    10,
+                    -5
+                ],
+                "distanceFormCam": 30,
+                "childHtmlUrl": "/innerHtml/hotspot.html",
+                "title": "Car Configurator",
+                "subTitle": "Schedule a Demo",
+                "type": "calendly",
+                "webURL": "https://metavian.tech/index.html#gmc_car",
+                "iconURL": "/icons/meeting.png"
             }
         ]
     },
@@ -78,7 +94,7 @@
             "childHtmlUrl": "/innerHtml/hotspot.html",
             "title": "Virtual Mart",
             "subTitle": "Virtual shopping experience",
-            "webURL": "https://www.surajwaterpark.com/",
+            "webURL": "https://metavian.tech/",
             "iconURL": "/icons/internet.png"
         },
         "hotspotArray": [
@@ -124,7 +140,7 @@
                 "childHtmlUrl": "/innerHtml/hotspot.html",
                 "title": "Virtual Mart",
                 "subTitle": "VR Mart",
-                "webURL": "https://www.surajwaterpark.com/",
+                "webURL": "https://metavian.tech/",
                 "iconURL": "/icons/internet.png"
             }
         ]
@@ -143,7 +159,7 @@
             "childHtmlUrl": "/innerHtml/hotspot.html",
             "title": "Fashion IX",
             "subTitle": "Virtual fashion experience",
-            "webURL": "https://www.surajwaterpark.com/"
+            "webURL": "https://metavian.tech/"
         },
         "hotspotArray": [
             {
@@ -186,9 +202,9 @@
                 ],
                 "distanceFormCam": 30,
                 "childHtmlUrl": "/innerHtml/hotspot.html",
+                "title": "Fashion IX",
                 "subTitle": "Download Brochure",
                 "type": "brochure_download",
-                "webURL": "https://metavian.tech/index.html#gmc_car",
                 "iconURL": "/icons/download.png"
             }
         ]
@@ -207,7 +223,7 @@
             "childHtmlUrl": "/innerHtml/hotspot.html",
             "title": "Edulab",
             "subTitle": "Education in VR",
-            "webURL": "https://www.surajwaterpark.com/",
+            "webURL": "https://metavian.tech/",
             "iconURL": "/icons/internet.png"
         },
         "hotspotArray": [
@@ -223,7 +239,7 @@
                 "childHtmlUrl": "/innerHtml/hotspot.html",
                 "title": "Edulab",
                 "subTitle": "Edulab on Youtube",
-                "webURL": "https://www.surajwaterpark.com/",
+                "webURL": "https://metavian.tech/",
                 "iconURL": "/icons/internet.png"
             },
             {
@@ -236,9 +252,9 @@
                 ],
                 "distanceFormCam": 30,
                 "childHtmlUrl": "/innerHtml/hotspot.html",
-                "title": "Car Configurator",
-                "subTitle": "Visualize your next car",
-                "webURL": "https://www.surajwaterpark.com/",
+                "title": "Edulab",
+                "subTitle": "Education in VR",
+                "webURL": "https://metavian.tech/",
                 "iconURL": "/icons/internet.png"
             },
             {
@@ -251,9 +267,9 @@
                 ],
                 "distanceFormCam": 30,
                 "childHtmlUrl": "/innerHtml/hotspot.html",
-                "title": "Car Configurator",
-                "subTitle": "Visualize your next car",
-                "webURL": "https://www.surajwaterpark.com/",
+                "title": "Edulab",
+                "subTitle": "Education in VR",
+                "webURL": "https://metavian.tech/",
                 "iconURL": "/icons/internet.png"
             }
         ]
@@ -272,7 +288,7 @@
             "childHtmlUrl": "/innerHtml/hotspot.html",
             "title": "Virtual Production",
             "subTitle": "Virtual media production",
-            "webURL": "https://www.surajwaterpark.com/",
+            "webURL": "https://metavian.tech/",
             "iconURL": "/icons/internet.png"
         },
         "hotspotArray": [
@@ -286,9 +302,9 @@
                 ],
                 "distanceFormCam": 30,
                 "childHtmlUrl": "/innerHtml/hotspot.html",
-                "title": "Car Configurator",
+                "title": "Virtual Production",
                 "subTitle": "Visualize your next car",
-                "webURL": "https://www.surajwaterpark.com/",
+                "webURL": "https://metavian.tech/",
                 "iconURL": "/icons/internet.png"
             },
             {
@@ -301,9 +317,9 @@
                 ],
                 "distanceFormCam": 30,
                 "childHtmlUrl": "/innerHtml/hotspot.html",
-                "title": "Car Configurator",
+                "title": "Virtual Production",
                 "subTitle": "Visualize your next car",
-                "webURL": "https://www.surajwaterpark.com/",
+                "webURL": "https://metavian.tech/",
                 "iconURL": "/icons/internet.png"
             },
             {
@@ -316,9 +332,9 @@
                 ],
                 "distanceFormCam": 30,
                 "childHtmlUrl": "/innerHtml/hotspot.html",
-                "title": "Car Configurator",
+                "title": "Virtual Production",
                 "subTitle": "Visualize your next car",
-                "webURL": "https://www.surajwaterpark.com/",
+                "webURL": "https://metavian.tech/",
                 "iconURL": "/icons/internet.png"
             }
         ]
@@ -337,7 +353,7 @@
             "childHtmlUrl": "/innerHtml/hotspot.html",
             "title": "Meta Realty",
             "subTitle": "Visualise Realty in 3D",
-            "webURL": "https://www.surajwaterpark.com/",
+            "webURL": "https://metavian.tech/",
             "iconURL": "/icons/internet.png"
         },
         "hotspotArray": [
@@ -351,9 +367,9 @@
                 ],
                 "distanceFormCam": 30,
                 "childHtmlUrl": "/innerHtml/hotspot.html",
-                "title": "Car Configurator",
-                "subTitle": "Visualize your next car",
-                "webURL": "https://www.surajwaterpark.com/",
+                "title": "Meta Realty",
+                "subTitle": "Visualise Realty in 3D",
+                "webURL": "https://metavian.tech/",
                 "iconURL": "/icons/internet.png"
             },
             {
@@ -366,9 +382,9 @@
                 ],
                 "distanceFormCam": 30,
                 "childHtmlUrl": "/innerHtml/hotspot.html",
-                "title": "Car Configurator",
-                "subTitle": "Visualize your next car",
-                "webURL": "https://www.surajwaterpark.com/",
+                "title": "Meta Realty",
+                "subTitle": "Visualise Realty in 3D",
+                "webURL": "https://metavian.tech/",
                 "iconURL": "/icons/internet.png"
             },
             {
@@ -381,10 +397,11 @@
                 ],
                 "distanceFormCam": 30,
                 "childHtmlUrl": "/innerHtml/hotspot.html",
-                "title": "Car Configurator",
-                "subTitle": "Visualize your next car",
-                "webURL": "https://www.surajwaterpark.com/",
-                "iconURL": "/icons/internet.png"
+                "title": "Meta Realty",
+                "subTitle": "Download Brochure",
+                "type": "brochure_download",
+                "iconURL": "/icons/download.png"
+            
             }
         ]
     }
