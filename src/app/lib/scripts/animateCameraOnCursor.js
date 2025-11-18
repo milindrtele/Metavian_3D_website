@@ -7,7 +7,7 @@ class camAnimator {
     this.target = target;
     this.onMouseMove = this.onMouseMove.bind(this);
     this.mousePos = {};
-    this.rotationSpeed = 5;
+    this.rotationSpeed = 30;
     this.currentCamPos = null;
     this.currentCamTarget = null;
     // this.init();
@@ -29,7 +29,7 @@ class camAnimator {
     this.camera.position.x =
       this.currentCamPos.x - this.mousePos.x * this.rotationSpeed;
 
-    console.log("x : " + this.currentCamPos.x);
+    // console.log("x : " + this.currentCamPos.x);
     // this.camera.position.x = THREE.MathUtils.lerp(
     //   this.currentCamPos.x,
     //   this.currentCamPos.x + this.mousePos.x * this.rotationSpeed,

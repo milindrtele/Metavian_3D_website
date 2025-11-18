@@ -2145,11 +2145,11 @@ export default function Horizon() {
               controlsRef.current,
               currentCameraTargetRef.current,
               { x: 55.0009, y: 2.47723, z: 107.594 }, // Target position
-              { x: 54.4541, y: 6.28496, z: 70 } // New camera  z:51.9438
+              { x: 54.4541, y: 6.28496, z: 85 } // New camera  z:51.9438
             ).then(() => {
               //
               camCursorAnimatorRef.current.currentCamPos =
-                { x: 54.4541, y: 6.28496, z: 70 };
+                { x: 54.4541, y: 6.28496, z: 85 };
               camCursorAnimatorRef.current.currentCamTarget = {
                 x: 55.0009,
                 y: 2.47723,

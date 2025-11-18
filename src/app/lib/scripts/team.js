@@ -25,7 +25,7 @@ class teamHandler {
     // Load a glTF resource
     this.loader.load(
       // resource URL
-      "/models/team_scene/team scene with chair.glb", //cleaned_team_v03.glb
+      "/models/team_scene/team scene with chair_02.glb", //cleaned_team_v03.glb
       // called when the resource is loaded
       (gltf) => {
         // Use arrow function here
@@ -39,7 +39,7 @@ class teamHandler {
           }
         });
 
-        console.log(this.animationCompleted);
+        console.log(this.teamScene);
 
         gltf.animations; // Array<THREE.AnimationClip>
         gltf.scene; // THREE.Group
@@ -121,7 +121,7 @@ class teamHandler {
         duration: 0.5,
         ease: "power2.inOut",
         onStart: () => {
-          this.animationCompleted[objectName] = false;
+          this.animationCompleted[objectName] = true;
         },
         onComplete: () => {
           this.animationCompleted[objectName] = true;
