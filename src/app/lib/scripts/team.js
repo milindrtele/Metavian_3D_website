@@ -25,7 +25,7 @@ class teamHandler {
     // Load a glTF resource
     this.loader.load(
       // resource URL
-      "/models/team_scene/team scene with chair_02.glb", //cleaned_team_v03.glb
+      "/models/team_scene/team scene with chair_04.glb", //cleaned_team_v03.glb
       // called when the resource is loaded
       (gltf) => {
         // Use arrow function here
@@ -33,6 +33,13 @@ class teamHandler {
         this.teamScene = gltf.scene;
         this.addUserDataToObject(this.teamScene);
         this.anchor_parent = this.teamScene.getObjectByName("anchors_parent");
+        this.spotLightParent =
+          this.teamScene.getObjectByName("spotlight_parent");
+        this.spotLightParent.traverse((child) => {
+          if (child.isLight) {
+            child.penumbra = 1;
+          }
+        });
         this.anchor_parent.traverse((child) => {
           if (child.isMesh && child.name.startsWith("box_")) {
             this.animationCompleted[child.name] = false;
@@ -118,7 +125,7 @@ class teamHandler {
     if (chair && !this.animationCompleted[objectName]) {
       gsap.to(chair.parent.rotation, {
         y: chair.rotation.y + Math.PI,
-        duration: 0.5,
+        duration: 2,
         ease: "power2.inOut",
         onStart: () => {
           this.animationCompleted[objectName] = true;
@@ -127,6 +134,23 @@ class teamHandler {
           this.animationCompleted[objectName] = true;
         },
       });
+
+      if (this.spotLightParent) {
+        this.spotLightParent.traverse((child) => {
+          console.log(
+            "spotlight child name: ",
+            child.name + `  ${objectName}_sl`
+          );
+          if (child.name === `${objectName}_sl`) {
+            console.log("Animating spotlight for:", child.name);
+            gsap.to(child, {
+              intensity: 543.5141306588226,
+              duration: 2,
+              ease: "power2.in",
+            });
+          }
+        });
+      }
 
       //this.onRotateChairBack(objectName);
     }

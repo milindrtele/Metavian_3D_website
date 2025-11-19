@@ -1,0 +1,29 @@
+.team_info_parent {
+    position: fixed;
+    bottom: 5%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30vw;
+    height: 10vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.826);
+    z-index: 0;
+}
+
+
+.team_info_header {
+    color: rgba(255, 255, 255, 0.694);
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 0;
+}
+
+.team_info_body {
+    color: rgb(219, 1, 253);
+    font-size: 1.5rem;
+    font-weight: 200;
+    margin: 0;
+}

@@ -138,6 +138,7 @@ import CircleOverlay from "./components/overlays/circleOverlay/circleOverlay.jsx
 import LineOverlay from "./components/overlays/lineOverlay/lineOverlay.jsx";
 import CircleMenu from "./components/circle_menu/CircleMenu.jsx";
 import LandScapeMessage from "./components/landScapeMessage/LandScapeMessage.jsx";
+import TeamInfo from "./components/teamInfo/teamInfo.jsx";
 
 import Stars from "./lib/scripts/stars.js";
 
@@ -278,6 +279,11 @@ export default function Horizon() {
 
   //
   const videoRef = useRef(null);
+
+  //team info
+  const [isTeamInfoVisible, setIsTeamInfoVisible] = useState(false);
+  const [selectedTeamMember, setSelectedTeamMember] = useState(null);
+  //const selectedTeamMemberRef = useRef(null);
 
   gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
   gsap.registerPlugin(CustomEase);
@@ -783,9 +789,12 @@ export default function Horizon() {
             // obj.selectedObj.material.map.repeat.set(1, 1);
             // })
             const selectedObj = intersectedObject[0].object;
+            console.log(selectedObj);
 
             // selectedObj.material.map.repeat.set(0.5, 0.5);
-            addSelectedObject(selectedObj.parent);
+            addSelectedObject(selectedObj.parent.children[0]);
+            console.log(selectedObj.parent.name);
+            setSelectedTeamMember(selectedObj.parent.name);
             teamScene.rotateChair(selectedObj.name);
             canvasRef.current.style.cursor = "pointer";
           } else {
@@ -1227,8 +1236,8 @@ export default function Horizon() {
       outlinePassRef.current.edgeGlow = 1.0; // 0.0 to 1.0
       outlinePassRef.current.edgeThickness = 4; // 1 to 4
       outlinePassRef.current.pulsePeriod = 5; // 0 to 5
-      outlinePassRef.current.visibleEdgeColor.set("#009dff");
-      outlinePassRef.current.hiddenEdgeColor.set("#009dff");
+      outlinePassRef.current.visibleEdgeColor.set("#4dff83");
+      outlinePassRef.current.hiddenEdgeColor.set("#4dff83");
 
       //composer.addPass(ssrPass);
       //composer.addPass(bloomPass);
@@ -1976,6 +1985,7 @@ export default function Horizon() {
             //
             camCursorAnimatorRef.current.remove();
             playShaderVideo();
+            setIsTeamInfoVisible(false);
           })
           .catch((error) => {
             console.error("Failed to stop video: ", error);
@@ -2026,6 +2036,7 @@ export default function Horizon() {
             };
             //
             camCursorAnimatorRef.current.remove();
+            setIsTeamInfoVisible(false);
           })
           .catch((error) => {
             console.error("Failed to stop video: ", error);
@@ -2065,6 +2076,7 @@ export default function Horizon() {
         camCursorAnimatorRef.current.remove();
 
         circleSelected("Meta Realty");
+        setIsTeamInfoVisible(false);
       } else if (currentUserPositionRef.current == "Menu Item 3") {
         pauseShaderVideo();
         removeAllHotspotsFromArray();
@@ -2115,6 +2127,7 @@ export default function Horizon() {
             };
             //
             camCursorAnimatorRef.current.remove();
+            setIsTeamInfoVisible(false);
           })
           .catch((error) => {
             console.error("Failed to stop video: ", error);
@@ -2165,6 +2178,8 @@ export default function Horizon() {
             };
 
             teamScene.addToScene();
+
+            setIsTeamInfoVisible(true);
           })
           .catch((error) => {
             console.error("Failed to stop video: ", error);
@@ -2203,6 +2218,8 @@ export default function Horizon() {
               y: 2.47723,
               z: 107.594,
             };
+
+            setIsTeamInfoVisible(false);
 
             printerScene.addToScene();
 
@@ -2810,10 +2827,12 @@ export default function Horizon() {
               product={productToViewInViewer}
             />
           )}
+
         </div>
         {loadedPercentage < 100 && !productPageVisible && <Loading />}
         <AudioOverlay />
         {isLandscape ? null : <LandScapeMessage />}
+        {isTeamInfoVisible ? <TeamInfo selectedTeamMember={selectedTeamMember} /> : null}
       </currentSceneContext.Provider>
     </loadingContext.Provider>
   );

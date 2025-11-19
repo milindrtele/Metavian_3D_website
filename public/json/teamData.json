@@ -1,0 +1,32 @@
+[
+    {   
+        "identifier": "ujas_anchor",
+        "memberName": "Ujas Pandya",
+        "memberDiscription": "Lead Process executive."
+    },
+    {
+        "identifier": "dax_anchor",
+        "memberName": "Dax Thomas",
+        "memberDiscription": "Game Developer, Unity and Unreal Engine"
+    },
+    {
+        "identifier": "ashutosh_anchor",
+        "memberName": "Ashutosh Kadam",
+        "memberDiscription": "3D Artist and Animator"
+    },
+    {
+        "identifier": "milind_anchor",
+        "memberName": "Milind Tele",
+        "memberDiscription": "3D Web Developer"
+    },
+    {
+        "identifier": "susant_anchor",
+        "memberName": "Susant Dasari",
+        "memberDiscription": "Full Stack Developer"
+    },
+    {
+        "identifier": "ketan_anchor",
+        "memberName": "Ketan Bhagat",
+        "memberDiscription": "Production Coordinator"
+    }
+]
