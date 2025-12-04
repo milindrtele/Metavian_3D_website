@@ -429,7 +429,7 @@ export default function StartingMessage(props) {
         </div>
       </div>
 
-      {isDiwaliVisible ? <DiwaliWishes close={closeDiwaliWhish} /> : null}
+      {/* {isDiwaliVisible ? <DiwaliWishes close={closeDiwaliWhish} /> : null} */}
     </>
   );
 }
