@@ -142,6 +142,9 @@ import TeamInfo from "./components/teamInfo/teamInfo.jsx";
 
 import Stars from "./lib/scripts/stars.js";
 
+//import models
+import carConfigWithoutAnimation from "@/assets/models/car_configurator_without_animation.glb";
+
 const roboto = Roboto({
   weight: "400",
   subsets: ["latin"],
@@ -252,7 +255,7 @@ export default function Horizon() {
   const currentCameraTargetRef = useRef(null);
 
   const [selectedModelUrl, setSelectedModelUrl] = useState(
-    "models/Consolidated models/saperated_animated_models/car_configurator/car_configurator_without_animation.glb"
+    carConfigWithoutAnimation
   );
 
   const [productToViewInViewer, setProductToViewInViewer] = useState(null);

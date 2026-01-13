@@ -18,6 +18,10 @@ import Hotspot from "./hotspot";
 import { gsap } from "gsap";
 import { vec3 } from "three/examples/jsm/nodes/Nodes.js";
 
+//imoprt models
+import contact_model_11_11_25 from "@/assets/models/contact_model_11_11_25.glb";
+import capsule from "@/assets/models/capsule/capsule.glb";
+
 let blenderCamera = null;
 let contact_model_Camera = null;
 let animationMixers = [];
@@ -280,8 +284,9 @@ export function loadAssetsWithPromise(
     loader.load(
       //"/models/contact models/contact_models_with_vr_headset_with_animations.glb",
       // "/models/contact models/contact_models_with_vr_headset_with_animation_and_optimisation_2_v02.glb",
-      "/models/contact models/contact_model_11_11_25.glb",
+      //"/models/contact models/contact_model_11_11_25.glb",
       //"/models/contact models/contacts_model_with_highliter_v01.glb",
+      contact_model_11_11_25,
       (gltf) => {
         social_media_models_scene = gltf.scene;
         //scene.add(social_media_models_scene);
@@ -456,7 +461,8 @@ export function loadAssetsWithPromise(
     //load the capsule
     loader.load(
       //"models/capsule/cosmos ship of imagination.glb",
-      "models/capsule/capsule/capsule.glb", //capsule_textured_with projection_display_legs_1_1k
+      //"models/capsule/capsule/capsule.glb", //capsule_textured_with projection_display_legs_1_1k
+      capsule,
       (gltf) => {
         capsule_model = gltf.scene;
         //console.log(capsule_model);
