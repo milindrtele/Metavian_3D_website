@@ -12,6 +12,10 @@ import { data } from "../../lib/shaders/thrusters/thrusters.js";
 
 import { Text } from "troika-three-text";
 
+import beepie from "@/assets/models/chat_bot/cleaned_beepie_animated.glb";
+import hdr_for_vitruvian from "@/assets/vitruvian_man/odyssey_0_5K_6e3c37df-221e-49b9-8447-39a50559d19e.hdr";
+import beepie_display_font from "@/assets/models/chat_bot/LLPIXEL3.ttf";
+
 export default function Beepie(props) {
   const [displayText, setDisplayText] = useState("Hi I'm BeePie!");
   const [fullText, setFullText] = useState(
@@ -101,14 +105,14 @@ export default function Beepie(props) {
       RectAreaLightUniformsLib.init();
 
       new RGBELoader().load(
-        "vitruvian_man/odyssey_0_5K_6e3c37df-221e-49b9-8447-39a50559d19e.hdr",
+        hdr_for_vitruvian,
         function (texture) {
           texture.mapping = THREE.EquirectangularReflectionMapping;
           scene.environment = texture;
         }
       );
 
-      gltfloader.load("models/chat_bot/cleaned_beepie_animated.glb", (gltf) => {
+      gltfloader.load(beepie, (gltf) => {
         // models/chat_bot/cleaned_beepie.glb
         console.log(gltf);
         scene.add(gltf.scene);
@@ -134,7 +138,7 @@ export default function Beepie(props) {
         myText.text = displayText;
         myText.fontSize = 0.2;
         myText.color = 0xffffff;
-        myText.font = "/models/chat_bot/LLPIXEL3.ttf";
+        myText.font = beepie_display_font; // Path to your font file
 
         // Position the text in front of the parent
         myText.position.set(0, 0.65, 1); // Adjust based on your scene

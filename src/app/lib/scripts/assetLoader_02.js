@@ -21,6 +21,13 @@ import { vec3 } from "three/examples/jsm/nodes/Nodes.js";
 //imoprt models
 import contact_model_11_11_25 from "@/assets/models/contact_model_11_11_25.glb";
 import capsule from "@/assets/models/capsule/capsule.glb";
+import camera_01 from "@/assets/models/positioned_assets/camera_01.glb";
+import car_configurator_white_withShadows from "@/assets/models/saperated_models/car_configurator/car_configurator_white_withShadows.glb";
+import virtual_mart_white_withShadows from "@/assets/models/saperated_models/virtual_mart/virtual_mart_white_withShadows.glb";
+import fashion_ix_white_withShadows from "@/assets/models/saperated_models/fashion_ix/fashion_ix_white_withShadows.glb";
+import edulab_white_withShadows from "@/assets/models/saperated_models/edulab/edulab_white_withShadows.glb";
+import virtual_production_white_withShadows from "@/assets/models/saperated_models/virtual_production/virtual_production_white_withShadows.glb";
+import meta_realty_white_withShadows_2 from "@/assets/models/saperated_models/meta_realty/meta_realty_white_withShadows_2.glb";
 
 let blenderCamera = null;
 let contact_model_Camera = null;
@@ -680,7 +687,8 @@ export function loadAssetsWithPromise(
 
     // Load camera animation
     loader.load(
-      "models/positioned assets 2/camera_01.glb",
+      // "models/positioned assets 2/camera_01.glb",
+      camera_01,
       (gltf) => {
         console.log(gltf);
         blenderCamera = gltf.cameras[0];
@@ -707,7 +715,8 @@ export function loadAssetsWithPromise(
         console.log(hotspotData);
         loadModels(
           0,
-          "models/Consolidated models/saperated_animated_models/car_configurator/car_configurator_white_withShadows.glb",
+          // "models/Consolidated models/saperated_animated_models/car_configurator/car_configurator_white_withShadows.glb",
+          car_configurator_white_withShadows,
           "anchor",
           null,
           null,
@@ -769,7 +778,8 @@ export function loadAssetsWithPromise(
       find_From_Data("Virtual Mart").then((hotspotData) => {
         loadModels(
           1,
-          "models/Consolidated models/saperated_animated_models/virtual_mart/virtual_mart_white_withShadows.glb", //"models/positioned assets 2/virtual_mart_2.glb",
+          // "models/Consolidated models/saperated_animated_models/virtual_mart/virtual_mart_white_withShadows.glb", //"models/positioned assets 2/virtual_mart_2.glb",
+          virtual_mart_white_withShadows,
           "anchor",
           null,
           null,
@@ -831,7 +841,8 @@ export function loadAssetsWithPromise(
       find_From_Data("Fashion IX").then((hotspotData) => {
         loadModels(
           2,
-          "models/Consolidated models/saperated_animated_models/fashion_ix/fashion_ix_white_withShadows.glb", //"models/positioned assets 2/fashion_ix.glb",
+          // "models/Consolidated models/saperated_animated_models/fashion_ix/fashion_ix_white_withShadows.glb", //"models/positioned assets 2/fashion_ix.glb",
+          fashion_ix_white_withShadows,
           "anchor",
           null,
           null,
@@ -863,7 +874,8 @@ export function loadAssetsWithPromise(
       find_From_Data("Edulab").then((hotspotData) => {
         loadModels(
           3,
-          "models/Consolidated models/saperated_animated_models/edulab/edulab_white_withShadows.glb", //"models/positioned assets 2/edulab_2.glb",
+          //"models/Consolidated models/saperated_animated_models/edulab/edulab_white_withShadows.glb", //"models/positioned assets 2/edulab_2.glb",
+          edulab_white_withShadows,
           "anchor",
           null,
           null,
@@ -895,7 +907,8 @@ export function loadAssetsWithPromise(
       find_From_Data("Virtual Production").then((hotspotData) => {
         loadModels(
           4,
-          "models/Consolidated models/saperated_animated_models/virtual_production/virtual_production_white_withShadows.glb", //"models/positioned assets 2/virtual_production.glb",
+          //"models/Consolidated models/saperated_animated_models/virtual_production/virtual_production_white_withShadows.glb", //"models/positioned assets 2/virtual_production.glb",
+          virtual_production_white_withShadows,
           "anchor",
           null,
           null,
@@ -927,7 +940,8 @@ export function loadAssetsWithPromise(
       find_From_Data("Meta Realty").then((hotspotData) => {
         loadModels(
           5,
-          "models/Consolidated models/saperated_animated_models/meta_realty/meta_realty_white_withShadows_2.glb", //"models/positioned assets 2/meta_realty.glb",
+          //"models/Consolidated models/saperated_animated_models/meta_realty/meta_realty_white_withShadows_2.glb", //"models/positioned assets 2/meta_realty.glb",
+          meta_realty_white_withShadows_2,
           "anchor",
           null,
           null,

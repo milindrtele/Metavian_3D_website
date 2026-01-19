@@ -15,6 +15,18 @@ const nextConfig = {
       type: "asset/resource",
     });
 
+    // hdri files
+    config.module.rules.push({
+      test: /\.(hdr)$/i,
+      type: "asset/resource",
+    });
+
+    //ttf fonts
+    config.module.rules.push({
+      test: /\.(ttf)$/i,
+      type: "asset/resource",
+    });
+
     return config;
   },
 };

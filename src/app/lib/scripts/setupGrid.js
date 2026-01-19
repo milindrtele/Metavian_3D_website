@@ -7,6 +7,9 @@ import gridFragment from "../shaders/grid_shader/gridFragment.glsl";
 import testVertex from "../shaders/grid_shader/testVertex.glsl";
 import testFragment from "../shaders/grid_shader/testFragment.glsl";
 
+import hexa_with_edge_single_object_scaled from "@/assets/models/hexa_with_edge_single_object_scaled.glb";
+import blank_plane from "@/assets/models/blank_plane.glb";
+
 let hexagon = null;
 let matcapTexture = null;
 let instancedMeshObject1 = null;
@@ -14,7 +17,7 @@ let instancedMeshObject2 = null;
 let uniformsForGrid = null;
 
 export function setupGrid(renderer, loader, uniformsForGrid, scene) {
-  loader.load("/models/hexa_with_edge_single_object_scaled.glb", (gltf) => {
+  loader.load(hexa_with_edge_single_object_scaled, (gltf) => {
     ///"/models/hexa_with_edge_AO_3.glb"
     //hexagon_b.glb
     hexagon = gltf.scene;
@@ -120,7 +123,7 @@ export function setupGrid(renderer, loader, uniformsForGrid, scene) {
     //blankPlaneMesh.position.set(0, -5.5, 0);
     //scene.add(blankPlaneMesh);
 
-    loader.load("/models/blank_plane.glb", (gltf) => {
+    loader.load(blank_plane, (gltf) => {
       const blank_planeMesh = gltf.scene;
       blank_planeMesh.children[0].material = blankPlaneMat;
       //blank_planeMesh.scale.set(new THREE.Vector3(2, 1, 2));
